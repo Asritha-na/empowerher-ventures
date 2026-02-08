@@ -1,49 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, Heart } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import SuccessStoryCard from "@/components/home/SuccessStoryCard";
-
-const successStories = [
-  {
-    image: "https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=600&q=80",
-    name: "Lakshmi Devi",
-    business: "Handmade Bangles & Jewelry",
-    description: "Started making traditional lac bangles from her village home. Now supplies to 15 cities with 20 women employed."
-  },
-  {
-    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80",
-    name: "Priya Sharma",
-    business: "Textile & Embroidery",
-    description: "Turned her grandmother's stitching skills into a flourishing business creating beautiful ethnic wear and home textiles."
-  },
-  {
-    image: "https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=600&q=80",
-    name: "Meera Patel",
-    business: "Organic Pickles & Spices",
-    description: "Her homemade pickles and spice blends are now sold across the country through online marketplaces."
-  },
-  {
-    image: "https://images.unsplash.com/photo-1597742200037-aa4d3d70c846?w=600&q=80",
-    name: "Sunita Kumari",
-    business: "Handloom Weaving",
-    description: "Revived the dying art of handloom weaving in her village, training 30+ women and exporting globally."
-  },
-  {
-    image: "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&q=80",
-    name: "Rani Begum",
-    business: "Tailoring & Fashion",
-    description: "From stitching clothes at home to running a boutique that creates modern designs inspired by traditional craft."
-  },
-  {
-    image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600&q=80",
-    name: "Kavita Singh",
-    business: "Bamboo Craft & Decor",
-    description: "Transforms bamboo into beautiful home décor pieces. Her products are featured in international craft fairs."
-  }
-];
+import EntrepreneurCarousel from "@/components/home/EntrepreneurCarousel";
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -87,26 +48,26 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Success Stories */}
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 text-amber-600 font-medium mb-3">
-            <Heart className="w-5 h-5" />
-            Real Stories, Real Women
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+      {/* Entrepreneur Carousel */}
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="text-center mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 bg-amber-100 text-amber-700 font-medium px-4 py-2 rounded-full text-sm mb-4"
+          >
+            <Sparkles className="w-4 h-4" />
+            Real Stories, Real Impact
+          </motion.div>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
             Women Who Made It Happen
           </h2>
-          <p className="text-gray-500 mt-3 max-w-lg mx-auto text-lg">
-            Get inspired by women from rural areas who turned their skills into successful businesses
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+            Get inspired by real rural women entrepreneurs who turned their skills into thriving businesses
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {successStories.map((story, index) => (
-            <SuccessStoryCard key={index} {...story} index={index} />
-          ))}
-        </div>
+        <EntrepreneurCarousel />
       </div>
 
       {/* Stats */}
