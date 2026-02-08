@@ -1,0 +1,252 @@
+import React, { useState, useEffect } from "react";
+import { base44 } from "@/api/base44Client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { User, Save, Loader2, Camera, Mail, Phone, MapPin, Building2, LogOut } from "lucide-react";
+import { motion } from "framer-motion";
+
+const businessTypes = [
+  { value: "handicrafts", label: "🎨 Handicrafts" },
+  { value: "textiles", label: "🧵 Textiles" },
+  { value: "food", label: "🍳 Food" },
+  { value: "agriculture", label: "🌾 Agriculture" },
+  { value: "retail", label: "🛍️ Retail" },
+  { value: "services", label: "💼 Services" },
+  { value: "other", label: "📦 Other" },
+];
+
+const languages = [
+  { value: "en", label: "English" },
+  { value: "hi", label: "Hindi" },
+  { value: "ta", label: "Tamil" },
+  { value: "te", label: "Telugu" },
+  { value: "bn", label: "Bengali" },
+  { value: "mr", label: "Marathi" },
+  { value: "gu", label: "Gujarati" },
+  { value: "kn", label: "Kannada" },
+  { value: "ml", label: "Malayalam" },
+];
+
+export default function Profile() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({
+    phone: "",
+    location: "",
+    bio: "",
+    business_name: "",
+    business_type: "",
+    preferred_language: "en",
+  });
+
+  useEffect(() => {
+    base44.auth.me().then((u) => {
+      setUser(u);
+      setForm({
+        phone: u.phone || "",
+        location: u.location || "",
+        bio: u.bio || "",
+        business_name: u.business_name || "",
+        business_type: u.business_type || "",
+        preferred_language: u.preferred_language || "en",
+      });
+      setLoading(false);
+    });
+  }, []);
+
+  const handleSave = async () => {
+    setSaving(true);
+    await base44.auth.updateMe(form);
+    setSaving(false);
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    await base44.auth.updateMe({ profile_image: file_url });
+    setUser({ ...user, profile_image: file_url });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
+      <div className="max-w-2xl mx-auto">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+            <User className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
+            <p className="text-gray-500">Your personal details</p>
+          </div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          {/* Profile Picture */}
+          <div className="flex justify-center mb-8">
+            <div className="relative">
+              {user?.profile_image ? (
+                <img
+                  src={user.profile_image}
+                  alt="Profile"
+                  className="w-28 h-28 rounded-3xl object-cover shadow-lg"
+                />
+              ) : (
+                <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg">
+                  <span className="text-4xl font-bold text-white">
+                    {user?.full_name?.charAt(0)?.toUpperCase() || "?"}
+                  </span>
+                </div>
+              )}
+              <label className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+                <Camera className="w-4 h-4 text-gray-600" />
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+              </label>
+            </div>
+          </div>
+
+          <Card className="rounded-3xl shadow-sm border border-gray-100">
+            <CardContent className="p-6 space-y-5">
+              {/* Read-only fields */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5" /> Full Name
+                </label>
+                <div className="h-12 bg-gray-50 rounded-xl flex items-center px-4 text-gray-700 font-medium">
+                  {user?.full_name || "Not set"}
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5" /> Email
+                </label>
+                <div className="h-12 bg-gray-50 rounded-xl flex items-center px-4 text-gray-700">
+                  {user?.email || "Not set"}
+                </div>
+              </div>
+
+              {/* Editable fields */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                  <Phone className="w-3.5 h-3.5" /> Phone Number
+                </label>
+                <Input
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="Your phone number"
+                  className="rounded-xl h-12"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5" /> Location
+                </label>
+                <Input
+                  value={form.location}
+                  onChange={(e) => setForm({ ...form, location: e.target.value })}
+                  placeholder="Village / City, State"
+                  className="rounded-xl h-12"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                  <Building2 className="w-3.5 h-3.5" /> Business Name
+                </label>
+                <Input
+                  value={form.business_name}
+                  onChange={(e) => setForm({ ...form, business_name: e.target.value })}
+                  placeholder="Your business name"
+                  className="rounded-xl h-12"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500">Business Type</label>
+                <Select
+                  value={form.business_type}
+                  onValueChange={(v) => setForm({ ...form, business_type: v })}
+                >
+                  <SelectTrigger className="rounded-xl h-12">
+                    <SelectValue placeholder="Select your business type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {businessTypes.map((bt) => (
+                      <SelectItem key={bt.value} value={bt.value} className="py-2">
+                        {bt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500">Preferred Language</label>
+                <Select
+                  value={form.preferred_language}
+                  onValueChange={(v) => setForm({ ...form, preferred_language: v })}
+                >
+                  <SelectTrigger className="rounded-xl h-12">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {languages.map((l) => (
+                      <SelectItem key={l.value} value={l.value} className="py-2">
+                        {l.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500">About Me</label>
+                <Textarea
+                  value={form.bio}
+                  onChange={(e) => setForm({ ...form, bio: e.target.value })}
+                  placeholder="Tell us about yourself and your business..."
+                  className="rounded-xl min-h-[100px]"
+                />
+              </div>
+
+              <Button
+                onClick={handleSave}
+                disabled={saving}
+                className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 rounded-xl h-12 text-base"
+              >
+                {saving ? (
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                ) : (
+                  <Save className="w-4 h-4 mr-2" />
+                )}
+                Save Profile
+              </Button>
+
+              <Button
+                variant="outline"
+                onClick={() => base44.auth.logout()}
+                className="w-full rounded-xl h-12 text-red-500 border-red-200 hover:bg-red-50"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
