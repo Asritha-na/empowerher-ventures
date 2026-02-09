@@ -208,18 +208,21 @@ If they ask to read the screen, describe what's available on the current ${curre
               </div>
 
               {/* Messages */}
-              <div className="h-96 overflow-y-auto p-4 bg-gray-50 space-y-3">
+              <div className="h-96 overflow-y-auto p-4 bg-gradient-to-b from-indigo-50 to-white space-y-3">
                 {messages.length === 0 && (
-                  <div className="text-center py-8">
-                    <Sparkles className="w-12 h-12 mx-auto text-indigo-300 mb-3" />
-                    <p className="text-gray-500 text-sm mb-4">Hi! I can help you navigate the app.</p>
-                    <Button
-                      onClick={readScreen}
-                      size="sm"
-                      className="bg-indigo-100 text-indigo-700 hover:bg-indigo-200 rounded-xl"
-                    >
-                      Read Current Screen
-                    </Button>
+                  <div className="py-6 px-4">
+                    <div className="bg-white rounded-2xl p-5 shadow-sm border border-indigo-100">
+                      <p className="text-gray-800 text-sm leading-relaxed mb-3">
+                        Hello {user?.full_name?.split(' ')[0] || 'there'}! 👋 I'm your AI assistant. I can help you navigate the app, create pitches, find investors, and answer questions. Try magic words like "navigate to dashboard" or "find investors"!
+                      </p>
+                      <button
+                        onClick={readScreen}
+                        className="flex items-center gap-2 text-indigo-600 text-sm font-medium hover:text-indigo-700"
+                      >
+                        <Volume2 className="w-4 h-4" />
+                        Listen
+                      </button>
+                    </div>
                   </div>
                 )}
                 
@@ -250,31 +253,47 @@ If they ask to read the screen, describe what's available on the current ${curre
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Input */}
-              <div className="p-4 bg-white border-t">
-                <div className="flex gap-2 mb-2">
-                  <Button
-                    onClick={readScreen}
-                    size="sm"
-                    variant="outline"
-                    className="rounded-xl text-xs"
+              {/* Quick Actions */}
+              <div className="px-4 pb-3 bg-white border-t border-gray-100">
+                <div className="flex flex-wrap gap-2 py-3">
+                  <button
+                    onClick={() => handleSend("Where am I?")}
+                    className="px-3 py-1.5 bg-pink-50 text-pink-700 rounded-full text-xs font-medium hover:bg-pink-100 transition-colors flex items-center gap-1"
                   >
-                    <Volume2 className="w-3 h-3 mr-1" />
-                    Read Screen
-                  </Button>
-                  {isSpeaking && (
-                    <Button
-                      onClick={stopSpeaking}
-                      size="sm"
-                      variant="outline"
-                      className="rounded-xl text-xs text-red-600"
-                    >
-                      <VolumeX className="w-3 h-3 mr-1" />
-                      Stop
-                    </Button>
-                  )}
+                    📍 Where am I?
+                  </button>
+                  <button
+                    onClick={() => handleSend("Navigate to Home")}
+                    className="px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-xs font-medium hover:bg-amber-100 transition-colors flex items-center gap-1"
+                  >
+                    🏠 Dashboard
+                  </button>
+                  <button
+                    onClick={() => handleSend("Help me create a pitch")}
+                    className="px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium hover:bg-yellow-100 transition-colors flex items-center gap-1"
+                  >
+                    💡 Create Pitch
+                  </button>
+                  <button
+                    onClick={() => handleSend("Help")}
+                    className="px-3 py-1.5 bg-red-50 text-red-700 rounded-full text-xs font-medium hover:bg-red-100 transition-colors flex items-center gap-1"
+                  >
+                    ❓ Help
+                  </button>
                 </div>
-                <div className="flex gap-2">
+              </div>
+
+              {/* Input */}
+              <div className="p-4 pt-0 bg-white">
+                <div className="flex gap-2 items-end">
+                  <Button
+                    onClick={toggleListening}
+                    size="icon"
+                    variant="outline"
+                    className={`rounded-xl shrink-0 ${isListening ? "bg-red-500 text-white border-red-500 hover:bg-red-600" : ""}`}
+                  >
+                    <Mic className="w-4 h-4" />
+                  </Button>
                   <Textarea
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -284,29 +303,22 @@ If they ask to read the screen, describe what's available on the current ${curre
                         handleSend();
                       }
                     }}
-                    placeholder="Ask me anything or say 'navigate to...'"
-                    className="rounded-xl resize-none text-sm"
-                    rows={2}
+                    placeholder="Say 'navigate to dashboard' or ask anything..."
+                    className="rounded-xl resize-none text-sm border-gray-200"
+                    rows={1}
                   />
-                  <div className="flex flex-col gap-2">
-                    <Button
-                      onClick={toggleListening}
-                      size="icon"
-                      variant={isListening ? "default" : "outline"}
-                      className={`rounded-xl ${isListening ? "bg-red-500 hover:bg-red-600" : ""}`}
-                    >
-                      <Mic className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={() => handleSend()}
-                      disabled={!input.trim() || isLoading}
-                      size="icon"
-                      className="rounded-xl bg-indigo-600 hover:bg-indigo-700"
-                    >
-                      <Send className="w-4 h-4" />
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={() => handleSend()}
+                    disabled={!input.trim() || isLoading}
+                    size="icon"
+                    className="rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shrink-0"
+                  >
+                    <Send className="w-4 h-4" />
+                  </Button>
                 </div>
+                <p className="text-xs text-gray-400 mt-2 text-center">
+                  ✨ Magic words: "navigate to...", "explain this screen", "find investors"
+                </p>
               </div>
             </Card>
           </motion.div>
