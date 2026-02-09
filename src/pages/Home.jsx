@@ -32,18 +32,31 @@ export default function Home() {
               Welcome{user?.full_name ? `, ${user.full_name}` : ""}!
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-              Your Ideas Can Change the World
+              Transform Your Ideas into Thriving Enterprises
             </h1>
             <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
               Every great business started with a single idea. Share yours today and connect with investors who believe in you.
             </p>
-            <Link
-              to={createPageUrl("MyIdea")}
-              className="inline-flex items-center gap-2 bg-white text-amber-700 font-semibold px-8 py-4 rounded-2xl text-lg hover:bg-amber-50 transition-colors shadow-lg"
-            >
-              Share Your Idea
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to={createPageUrl("MyIdea")}
+                className="inline-flex items-center gap-2 bg-white text-amber-700 font-semibold px-8 py-4 rounded-2xl text-lg hover:bg-amber-50 transition-colors shadow-lg"
+              >
+                Get Started
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <a
+                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border-2 border-white text-white font-semibold px-8 py-4 rounded-2xl text-lg hover:bg-white/20 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                Watch Demo Video
+              </a>
+            </div>
           </motion.div>
         </div>
       </div>

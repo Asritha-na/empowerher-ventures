@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
+import AINavigationBot from "@/components/AINavigationBot";
 import {
   Home,
   Lightbulb,
@@ -137,6 +138,9 @@ export default function Layout({ children, currentPageName }) {
       <main className="flex-1 min-h-screen md:ml-0 mt-16 md:mt-0 overflow-auto">
         {children}
       </main>
+
+      {/* AI Navigation Bot */}
+      <AINavigationBot currentPage={currentPageName} />
     </div>
   );
 }
