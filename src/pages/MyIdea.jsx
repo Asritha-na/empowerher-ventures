@@ -186,38 +186,36 @@ Funding Needed: ₹${formData.funding_needed}
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-rose-500 to-pink-600 text-white rounded-full text-sm font-medium mb-4">
-            ✨ AI-Powered Pitch Coach (GPT-4)
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-            Share Your <span className="text-rose-600">Brilliant Idea</span>
+          <h1 className="text-4xl md:text-5xl font-bold mb-3">
+            <span className="text-gray-900">Share Your </span>
+            <span className="text-rose-600">Brilliant Idea</span>
           </h1>
-          <p className="text-gray-500 text-lg">
+          <p className="text-gray-500 text-lg mb-8">
             Record your pitch, upload video, and get expert AI feedback
           </p>
-        </div>
 
-        {/* Progress Steps */}
-        <div className="flex justify-center items-center gap-4 mb-10">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold">
-              1
+          {/* Progress Steps */}
+          <div className="flex justify-center items-center gap-6 max-w-2xl mx-auto">
+            <div className="flex items-center gap-3">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 text-white flex items-center justify-center font-bold text-lg shadow-lg">
+                1
+              </div>
+              <span className="text-base font-semibold text-gray-900">Share Your Idea</span>
             </div>
-            <span className="text-sm font-medium text-gray-700">Share Your Idea</span>
-          </div>
-          <div className="w-12 h-0.5 bg-gray-200" />
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">
-              2
+            <div className="w-16 h-0.5 bg-gray-300" />
+            <div className="flex items-center gap-3">
+              <div className="w-14 h-14 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-lg">
+                2
+              </div>
+              <span className="text-base font-medium text-gray-400">AI Review</span>
             </div>
-            <span className="text-sm font-medium text-gray-400">AI Review</span>
-          </div>
-          <div className="w-12 h-0.5 bg-gray-200" />
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">
-              3
+            <div className="w-16 h-0.5 bg-gray-300" />
+            <div className="flex items-center gap-3">
+              <div className="w-14 h-14 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-lg">
+                3
+              </div>
+              <span className="text-base font-medium text-gray-400">Find Investors</span>
             </div>
-            <span className="text-sm font-medium text-gray-400">Find Investors</span>
           </div>
         </div>
 
