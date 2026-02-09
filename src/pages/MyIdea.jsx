@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Lightbulb, Sparkles, Loader2, Send, FileText, Trash2, Eye } from "lucide-react";
+import { Lightbulb, Sparkles, Loader2, Send, FileText, Trash2, Eye, Video, Upload, FileEdit, Mic } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SpeechRecorder from "@/components/idea/SpeechRecorder";
 import {
@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const categories = [
   { value: "handicrafts", label: "🎨 Handicrafts" },
@@ -28,12 +29,25 @@ const categories = [
 ];
 
 export default function MyIdea() {
+  const [activeTab, setActiveTab] = useState("voice");
   const [title, setTitle] = useState("");
   const [speechText, setSpeechText] = useState("");
   const [category, setCategory] = useState("");
   const [structuredPitch, setStructuredPitch] = useState("");
   const [isRefining, setIsRefining] = useState(false);
   const [viewPitch, setViewPitch] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  
+  // Form fields
+  const [formData, setFormData] = useState({
+    problem: "",
+    solution: "",
+    target_market: "",
+    revenue_model: "",
+    funding_needed: ""
+  });
+  
   const queryClient = useQueryClient();
 
   const { data: pitches = [], isLoading } = useQuery({
@@ -45,10 +59,7 @@ export default function MyIdea() {
     mutationFn: (data) => base44.entities.Pitch.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pitches"] });
-      setTitle("");
-      setSpeechText("");
-      setCategory("");
-      setStructuredPitch("");
+      resetForm();
     },
   });
 
@@ -56,6 +67,21 @@ export default function MyIdea() {
     mutationFn: (id) => base44.entities.Pitch.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pitches"] }),
   });
+
+  const resetForm = () => {
+    setTitle("");
+    setSpeechText("");
+    setCategory("");
+    setStructuredPitch("");
+    setVideoFile(null);
+    setFormData({
+      problem: "",
+      solution: "",
+      target_market: "",
+      revenue_model: "",
+      funding_needed: ""
+    });
+  };
 
   const refinePitch = async () => {
     if (!speechText.trim()) return;
@@ -87,12 +113,64 @@ Format it clearly with headers. Keep it concise but compelling.`,
     setIsRefining(false);
   };
 
-  const submitPitch = () => {
+  const handleVideoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (file.size > 100 * 1024 * 1024) {
+      alert("File size must be less than 100MB");
+      return;
+    }
+    
+    setVideoFile(file);
+  };
+
+  const submitVoicePitch = () => {
     createMutation.mutate({
       title,
       raw_speech: speechText,
       structured_pitch: structuredPitch,
       category,
+      pitch_type: "voice",
+      status: "submitted"
+    });
+  };
+
+  const submitVideoPitch = async () => {
+    if (!videoFile) return;
+    
+    setIsUploading(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file: videoFile });
+    
+    createMutation.mutate({
+      title,
+      category,
+      video_url: file_url,
+      pitch_type: "video",
+      status: "submitted"
+    });
+    setIsUploading(false);
+  };
+
+  const submitFormPitch = async () => {
+    const pitchContent = `
+Problem: ${formData.problem}
+Solution: ${formData.solution}
+Target Market: ${formData.target_market}
+Revenue Model: ${formData.revenue_model}
+Funding Needed: ₹${formData.funding_needed}
+`;
+
+    createMutation.mutate({
+      title,
+      category,
+      structured_pitch: pitchContent,
+      pitch_type: "form",
+      problem: formData.problem,
+      solution: formData.solution,
+      target_market: formData.target_market,
+      revenue_model: formData.revenue_model,
+      funding_needed: parseFloat(formData.funding_needed),
       status: "submitted"
     });
   };
@@ -105,111 +183,299 @@ Format it clearly with headers. Keep it concise but compelling.`,
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-              <Lightbulb className="w-6 h-6 text-white" />
+        <div className="text-center mb-10">
+          <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-rose-500 to-pink-600 text-white rounded-full text-sm font-medium mb-4">
+            ✨ AI-Powered Pitch Coach (GPT-4)
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+            Share Your <span className="text-rose-600">Brilliant Idea</span>
+          </h1>
+          <p className="text-gray-500 text-lg">
+            Record your pitch, upload video, and get expert AI feedback
+          </p>
+        </div>
+
+        {/* Progress Steps */}
+        <div className="flex justify-center items-center gap-4 mb-10">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold">
+              1
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">My Ideas</h1>
-              <p className="text-gray-500">Share your business idea by speaking</p>
+            <span className="text-sm font-medium text-gray-700">Share Your Idea</span>
+          </div>
+          <div className="w-12 h-0.5 bg-gray-200" />
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">
+              2
             </div>
+            <span className="text-sm font-medium text-gray-400">AI Review</span>
+          </div>
+          <div className="w-12 h-0.5 bg-gray-200" />
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">
+              3
+            </div>
+            <span className="text-sm font-medium text-gray-400">Find Investors</span>
           </div>
         </div>
 
-        {/* New Idea Form */}
-        <Card className="mb-8 border-2 border-dashed border-amber-200 bg-white rounded-3xl shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xl text-gray-800">✨ Create New Pitch</CardTitle>
+        {/* Main Card */}
+        <Card className="mb-8 border-0 shadow-lg rounded-3xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-rose-50 to-pink-50 border-b">
+            <CardTitle className="text-xl text-gray-800">Step 1: Share Your Idea</CardTitle>
+            <p className="text-sm text-gray-500 mt-1">Choose voice recording OR video upload (or skip to form)</p>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <Input
-              placeholder="Give your idea a name..."
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="text-lg rounded-xl h-14 border-gray-200"
-            />
-
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="rounded-xl h-14 border-gray-200 text-base">
-                <SelectValue placeholder="Choose your business type..." />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((c) => (
-                  <SelectItem key={c.value} value={c.value} className="text-base py-3">
-                    {c.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Speech Recorder */}
-            <div className="bg-amber-50/80 rounded-2xl p-6">
-              <SpeechRecorder onTranscript={setSpeechText} />
+          <CardContent className="p-6">
+            {/* Common Fields */}
+            <div className="space-y-4 mb-6">
+              <Input
+                placeholder="Give your idea a name..."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="text-lg rounded-xl h-14 border-gray-200"
+              />
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger className="rounded-xl h-14 border-gray-200 text-base">
+                  <SelectValue placeholder="Choose your business type..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((c) => (
+                    <SelectItem key={c.value} value={c.value} className="text-base py-3">
+                      {c.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
-            {speechText && (
-              <div className="space-y-3">
-                <label className="text-sm font-medium text-gray-600">Your words:</label>
-                <Textarea
-                  value={speechText}
-                  onChange={(e) => setSpeechText(e.target.value)}
-                  className="min-h-[120px] rounded-xl border-gray-200 text-base"
-                  placeholder="Your speech will appear here, or type your idea..."
-                />
-                <Button
-                  onClick={refinePitch}
-                  disabled={isRefining}
-                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-xl h-12 px-6"
-                >
-                  {isRefining ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      AI is refining your pitch...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Refine with AI
-                    </>
-                  )}
-                </Button>
-              </div>
-            )}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-3 mb-6 bg-gray-100 p-1 rounded-xl">
+                <TabsTrigger value="voice" className="rounded-lg data-[state=active]:bg-white">
+                  <Mic className="w-4 h-4 mr-2" />
+                  Voice
+                </TabsTrigger>
+                <TabsTrigger value="video" className="rounded-lg data-[state=active]:bg-white">
+                  <Video className="w-4 h-4 mr-2" />
+                  Video
+                </TabsTrigger>
+                <TabsTrigger value="form" className="rounded-lg data-[state=active]:bg-white">
+                  <FileEdit className="w-4 h-4 mr-2" />
+                  Form
+                </TabsTrigger>
+              </TabsList>
 
-            {structuredPitch && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100"
-              >
-                <h3 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4" /> AI-Refined Pitch
-                </h3>
-                <div className="text-gray-700 whitespace-pre-wrap text-sm leading-relaxed">
-                  {structuredPitch}
+              {/* Option 1: Voice Recording */}
+              <TabsContent value="voice" className="space-y-6">
+                <div className="bg-rose-50 rounded-2xl p-6 border-2 border-dashed border-rose-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Mic className="w-5 h-5 text-rose-600" />
+                    <h3 className="font-semibold text-gray-900">Option 1: Record Your Pitch (Voice)</h3>
+                  </div>
+                  <p className="text-sm text-gray-500 mb-4">Perfect for quick ideas - just speak naturally!</p>
+                  <SpeechRecorder onTranscript={setSpeechText} />
                 </div>
-                <Button
-                  onClick={submitPitch}
-                  disabled={createMutation.isPending}
-                  className="mt-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 rounded-xl h-12 px-8"
-                >
-                  {createMutation.isPending ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <Send className="w-4 h-4 mr-2" />
+
+                {speechText && (
+                  <div className="space-y-3">
+                    <label className="text-sm font-medium text-gray-600">Your words:</label>
+                    <Textarea
+                      value={speechText}
+                      onChange={(e) => setSpeechText(e.target.value)}
+                      className="min-h-[120px] rounded-xl border-gray-200 text-base"
+                      placeholder="Your speech will appear here, or type your idea..."
+                    />
+                    <Button
+                      onClick={refinePitch}
+                      disabled={isRefining}
+                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-xl h-12 px-6"
+                    >
+                      {isRefining ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          AI is refining your pitch...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Refine with AI
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                )}
+
+                {structuredPitch && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100"
+                  >
+                    <h3 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
+                      <Sparkles className="w-4 h-4" /> AI-Refined Pitch
+                    </h3>
+                    <div className="text-gray-700 whitespace-pre-wrap text-sm leading-relaxed">
+                      {structuredPitch}
+                    </div>
+                    <Button
+                      onClick={submitVoicePitch}
+                      disabled={createMutation.isPending}
+                      className="mt-4 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 rounded-xl h-12 px-8"
+                    >
+                      {createMutation.isPending ? (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      ) : (
+                        <Send className="w-4 h-4 mr-2" />
+                      )}
+                      Submit Pitch
+                    </Button>
+                  </motion.div>
+                )}
+              </TabsContent>
+
+              {/* Option 2: Video Upload */}
+              <TabsContent value="video" className="space-y-6">
+                <div className="bg-purple-50 rounded-2xl p-8 border-2 border-dashed border-purple-200 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <Video className="w-5 h-5 text-purple-600" />
+                    <h3 className="font-semibold text-gray-900">Option 2: Upload a Pitch Video</h3>
+                  </div>
+                  <p className="text-sm text-gray-500 mb-6">Show your product, demonstrate your idea, or present yourself!</p>
+                  
+                  <div className="mb-6">
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-purple-100 flex items-center justify-center">
+                      <Video className="w-10 h-10 text-purple-600" />
+                    </div>
+                    <p className="text-gray-700 font-medium mb-2">Click to upload your pitch video</p>
+                    <p className="text-sm text-gray-400">MP4, MOV, AVI up to 100MB</p>
+                  </div>
+
+                  <label className="inline-block">
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={handleVideoUpload}
+                      className="hidden"
+                    />
+                    <span className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium px-6 py-3 rounded-xl cursor-pointer hover:from-purple-700 hover:to-indigo-700">
+                      <Upload className="w-4 h-4" />
+                      Choose Video File
+                    </span>
+                  </label>
+
+                  {videoFile && (
+                    <div className="mt-4 text-sm text-gray-600">
+                      Selected: {videoFile.name} ({(videoFile.size / 1024 / 1024).toFixed(2)}MB)
+                    </div>
                   )}
-                  Submit Pitch
-                </Button>
-              </motion.div>
-            )}
+                </div>
+
+                {videoFile && (
+                  <Button
+                    onClick={submitVideoPitch}
+                    disabled={isUploading || createMutation.isPending}
+                    className="w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 rounded-xl h-12"
+                  >
+                    {isUploading || createMutation.isPending ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 mr-2" />
+                        Submit Video Pitch
+                      </>
+                    )}
+                  </Button>
+                )}
+              </TabsContent>
+
+              {/* Option 3: Form */}
+              <TabsContent value="form" className="space-y-4">
+                <div className="bg-blue-50 rounded-2xl p-6 border-2 border-dashed border-blue-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <FileEdit className="w-5 h-5 text-blue-600" />
+                    <h3 className="font-semibold text-gray-900">Skip Recording - Fill Form Directly</h3>
+                  </div>
+                  <p className="text-sm text-gray-500 mb-6">You can submit your idea without recording</p>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">What problem are you solving?</label>
+                      <Textarea
+                        value={formData.problem}
+                        onChange={(e) => setFormData({...formData, problem: e.target.value})}
+                        placeholder="Describe the problem your business addresses..."
+                        className="rounded-xl"
+                        rows={3}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">Your solution</label>
+                      <Textarea
+                        value={formData.solution}
+                        onChange={(e) => setFormData({...formData, solution: e.target.value})}
+                        placeholder="How does your business solve this problem?"
+                        className="rounded-xl"
+                        rows={3}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">Target market</label>
+                      <Input
+                        value={formData.target_market}
+                        onChange={(e) => setFormData({...formData, target_market: e.target.value})}
+                        placeholder="Who are your customers?"
+                        className="rounded-xl h-12"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">Revenue model</label>
+                      <Input
+                        value={formData.revenue_model}
+                        onChange={(e) => setFormData({...formData, revenue_model: e.target.value})}
+                        placeholder="How will you make money?"
+                        className="rounded-xl h-12"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">Funding needed (₹)</label>
+                      <Input
+                        type="number"
+                        value={formData.funding_needed}
+                        onChange={(e) => setFormData({...formData, funding_needed: e.target.value})}
+                        placeholder="Amount in rupees"
+                        className="rounded-xl h-12"
+                      />
+                    </div>
+
+                    <Button
+                      onClick={submitFormPitch}
+                      disabled={createMutation.isPending || !formData.problem || !formData.solution}
+                      className="w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 rounded-xl h-12"
+                    >
+                      {createMutation.isPending ? (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      ) : (
+                        <Send className="w-4 h-4 mr-2" />
+                      )}
+                      Submit Form Pitch
+                    </Button>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
 
         {/* My Pitches */}
-        <h2 className="text-xl font-bold text-gray-900 mb-4">My Submitted Pitches</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">My Submitted Pitches</h2>
         <div className="space-y-4">
           <AnimatePresence>
             {isLoading ? (
@@ -236,6 +502,14 @@ Format it clearly with headers. Keep it concise but compelling.`,
                           <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-semibold text-lg text-gray-900">{pitch.title}</h3>
                             <Badge className={statusColors[pitch.status]}>{pitch.status}</Badge>
+                            {pitch.pitch_type && (
+                              <Badge variant="outline" className="capitalize">
+                                {pitch.pitch_type === "voice" && "🎤"}
+                                {pitch.pitch_type === "video" && "🎥"}
+                                {pitch.pitch_type === "form" && "📝"}
+                                {pitch.pitch_type}
+                              </Badge>
+                            )}
                           </div>
                           {pitch.category && (
                             <span className="text-sm text-gray-400 capitalize">{pitch.category?.replace(/_/g, " ")}</span>
@@ -276,6 +550,12 @@ Format it clearly with headers. Keep it concise but compelling.`,
             <DialogTitle>{viewPitch?.title}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            {viewPitch?.video_url && (
+              <div>
+                <h4 className="text-sm font-medium text-gray-500 mb-2">Pitch Video</h4>
+                <video src={viewPitch.video_url} controls className="w-full rounded-xl" />
+              </div>
+            )}
             {viewPitch?.raw_speech && (
               <div>
                 <h4 className="text-sm font-medium text-gray-500 mb-1">Original Speech</h4>
@@ -284,7 +564,7 @@ Format it clearly with headers. Keep it concise but compelling.`,
             )}
             {viewPitch?.structured_pitch && (
               <div>
-                <h4 className="text-sm font-medium text-gray-500 mb-1">Refined Pitch</h4>
+                <h4 className="text-sm font-medium text-gray-500 mb-1">Pitch Details</h4>
                 <p className="text-gray-700 text-sm whitespace-pre-wrap bg-indigo-50 p-3 rounded-xl">{viewPitch.structured_pitch}</p>
               </div>
             )}
