@@ -185,6 +185,33 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* CTA Section */}
+      <div className="bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 py-16 md:py-20">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Ready to Start Your Journey?
+            </h2>
+            <p className="text-white/90 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+              Join thousands of women entrepreneurs who are building their dreams with Shakti
+            </p>
+            <Link
+              to={createPageUrl("MyIdea")}
+              className="inline-flex items-center gap-3 bg-white text-rose-600 font-semibold px-8 py-4 rounded-full text-lg hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+              </svg>
+              Get Started Today
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 }
