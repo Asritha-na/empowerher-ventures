@@ -7,7 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Lightbulb, Sparkles, Loader2, Send, FileText, Trash2, Eye, Video, Upload, FileEdit, Mic } from "lucide-react";
+import { Lightbulb, Sparkles, Loader2, Send, FileText, Trash2, Eye, Video, Upload, FileEdit, Mic, Users } from "lucide-react";
+import { createPageUrl } from "@/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import SpeechRecorder from "@/components/idea/SpeechRecorder";
 import {
@@ -29,6 +30,7 @@ const categories = [
 ];
 
 export default function MyIdea() {
+  const [currentStep, setCurrentStep] = useState(1);
   const [activeTab, setActiveTab] = useState("voice");
   const [title, setTitle] = useState("");
   const [speechText, setSpeechText] = useState("");
@@ -38,6 +40,7 @@ export default function MyIdea() {
   const [viewPitch, setViewPitch] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [submittedPitch, setSubmittedPitch] = useState(null);
   
   // Form fields
   const [formData, setFormData] = useState({
@@ -57,8 +60,10 @@ export default function MyIdea() {
 
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities.Pitch.create(data),
-    onSuccess: () => {
+    onSuccess: (newPitch) => {
       queryClient.invalidateQueries({ queryKey: ["pitches"] });
+      setSubmittedPitch(newPitch);
+      setCurrentStep(2);
       resetForm();
     },
   });
@@ -196,30 +201,64 @@ Funding Needed: ₹${formData.funding_needed}
 
           {/* Progress Steps */}
           <div className="flex justify-center items-center gap-6 max-w-2xl mx-auto">
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 text-white flex items-center justify-center font-bold text-lg shadow-lg">
+            <button
+              onClick={() => setCurrentStep(1)}
+              className="flex items-center gap-3 transition-all"
+            >
+              <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg shadow-lg transition-all ${
+                currentStep === 1 
+                  ? 'bg-gradient-to-br from-rose-500 to-pink-600 text-white' 
+                  : currentStep > 1
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-200 text-gray-400'
+              }`}>
                 1
               </div>
-              <span className="text-base font-semibold text-gray-900">Share Your Idea</span>
-            </div>
-            <div className="w-16 h-0.5 bg-gray-300" />
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-lg">
+              <span className={`text-base font-semibold ${currentStep >= 1 ? 'text-gray-900' : 'text-gray-400'}`}>
+                Share Your Idea
+              </span>
+            </button>
+            <div className={`w-16 h-0.5 transition-colors ${currentStep >= 2 ? 'bg-green-500' : 'bg-gray-300'}`} />
+            <button
+              onClick={() => submittedPitch && setCurrentStep(2)}
+              disabled={!submittedPitch}
+              className="flex items-center gap-3 transition-all disabled:cursor-not-allowed"
+            >
+              <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg transition-all ${
+                currentStep === 2 
+                  ? 'bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-lg' 
+                  : currentStep > 2
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-200 text-gray-400'
+              }`}>
                 2
               </div>
-              <span className="text-base font-medium text-gray-400">AI Review</span>
-            </div>
-            <div className="w-16 h-0.5 bg-gray-300" />
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-lg">
+              <span className={`text-base font-medium ${currentStep >= 2 ? 'text-gray-900' : 'text-gray-400'}`}>
+                AI Review
+              </span>
+            </button>
+            <div className={`w-16 h-0.5 transition-colors ${currentStep >= 3 ? 'bg-green-500' : 'bg-gray-300'}`} />
+            <button
+              onClick={() => submittedPitch && setCurrentStep(3)}
+              disabled={!submittedPitch}
+              className="flex items-center gap-3 transition-all disabled:cursor-not-allowed"
+            >
+              <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg transition-all ${
+                currentStep === 3 
+                  ? 'bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-lg' 
+                  : 'bg-gray-200 text-gray-400'
+              }`}>
                 3
               </div>
-              <span className="text-base font-medium text-gray-400">Find Investors</span>
-            </div>
+              <span className={`text-base font-medium ${currentStep >= 3 ? 'text-gray-900' : 'text-gray-400'}`}>
+                Find Investors
+              </span>
+            </button>
           </div>
         </div>
 
-        {/* Main Card */}
+        {/* Step 1: Share Your Idea */}
+        {currentStep === 1 && (
         <Card className="mb-8 border-0 shadow-lg rounded-3xl overflow-hidden">
           <CardHeader className="bg-gradient-to-r from-rose-50 to-pink-50 border-b">
             <CardTitle className="text-xl text-gray-800">Step 1: Share Your Idea</CardTitle>
@@ -471,6 +510,88 @@ Funding Needed: ₹${formData.funding_needed}
             </Tabs>
           </CardContent>
         </Card>
+        )}
+
+        {/* Step 2: AI Review */}
+        {currentStep === 2 && submittedPitch && (
+        <Card className="mb-8 border-0 shadow-lg rounded-3xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b">
+            <CardTitle className="text-xl text-gray-800">Step 2: AI Review & Feedback</CardTitle>
+            <p className="text-sm text-gray-500 mt-1">Get expert AI analysis of your pitch</p>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-6">
+              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
+                <h3 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" /> Your Pitch: {submittedPitch.title}
+                </h3>
+                {submittedPitch.structured_pitch && (
+                  <div className="text-gray-700 whitespace-pre-wrap text-sm leading-relaxed mb-4">
+                    {submittedPitch.structured_pitch}
+                  </div>
+                )}
+                {submittedPitch.video_url && (
+                  <video src={submittedPitch.video_url} controls className="w-full rounded-xl mb-4" />
+                )}
+                <div className="bg-white rounded-xl p-4 mb-4">
+                  <p className="text-sm text-gray-600 mb-2">💡 AI feedback coming soon! Your pitch is under review.</p>
+                  <p className="text-xs text-gray-400">Check the "Meeting Notes" tab for detailed AI analysis.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <Button
+                  onClick={() => setCurrentStep(1)}
+                  variant="outline"
+                  className="rounded-xl h-12"
+                >
+                  ← Back to Edit
+                </Button>
+                <Button
+                  onClick={() => setCurrentStep(3)}
+                  className="flex-1 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 rounded-xl h-12"
+                >
+                  Continue to Find Investors →
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        )}
+
+        {/* Step 3: Find Investors */}
+        {currentStep === 3 && (
+        <Card className="mb-8 border-0 shadow-lg rounded-3xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 border-b">
+            <CardTitle className="text-xl text-gray-800">Step 3: Find Investors</CardTitle>
+            <p className="text-sm text-gray-500 mt-1">Connect with investors who can fund your idea</p>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="text-center py-8">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                <Users className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Find Investors?</h3>
+              <p className="text-gray-500 mb-6">Browse our network of investors interested in ideas like yours</p>
+              <div className="flex gap-4 justify-center">
+                <Button
+                  onClick={() => setCurrentStep(2)}
+                  variant="outline"
+                  className="rounded-xl h-12"
+                >
+                  ← Back to Review
+                </Button>
+                <Button
+                  onClick={() => window.location.href = createPageUrl("FindInvestors")}
+                  className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 rounded-xl h-12 px-8"
+                >
+                  Browse Investors →
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        )}
 
         {/* My Pitches */}
         <h2 className="text-2xl font-bold text-gray-900 mb-4">My Submitted Pitches</h2>
