@@ -83,6 +83,85 @@ export default function Home() {
         <EntrepreneurCarousel />
       </div>
 
+      {/* Features Section */}
+      <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
+            Everything You Need to <span className="text-rose-600">Succeed</span>
+          </h2>
+          <p className="text-gray-500 text-lg max-w-3xl mx-auto">
+            From idea to execution, we provide the tools, connections, and support to help you build a thriving business
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              icon: "🎤",
+              color: "from-pink-500 to-rose-500",
+              title: "Voice-First Interface",
+              description: "Record your pitch in any language - no typing needed. Perfect for rural entrepreneurs."
+            },
+            {
+              icon: "💬",
+              color: "from-purple-500 to-indigo-500",
+              title: "AI Pitch Coach",
+              description: "Get instant feedback on your pitch with our AI-powered coach. Improve clarity, structure, and impact."
+            },
+            {
+              icon: "👥",
+              color: "from-blue-500 to-cyan-500",
+              title: "Verified Investors",
+              description: "Connect with verified CSR funds, angel investors, NGOs, and micro-finance institutions."
+            },
+            {
+              icon: "📚",
+              color: "from-green-500 to-emerald-500",
+              title: "Learning Hub",
+              description: "Access free courses, templates, pitch deck generators, and business guidance."
+            },
+            {
+              icon: "🛍️",
+              color: "from-orange-500 to-amber-500",
+              title: "D2C Marketplace",
+              description: "Sell your products directly to customers. Showcase with photos and AR/VR technology."
+            },
+            {
+              icon: "🌐",
+              color: "from-violet-500 to-purple-500",
+              title: "Multilingual Support",
+              description: "Available in 12+ Indian languages. Voice assistance for non-literate users."
+            },
+            {
+              icon: "🔒",
+              color: "from-teal-500 to-cyan-500",
+              title: "Safe & Secure",
+              description: "KYC-verified investors, content moderation, and privacy controls to keep you safe."
+            },
+            {
+              icon: "📈",
+              color: "from-yellow-500 to-orange-500",
+              title: "Impact Tracking",
+              description: "Track your growth, jobs created, and community impact with beautiful dashboards."
+            }
+          ].map((feature, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className="bg-white rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all border border-gray-100"
+            >
+              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-2xl mb-4`}>
+                {feature.icon}
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2 text-lg">{feature.title}</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">{feature.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
       {/* Stats */}
       <div className="bg-gradient-to-r from-amber-600 to-orange-500 text-white py-16">
         <div className="max-w-6xl mx-auto px-4">
