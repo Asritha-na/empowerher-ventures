@@ -175,7 +175,11 @@ export default function Layout({ children, currentPageName }) {
 
   // If no role selected, show role select page
   if (currentPageName === "RoleSelect") {
-    return <>{children}</>;
+    return (
+      <LanguageProvider>
+        {children}
+      </LanguageProvider>
+    );
   }
 
   // Redirect to role select if no role
