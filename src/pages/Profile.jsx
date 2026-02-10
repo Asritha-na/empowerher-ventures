@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, Save, Loader2, Camera, Mail, Phone, MapPin, Building2, LogOut } from "lucide-react";
+import { User, Save, Loader2, Camera, Mail, Phone, MapPin, Building2, LogOut, PhoneCall } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -251,6 +251,18 @@ export default function Profile() {
                 <LogOut className="w-4 h-4 mr-2" />
                 {t("logout")}
               </Button>
+            </CardContent>
+          </Card>
+
+          {/* Toll-Free Support */}
+          <Card className="rounded-3xl shadow-sm border border-gray-100 mt-6 bg-gradient-to-br from-pink-50 to-white">
+            <CardContent className="p-6 text-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center mx-auto mb-4">
+                <PhoneCall className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">{t("tollFreeSupport")}</h3>
+              <p className="text-4xl font-bold text-red-500 mb-2">1800-123-123</p>
+              <p className="text-sm text-gray-500">{t("available24x7")}</p>
             </CardContent>
           </Card>
         </motion.div>
