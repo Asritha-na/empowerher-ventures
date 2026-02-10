@@ -22,7 +22,7 @@ const navItems = [
   { name: "My Idea", icon: Lightbulb, page: "MyIdea" },
   { name: "Find Investors", icon: Users, page: "FindInvestors" },
   { name: "Learning Hub", icon: BookOpen, page: "LearningHub" },
-  { name: "Community", icon: Users2, page: "Community" },
+  { name: "Co-founder Connect", icon: Users2, page: "Community" },
   { name: "Meeting Notes", icon: Brain, page: "MeetingNotes" },
   { name: "Appointments", icon: Calendar, page: "Appointments" },
   { name: "Profile", icon: User, page: "Profile" },
