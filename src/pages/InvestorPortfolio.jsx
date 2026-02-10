@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Briefcase, Users, TrendingUp, Calendar, Mail, Phone, Camera, User, Save, Loader2, Heart, DollarSign, UserPlus } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +16,7 @@ import AIRecommendations from "@/components/investor/AIRecommendations";
 
 export default function InvestorPortfolio() {
   const { t } = useLanguage();
+  const queryClient = useQueryClient();
   const [user, setUser] = useState(null);
   const [saving, setSaving] = useState(false);
   const [profileForm, setProfileForm] = useState({
@@ -59,6 +60,8 @@ export default function InvestorPortfolio() {
 
   const handleSaveProfile = async () => {
     setSaving(true);
+    
+    // Save to User entity
     await base44.auth.updateMe({
       investor_name: profileForm.name,
       investor_bio: profileForm.bio,
@@ -68,6 +71,36 @@ export default function InvestorPortfolio() {
       investor_linkedin: profileForm.linkedin,
       investor_website: profileForm.website,
     });
+
+    // Also save/update in Investor entity for public visibility
+    if (currentInvestor) {
+      await base44.entities.Investor.update(currentInvestor.id, {
+        name: profileForm.name,
+        bio: profileForm.bio,
+        location: profileForm.location,
+        phone: profileForm.phone,
+        email: user.email,
+        image_url: user.profile_image,
+      });
+    } else {
+      await base44.entities.Investor.create({
+        name: profileForm.name,
+        bio: profileForm.bio,
+        location: profileForm.location,
+        phone: profileForm.phone,
+        email: user.email,
+        image_url: user.profile_image,
+        focus_areas: [],
+        min_investment: 0,
+        max_investment: 0,
+        is_verified: true,
+      });
+    }
+    
+    // Refresh the investor data
+    queryClient.invalidateQueries({ queryKey: ["investor-data"] });
+    queryClient.invalidateQueries({ queryKey: ["investors"] });
+    
     setSaving(false);
   };
 
@@ -76,6 +109,15 @@ export default function InvestorPortfolio() {
     if (!file) return;
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
     await base44.auth.updateMe({ profile_image: file_url });
+    
+    // Also update in Investor entity
+    if (currentInvestor) {
+      await base44.entities.Investor.update(currentInvestor.id, {
+        image_url: file_url,
+      });
+      queryClient.invalidateQueries({ queryKey: ["investor-data"] });
+    }
+    
     setUser({ ...user, profile_image: file_url });
   };
 
