@@ -9,6 +9,7 @@ import { createPageUrl } from "@/utils";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
 import LanguageSelector from "@/components/LanguageSelector";
+import MatchingPitchesNotification from "@/components/matching/MatchingPitchesNotification";
 
 export default function InvestorHome() {
   const { t } = useLanguage();

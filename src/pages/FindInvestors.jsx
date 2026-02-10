@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Search, Users, Loader2 } from "lucide-react";
 import InvestorCard from "@/components/investors/InvestorCard";
+import AIInvestorMatcher from "@/components/matching/AIInvestorMatcher";
 
 export default function FindInvestors() {
   const [user, setUser] = useState(null);
@@ -17,6 +18,12 @@ export default function FindInvestors() {
   const { data: investors = [], isLoading } = useQuery({
     queryKey: ["investors"],
     queryFn: () => base44.entities.Investor.list(),
+  });
+
+  const { data: userPitches = [] } = useQuery({
+    queryKey: ["user-pitches", user?.email],
+    queryFn: () => base44.entities.Pitch.filter({ created_by: user?.email }),
+    enabled: !!user?.email,
   });
 
   const updateMutation = useMutation({
@@ -84,7 +91,12 @@ export default function FindInvestors() {
           </div>
         </div>
 
-        <div className="relative mt-6 mb-8">
+        {/* AI-Powered Investor Recommendations */}
+        <div className="mb-8">
+          <AIInvestorMatcher userPitches={userPitches} />
+        </div>
+
+        <div className="relative mb-8">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <Input
             placeholder="Search by name, location, or interest..."
@@ -93,6 +105,8 @@ export default function FindInvestors() {
             className="pl-12 h-14 rounded-2xl border-gray-200 text-base bg-white shadow-sm"
           />
         </div>
+
+        <h2 className="text-xl font-bold text-gray-900 mb-4">All Investors</h2>
 
         {isLoading ? (
           <div className="text-center py-16">
