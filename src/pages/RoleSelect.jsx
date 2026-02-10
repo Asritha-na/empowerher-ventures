@@ -24,6 +24,26 @@ export default function RoleSelect() {
       <div className="absolute top-6 right-6 flex items-center gap-3">
         <LanguageSelector />
       </div>
+
+      {/* Toll-Free Support - Top Left */}
+      <div className="absolute top-6 left-6">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="bg-white rounded-2xl shadow-lg p-4 flex items-center gap-3"
+        >
+          <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+            <Phone className="w-6 h-6 text-green-600" />
+          </div>
+          <div>
+            <p className="text-xs text-gray-500">{t("needHelp")}</p>
+            <a href="tel:1800-123-4567" className="font-bold text-green-600 text-lg">
+              1800-123-4567
+            </a>
+            <p className="text-xs text-gray-400">{t("callTollFree")}</p>
+          </div>
+        </motion.div>
+      </div>
       
       <div className="max-w-2xl w-full">
         <motion.div
