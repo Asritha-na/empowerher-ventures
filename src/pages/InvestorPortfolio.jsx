@@ -10,6 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/components/LanguageProvider";
 import CampaignWithInvestors from "@/components/crowdfunding/CampaignWithInvestors";
+import PortfolioPerformance from "@/components/investor/PortfolioPerformance";
+import ProjectedReturns from "@/components/investor/ProjectedReturns";
+import AIRecommendations from "@/components/investor/AIRecommendations";
 
 export default function InvestorPortfolio() {
   const { t } = useLanguage();
@@ -94,6 +97,9 @@ export default function InvestorPortfolio() {
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
+            {/* Portfolio Performance Chart */}
+            <PortfolioPerformance investments={currentInvestor?.investments_made || 0} />
+
             {/* Stats Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="border-none shadow-md">
@@ -175,6 +181,12 @@ export default function InvestorPortfolio() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Projected Returns and AI Recommendations */}
+            <div className="grid lg:grid-cols-2 gap-6">
+              <ProjectedReturns investments={currentInvestor?.investments_made || 0} />
+              <AIRecommendations currentInvestor={currentInvestor} />
+            </div>
           </TabsContent>
 
           <TabsContent value="profile" className="space-y-6">
