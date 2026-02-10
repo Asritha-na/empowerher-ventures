@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Textarea } from "@/components/ui/textarea";
 import { MessageCircle, Mail, Briefcase, CheckCircle, Star, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
+import NotesManager from "@/components/investor/NotesManager";
 
 export default function InvestorCard({ investor, isConnected, onConnect, onDisconnect, onAddReview, currentUserEmail, index }) {
   const [showReviews, setShowReviews] = useState(false);
@@ -138,23 +139,31 @@ export default function InvestorCard({ investor, isConnected, onConnect, onDisco
         </div>
 
         {/* Card Footer */}
-        <div className="p-4 bg-gray-50 flex gap-2">
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
-          >
-            <MessageCircle className="w-4 h-4" />
-            Connect on WhatsApp
-          </a>
-          <a
-            href={emailUrl}
-            className="inline-flex items-center justify-center gap-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2.5 px-4 rounded-lg transition-colors text-sm"
-          >
-            <Mail className="w-4 h-4" />
-            Send Email
-          </a>
+        <div className="p-4 bg-gray-50 space-y-2">
+          <div className="flex gap-2">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Connect on WhatsApp
+            </a>
+            <a
+              href={emailUrl}
+              className="inline-flex items-center justify-center gap-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2.5 px-4 rounded-lg transition-colors text-sm"
+            >
+              <Mail className="w-4 h-4" />
+              Send Email
+            </a>
+          </div>
+          <NotesManager
+            investorEmail={currentUserEmail}
+            relatedToType="investor"
+            relatedToId={investor.id}
+            relatedToName={investor.name}
+          />
         </div>
       </motion.div>
 
