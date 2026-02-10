@@ -1,17 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Briefcase, Users, TrendingUp, Calendar, Mail, Phone } from "lucide-react";
+import { Briefcase, Users, TrendingUp, Calendar, Mail, Phone, Camera, User, Save, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function InvestorPortfolio() {
   const [user, setUser] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    name: "",
+    bio: "",
+    location: "",
+    phone: "",
+    company: "",
+    linkedin: "",
+    website: "",
+  });
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
+    base44.auth.me().then((u) => {
+      setUser(u);
+      setProfileForm({
+        name: u.investor_name || "",
+        bio: u.investor_bio || "",
+        location: u.investor_location || "",
+        phone: u.investor_phone || "",
+        company: u.investor_company || "",
+        linkedin: u.investor_linkedin || "",
+        website: u.investor_website || "",
+      });
+    }).catch(() => {});
   }, []);
 
   const { data: investors = [] } = useQuery({
@@ -22,6 +45,28 @@ export default function InvestorPortfolio() {
   // Find current investor's data
   const currentInvestor = investors.find((inv) => inv.email === user?.email);
   const connectedEntrepreneurs = currentInvestor?.is_connected || [];
+
+  const handleSaveProfile = async () => {
+    setSaving(true);
+    await base44.auth.updateMe({
+      investor_name: profileForm.name,
+      investor_bio: profileForm.bio,
+      investor_location: profileForm.location,
+      investor_phone: profileForm.phone,
+      investor_company: profileForm.company,
+      investor_linkedin: profileForm.linkedin,
+      investor_website: profileForm.website,
+    });
+    setSaving(false);
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    await base44.auth.updateMe({ profile_image: file_url });
+    setUser({ ...user, profile_image: file_url });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50/30 to-white p-4 md:p-8">
@@ -34,6 +79,7 @@ export default function InvestorPortfolio() {
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="bg-white rounded-xl p-1 shadow-sm">
             <TabsTrigger value="overview" className="rounded-lg">Overview</TabsTrigger>
+            <TabsTrigger value="profile" className="rounded-lg">Profile Details</TabsTrigger>
             <TabsTrigger value="connections" className="rounded-lg">Connections</TabsTrigger>
             <TabsTrigger value="activity" className="rounded-lg">Activity</TabsTrigger>
           </TabsList>
@@ -120,6 +166,129 @@ export default function InvestorPortfolio() {
                 </CardContent>
               </Card>
             )}
+          </TabsContent>
+
+          <TabsContent value="profile" className="space-y-6">
+            {/* Profile Picture */}
+            <Card className="border-none shadow-md">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Profile Picture</h2>
+                <div className="flex justify-center">
+                  <div className="relative">
+                    {user?.profile_image ? (
+                      <img
+                        src={user.profile_image}
+                        alt="Profile"
+                        className="w-32 h-32 rounded-full object-cover shadow-lg"
+                      />
+                    ) : (
+                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center shadow-lg">
+                        <User className="w-16 h-16 text-white" />
+                      </div>
+                    )}
+                    <label className="absolute -bottom-2 -right-2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors border-2 border-purple-200">
+                      <Camera className="w-5 h-5 text-purple-600" />
+                      <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                    </label>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Complete Details Form */}
+            <Card className="border-none shadow-md">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Complete Investor Details</h2>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-600 mb-1 block">Full Name</label>
+                    <Input
+                      value={profileForm.name}
+                      onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
+                      placeholder="Your full name"
+                      className="rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-600 mb-1 block">Bio</label>
+                    <Textarea
+                      value={profileForm.bio}
+                      onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
+                      placeholder="Tell us about yourself and your investment philosophy..."
+                      className="rounded-lg min-h-[100px]"
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-600 mb-1 block">Location</label>
+                      <Input
+                        value={profileForm.location}
+                        onChange={(e) => setProfileForm({ ...profileForm, location: e.target.value })}
+                        placeholder="City, State"
+                        className="rounded-lg"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-600 mb-1 block">Phone</label>
+                      <Input
+                        value={profileForm.phone}
+                        onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
+                        placeholder="+91 XXXXXXXXXX"
+                        className="rounded-lg"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-600 mb-1 block">Company/Organization</label>
+                    <Input
+                      value={profileForm.company}
+                      onChange={(e) => setProfileForm({ ...profileForm, company: e.target.value })}
+                      placeholder="Your company or investment firm"
+                      className="rounded-lg"
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-600 mb-1 block">LinkedIn URL</label>
+                      <Input
+                        value={profileForm.linkedin}
+                        onChange={(e) => setProfileForm({ ...profileForm, linkedin: e.target.value })}
+                        placeholder="https://linkedin.com/in/..."
+                        className="rounded-lg"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-600 mb-1 block">Website</label>
+                      <Input
+                        value={profileForm.website}
+                        onChange={(e) => setProfileForm({ ...profileForm, website: e.target.value })}
+                        placeholder="https://..."
+                        className="rounded-lg"
+                      />
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={handleSaveProfile}
+                    disabled={saving}
+                    className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 rounded-lg h-12"
+                  >
+                    {saving ? (
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                    ) : (
+                      <Save className="w-5 h-5 mr-2" />
+                    )}
+                    Save Profile
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="connections">
