@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/components/LanguageProvider";
+import CampaignWithInvestors from "@/components/crowdfunding/CampaignWithInvestors";
 
 export default function InvestorPortfolio() {
   const { t } = useLanguage();
@@ -303,7 +304,7 @@ export default function InvestorPortfolio() {
             {/* Header */}
             <div className="text-center mb-8">
               <h2 className="text-4xl font-bold text-red-500 mb-2">Crowdfunding Campaigns</h2>
-              <p className="text-gray-600 text-lg">Support women entrepreneurs by contributing to their dreams</p>
+              <p className="text-gray-600 text-lg">Explore active campaigns and see who's investing</p>
             </div>
 
             {/* Stats Cards */}
@@ -357,82 +358,18 @@ export default function InvestorPortfolio() {
               </Card>
             </div>
 
-            {/* Campaigns List */}
+            {/* Campaigns List with Investor Details */}
             {campaigns.filter(c => c.status === "active").length === 0 ? (
               <div className="text-center py-16">
                 <TrendingUp className="w-20 h-20 text-gray-300 mx-auto mb-4" />
                 <p className="text-2xl text-gray-500 mb-2">No active campaigns yet</p>
-                <p className="text-gray-400">Be the first to create a crowdfunding campaign!</p>
+                <p className="text-gray-400">Check back soon for new crowdfunding opportunities!</p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 gap-6">
-                {campaigns.filter(c => c.status === "active").map((campaign) => {
-                  const progressPercentage = ((campaign.raised_amount || 0) / campaign.goal_amount) * 100;
-                  const daysLeft = campaign.end_date ? Math.max(0, Math.ceil((new Date(campaign.end_date) - new Date()) / (1000 * 60 * 60 * 24))) : 0;
-
-                  return (
-                    <Card key={campaign.id} className="border-none shadow-lg hover:shadow-xl transition-shadow">
-                      <CardContent className="p-0">
-                        {campaign.image_url && (
-                          <img
-                            src={campaign.image_url}
-                            alt={campaign.title}
-                            className="w-full h-48 object-cover rounded-t-xl"
-                          />
-                        )}
-                        <div className="p-6">
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="flex-1">
-                              <h3 className="font-bold text-xl text-gray-900 mb-1">{campaign.title}</h3>
-                              <p className="text-sm text-gray-500">by {campaign.entrepreneur_name}</p>
-                            </div>
-                            {campaign.category && (
-                              <Badge variant="secondary" className="capitalize">{campaign.category}</Badge>
-                            )}
-                          </div>
-
-                          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{campaign.description}</p>
-
-                          {/* Progress Bar */}
-                          <div className="mb-4">
-                            <div className="flex justify-between text-sm mb-2">
-                              <span className="font-semibold text-gray-900">
-                                ₹{(campaign.raised_amount || 0).toLocaleString()} raised
-                              </span>
-                              <span className="text-gray-500">
-                                of ₹{campaign.goal_amount.toLocaleString()}
-                              </span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                              <div
-                                className="bg-gradient-to-r from-green-400 to-emerald-500 h-2.5 rounded-full"
-                                style={{ width: `${Math.min(progressPercentage, 100)}%` }}
-                              ></div>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-6 text-sm text-gray-500 mb-4">
-                            <div className="flex items-center gap-1">
-                              <UserPlus className="w-4 h-4" />
-                              <span>{campaign.backers?.length || 0} backers</span>
-                            </div>
-                            {daysLeft > 0 && (
-                              <div className="flex items-center gap-1">
-                                <Calendar className="w-4 h-4" />
-                                <span>{daysLeft} days left</span>
-                              </div>
-                            )}
-                          </div>
-
-                          <Button className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 rounded-lg">
-                            <Heart className="w-4 h-4 mr-2" />
-                            Back This Campaign
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+              <div className="grid lg:grid-cols-2 gap-8">
+                {campaigns.filter(c => c.status === "active").map((campaign) => (
+                  <CampaignWithInvestors key={campaign.id} campaign={campaign} />
+                ))}
               </div>
             )}
           </TabsContent>
