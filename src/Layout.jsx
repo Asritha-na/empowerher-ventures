@@ -166,42 +166,33 @@ function LayoutInner({ children, currentPageName, user }) {
         {/* User Info */}
         {user && (
           <div className="absolute bottom-20 left-0 right-0 p-4 border-t border-slate-800/50">
-            <div className="flex items-center gap-3 px-2">
+            <div 
+              className="px-2 cursor-pointer relative h-9 flex items-center"
+              onMouseEnter={() => setProfileHover(true)}
+              onMouseLeave={() => setProfileHover(false)}
+            >
               <motion.div 
-                className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-[0_0_15px_rgba(251,191,36,0.2)] cursor-pointer overflow-hidden relative"
-                whileHover={{ scale: 1.05 }}
-                onHoverStart={() => setProfileHover(true)}
-                onHoverEnd={() => setProfileHover(false)}
+                initial={false}
+                animate={{ 
+                  opacity: profileHover ? 0 : 1,
+                  x: profileHover ? -10 : 0,
+                }}
+                transition={{ duration: 0.3 }}
+                className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-[0_0_15px_rgba(251,191,36,0.2)] absolute left-0"
               >
-                <motion.div
-                  initial={false}
-                  animate={{ 
-                    opacity: profileHover ? 0 : 1,
-                    scale: profileHover ? 0.8 : 1,
-                    rotateY: profileHover ? 90 : 0
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0 flex items-center justify-center"
-                >
-                  {user.full_name?.charAt(0)?.toUpperCase() || "?"}
-                </motion.div>
-                <motion.div
-                  initial={false}
-                  animate={{ 
-                    opacity: profileHover ? 1 : 0,
-                    scale: profileHover ? 1 : 0.8,
-                    rotateY: profileHover ? 0 : -90
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0 flex items-center justify-center text-[10px] px-1"
-                >
-                  {user.full_name?.split(' ')[0] || "User"}
-                </motion.div>
+                {user.full_name?.charAt(0)?.toUpperCase() || "?"}
               </motion.div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-200 truncate">{user.full_name}</p>
-                <p className="text-xs text-slate-500 capitalize">{user.user_role || "User"}</p>
-              </div>
+              <motion.div
+                initial={false}
+                animate={{ 
+                  opacity: profileHover ? 1 : 0,
+                  x: profileHover ? 0 : 10,
+                }}
+                transition={{ duration: 0.3 }}
+                className="absolute left-0 text-sm font-medium text-slate-200 truncate"
+              >
+                {user.full_name}
+              </motion.div>
             </div>
           </div>
         )}
