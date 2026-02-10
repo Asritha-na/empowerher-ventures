@@ -17,12 +17,19 @@ const skillColors = [
 export default function CoFounderConnect() {
   const [search, setSearch] = useState("");
 
-  const { data: members = [], isLoading } = useQuery({
+  const { data: members = [], isLoading: membersLoading } = useQuery({
     queryKey: ["community"],
     queryFn: () => base44.entities.CommunityMember.list(),
   });
 
-  const filtered = members.filter(
+  const { data: pitches = [], isLoading: pitchesLoading } = useQuery({
+    queryKey: ["pitches"],
+    queryFn: () => base44.entities.Pitch.list("-created_date"),
+  });
+
+  const isLoading = membersLoading || pitchesLoading;
+
+  const filteredMembers = members.filter(
     (m) =>
       m.name?.toLowerCase().includes(search.toLowerCase()) ||
       m.business_name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -30,9 +37,16 @@ export default function CoFounderConnect() {
       m.skills?.some(s => s.toLowerCase().includes(search.toLowerCase()))
   );
 
+  const filteredPitches = pitches.filter(
+    (p) =>
+      p.title?.toLowerCase().includes(search.toLowerCase()) ||
+      p.category?.toLowerCase().includes(search.toLowerCase()) ||
+      p.structured_pitch?.toLowerCase().includes(search.toLowerCase())
+  );
+
   const stats = [
-    { label: "Active Co-Founders", value: members.length, color: "from-rose-500 to-pink-500" },
-    { label: "Skills Available", value: "50+", color: "from-blue-500 to-cyan-500" },
+    { label: "Active Ideas", value: pitches.length, color: "from-rose-500 to-pink-500" },
+    { label: "Active Co-Founders", value: members.length, color: "from-blue-500 to-cyan-500" },
     { label: "Successful Matches", value: "120", color: "from-green-500 to-emerald-500" },
     { label: "Cities Covered", value: "15+", color: "from-purple-500 to-violet-500" },
   ];
@@ -91,19 +105,76 @@ export default function CoFounderConnect() {
           ))}
         </div>
 
+        {/* Business Ideas Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Business Ideas Shared</h2>
+          {isLoading ? (
+            <div className="text-center py-16">
+              <Loader2 className="w-8 h-8 animate-spin text-purple-500 mx-auto" />
+            </div>
+          ) : filteredPitches.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-2xl border border-gray-100">
+              <Target className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+              <p className="text-gray-400">No ideas shared yet.</p>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {filteredPitches.map((pitch, i) => (
+                <motion.div
+                  key={pitch.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-gray-100"
+                >
+                  <div className="p-5">
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="font-bold text-lg text-gray-900 flex-1">{pitch.title}</h3>
+                      {pitch.category && (
+                        <Badge className="bg-purple-100 text-purple-700 capitalize shrink-0 ml-2">
+                          {pitch.category}
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    {pitch.structured_pitch && (
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                        {pitch.structured_pitch}
+                      </p>
+                    )}
+                    
+                    {pitch.funding_needed && (
+                      <div className="bg-green-50 rounded-lg p-3 mb-4">
+                        <p className="text-xs font-semibold text-green-900 mb-1">Funding Needed</p>
+                        <p className="text-lg font-bold text-green-700">₹{pitch.funding_needed.toLocaleString()}</p>
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <TrendingUp className="w-4 h-4" />
+                      <span>Posted by {pitch.created_by}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Co-Founders Grid */}
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Looking for Co-Founders</h2>
         {isLoading ? (
           <div className="text-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-purple-500 mx-auto" />
           </div>
-        ) : filtered.length === 0 ? (
+        ) : filteredMembers.length === 0 ? (
           <div className="text-center py-16 text-gray-400">
             <Users2 className="w-12 h-12 mx-auto mb-3 opacity-50" />
             <p>No co-founders found yet.</p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((member, i) => {
+            {filteredMembers.map((member, i) => {
               const whatsappUrl = `https://wa.me/${member.phone?.replace(/[^0-9]/g, "")}?text=Hi ${member.name}, I found your profile on NariShakti Co-Founder Connect. I'd love to discuss potential partnership opportunities!`;
               
               return (
