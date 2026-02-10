@@ -61,16 +61,15 @@ function LayoutInner({ children, currentPageName, user }) {
     : getEntrepreneurNavItems(t);
 
   return (
-    <LanguageProvider>
-      <div className="min-h-screen flex bg-gray-50">
-        <style>{`
-          :root {
-            --color-primary: #d97706;
-            --color-primary-light: #fef3c7;
-          }
-          .scrollbar-hide::-webkit-scrollbar { display: none; }
-          .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        `}</style>
+    <div className="min-h-screen flex bg-gray-50">
+      <style>{`
+        :root {
+          --color-primary: #d97706;
+          --color-primary-light: #fef3c7;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 z-50">
@@ -153,9 +152,9 @@ function LayoutInner({ children, currentPageName, user }) {
         {children}
       </main>
 
-      {/* AI Navigation Bot */}
-      <AINavigationBot currentPage={currentPageName} />
-      </div>
+    {/* AI Navigation Bot */}
+    <AINavigationBot currentPage={currentPageName} />
+    </div>
   );
 }
 
