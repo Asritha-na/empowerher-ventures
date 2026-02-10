@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 export default function RoleSelect() {
   const [loading, setLoading] = useState(false);
+  const { t } = useLanguage();
 
   const selectRole = async (role) => {
     setLoading(true);

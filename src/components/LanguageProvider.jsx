@@ -148,6 +148,15 @@ const translations = {
     cofounderConnector: "Co-Founder Connector",
     recognizingExcellence: "Recognizing excellence",
     topEntrepreneursThisMonth: "Top Entrepreneurs This Month",
+    
+    // RoleSelect page
+    shakti: "Shakti",
+    empoweringRuralWomen: "Empowering rural women to turn their dreams into thriving businesses",
+    selectYourRole: "Select Your Role",
+    imAnEntrepreneur: "I'm an Entrepreneur",
+    entrepreneurDescription: "I have a business idea and want to share it with the world, find investors, and grow",
+    imAnInvestor: "I'm an Investor",
+    investorDescription: "I want to discover promising business ideas and support rural women entrepreneurs",
   },
   hi: {
     // Navigation
@@ -242,6 +251,15 @@ const translations = {
     cofounderConnector: "सह-संस्थापक कनेक्टर",
     recognizingExcellence: "उत्कृष्टता को मान्यता",
     topEntrepreneursThisMonth: "इस महीने के शीर्ष उद्यमी",
+    
+    // RoleSelect page
+    shakti: "शक्ति",
+    empoweringRuralWomen: "ग्रामीण महिलाओं को उनके सपनों को संपन्न व्यवसायों में बदलने के लिए सशक्त बनाना",
+    selectYourRole: "अपनी भूमिका चुनें",
+    imAnEntrepreneur: "मैं एक उद्यमी हूं",
+    entrepreneurDescription: "मेरे पास एक व्यवसाय विचार है और मैं इसे दुनिया के साथ साझा करना चाहता हूं, निवेशक खोजना चाहता हूं, और बढ़ना चाहता हूं",
+    imAnInvestor: "मैं एक निवेशक हूं",
+    investorDescription: "मैं आशाजनक व्यवसाय विचारों की खोज करना चाहता हूं और ग्रामीण महिला उद्यमियों का समर्थन करना चाहता हूं",
   },
   ta: {
     // Navigation
@@ -297,6 +315,15 @@ const translations = {
     cofounderConnector: "இணை நிறுவனர் இணைப்பாளர்",
     recognizingExcellence: "சிறப்பை அங்கீகரித்தல்",
     topEntrepreneursThisMonth: "இந்த மாதத்தின் சிறந்த தொழில்முனைவோர்",
+    
+    // RoleSelect page
+    shakti: "சக்தி",
+    empoweringRuralWomen: "கிராமப்புற பெண்களை அவர்களின் கனவுகளை செழிப்பான வணிகங்களாக மாற்ற அதிகாரம் அளித்தல்",
+    selectYourRole: "உங்கள் பங்கைத் தேர்ந்தெடுக்கவும்",
+    imAnEntrepreneur: "நான் ஒரு தொழில்முனைவோன்",
+    entrepreneurDescription: "என்னிடம் ஒரு வணிக யோசனை உள்ளது மற்றும் அதை உலகத்துடன் பகிர்ந்து கொள்ள விரும்புகிறேன், முதலீட்டாளர்களைக் கண்டறிய விரும்புகிறேன், மற்றும் வளர விரும்புகிறேன்",
+    imAnInvestor: "நான் ஒரு முதலீட்டாளர்",
+    investorDescription: "நான் நம்பிக்கைக்குரிய வணிக யோசனைகளைக் கண்டறிய விரும்புகிறேன் மற்றும் கிராமப்புற பெண் தொழில்முனைவோருக்கு ஆதரவளிக்க விரும்புகிறேன்",
   },
   te: {
     // Navigation
@@ -352,6 +379,15 @@ const translations = {
     cofounderConnector: "సహ వ్యవస్థాపక కనెక్టర్",
     recognizingExcellence: "శ్రేష్ఠతను గుర్తించడం",
     topEntrepreneursThisMonth: "ఈ నెలలో అగ్ర వ్యవసాయదారులు",
+    
+    // RoleSelect page
+    shakti: "శక్తి",
+    empoweringRuralWomen: "గ్రామీణ మహిళలను వారి కలలను అభివృద్ధి చెందుతున్న వ్యాపారాలుగా మార్చడానికి శక్తివంతం చేయడం",
+    selectYourRole: "మీ పాత్రను ఎంచుకోండి",
+    imAnEntrepreneur: "నేను వ్యవసాయదారుడిని",
+    entrepreneurDescription: "నా వద్ద వ్యాపార ఆలోచన ఉంది మరియు దానిని ప్రపంచంతో పంచుకోవాలనుకుంటున్నాను, పెట్టుబడిదారులను కనుగొనాలి మరియు పెరగాలి",
+    imAnInvestor: "నేను పెట్టుబడిదారుడిని",
+    investorDescription: "నేను ఆశాజనకమైన వ్యాపార ఆలోచనలను కనుగొనాలనుకుంటున్నాను మరియు గ్రామీణ మహిళా వ్యవసాయదారులకు మద్దతు ఇవ్వాలనుకుంటున్నాను",
   },
   bn: {
     // Navigation
@@ -407,6 +443,15 @@ const translations = {
     cofounderConnector: "সহ-প্রতিষ্ঠাতা সংযোগকারী",
     recognizingExcellence: "উৎকর্ষতা স্বীকৃতি",
     topEntrepreneursThisMonth: "এই মাসের শীর্ষ উদ্যোক্তা",
+    
+    // RoleSelect page
+    shakti: "শক্তি",
+    empoweringRuralWomen: "গ্রামীণ মহিলাদের তাদের স্বপ্নগুলিকে সমৃদ্ধ ব্যবসায় পরিণত করার ক্ষমতায়ন",
+    selectYourRole: "আপনার ভূমিকা নির্বাচন করুন",
+    imAnEntrepreneur: "আমি একজন উদ্যোক্তা",
+    entrepreneurDescription: "আমার একটি ব্যবসায়িক ধারণা আছে এবং আমি এটি বিশ্বের সাথে ভাগ করতে চাই, বিনিয়োগকারী খুঁজতে চাই এবং বৃদ্ধি করতে চাই",
+    imAnInvestor: "আমি একজন বিনিয়োগকারী",
+    investorDescription: "আমি প্রতিশ্রুতিশীল ব্যবসায়িক ধারণা আবিষ্কার করতে চাই এবং গ্রামীণ মহিলা উদ্যোক্তাদের সমর্থন করতে চাই",
   },
   mr: {
     // Navigation
@@ -462,6 +507,15 @@ const translations = {
     cofounderConnector: "सह-संस्थापक कनेक्टर",
     recognizingExcellence: "उत्कृष्टता ओळखणे",
     topEntrepreneursThisMonth: "या महिन्याचे शीर्ष उद्योजक",
+    
+    // RoleSelect page
+    shakti: "शक्ती",
+    empoweringRuralWomen: "ग्रामीण महिलांना त्यांची स्वप्ने भरभराटीच्या व्यवसायांमध्ये बदलण्यासाठी सशक्त करणे",
+    selectYourRole: "तुमची भूमिका निवडा",
+    imAnEntrepreneur: "मी एक उद्योजक आहे",
+    entrepreneurDescription: "माझ्याकडे एक व्यवसाय कल्पना आहे आणि मला ती जगासोबत शेअर करायची आहे, गुंतवणूकदार शोधायचे आहेत आणि वाढायचे आहे",
+    imAnInvestor: "मी एक गुंतवणूकदार आहे",
+    investorDescription: "मला आशादायक व्यवसाय कल्पना शोधायच्या आहेत आणि ग्रामीण महिला उद्योजकांना समर्थन द्यायचे आहे",
   },
   gu: {
     // Navigation
@@ -517,6 +571,15 @@ const translations = {
     cofounderConnector: "સહ-સ્થાપક કનેક્ટર",
     recognizingExcellence: "ઉત્કૃષ્ટતાને માન્યતા",
     topEntrepreneursThisMonth: "આ મહિનાના ટોચના ઉદ્યોગસાહસિકો",
+    
+    // RoleSelect page
+    shakti: "શક્તિ",
+    empoweringRuralWomen: "ગ્રામીણ મહિલાઓને તેમના સપનાને સમૃદ્ધ વ્યવસાયોમાં ફેરવવા માટે સશક્તિકરણ",
+    selectYourRole: "તમારી ભૂમિકા પસંદ કરો",
+    imAnEntrepreneur: "હું એક ઉદ્યોગસાહસિક છું",
+    entrepreneurDescription: "મારી પાસે એક વ્યવસાય વિચાર છે અને હું તેને વિશ્વ સાથે શેર કરવા માંગુ છું, રોકાણકારો શોધવા માંગુ છું અને વૃદ્ધિ કરવા માંગુ છું",
+    imAnInvestor: "હું એક રોકાણકાર છું",
+    investorDescription: "હું આશાસ્પદ વ્યવસાય વિચારો શોધવા માંગુ છું અને ગ્રામીણ મહિલા ઉદ્યોગસાહસિકોને સમર્થન આપવા માંગુ છું",
   },
   kn: {
     // Navigation
@@ -572,6 +635,15 @@ const translations = {
     cofounderConnector: "ಸಹ-ಸಂಸ್ಥಾಪಕ ಸಂಪರ್ಕಕಾರ",
     recognizingExcellence: "ಉತ್ಕೃಷ್ಟತೆಯನ್ನು ಗುರುತಿಸುವುದು",
     topEntrepreneursThisMonth: "ಈ ತಿಂಗಳ ಉನ್ನತ ಉದ್ಯಮಿಗಳು",
+    
+    // RoleSelect page
+    shakti: "ಶಕ್ತಿ",
+    empoweringRuralWomen: "ಗ್ರಾಮೀಣ ಮಹಿಳೆಯರನ್ನು ಅವರ ಕನಸುಗಳನ್ನು ಅಭಿವೃದ್ಧಿ ಹೊಂದುತ್ತಿರುವ ವ್ಯಾಪಾರಗಳಾಗಿ ಪರಿವರ್ತಿಸಲು ಶಕ್ತಿಯುತಗೊಳಿಸುವುದು",
+    selectYourRole: "ನಿಮ್ಮ ಪಾತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    imAnEntrepreneur: "ನಾನು ಉದ್ಯಮಿ",
+    entrepreneurDescription: "ನನ್ನ ಬಳಿ ವ್ಯಾಪಾರ ಕಲ್ಪನೆ ಇದೆ ಮತ್ತು ಅದನ್ನು ಪ್ರಪಂಚದೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲು ಬಯಸುತ್ತೇನೆ, ಹೂಡಿಕೆದಾರರನ್ನು ಹುಡುಕಲು ಮತ್ತು ಬೆಳೆಯಲು ಬಯಸುತ್ತೇನೆ",
+    imAnInvestor: "ನಾನು ಹೂಡಿಕೆದಾರ",
+    investorDescription: "ನಾನು ಭರವಸೆಯ ವ್ಯಾಪಾರ ಕಲ್ಪನೆಗಳನ್ನು ಕಂಡುಹಿಡಿಯಲು ಮತ್ತು ಗ್ರಾಮೀಣ ಮಹಿಳಾ ಉದ್ಯಮಿಗಳನ್ನು ಬೆಂಬಲಿಸಲು ಬಯಸುತ್ತೇನೆ",
   },
   ml: {
     // Navigation
@@ -627,6 +699,15 @@ const translations = {
     cofounderConnector: "സഹ-സ്ഥാപക കണക്ടർ",
     recognizingExcellence: "മികവ് തിരിച്ചറിയൽ",
     topEntrepreneursThisMonth: "ഈ മാസത്തെ മുൻനിര സംരംഭകർ",
+    
+    // RoleSelect page
+    shakti: "ശക്തി",
+    empoweringRuralWomen: "ഗ്രാമീണ സ്ത്രീകളെ അവരുടെ സ്വപ്നങ്ങൾ അഭിവൃദ്ധി പ്രാപിക്കുന്ന ബിസിനസുകളാക്കി മാറ്റാൻ ശാക്തീകരിക്കുന്നു",
+    selectYourRole: "നിങ്ങളുടെ റോൾ തിരഞ്ഞെടുക്കുക",
+    imAnEntrepreneur: "നാൻ ഒരു സംരംഭകനാണ്",
+    entrepreneurDescription: "എനിക്ക് ഒരു ബിസിനസ് ആശയമുണ്ട്, അത് ലോകവുമായി പങ്കിടാൻ ആഗ്രഹിക്കുന്നു, നിക്ഷേപകരെ കണ്ടെത്താനും വളരാനും ആഗ്രഹിക്കുന്നു",
+    imAnInvestor: "ഞാൻ ഒരു നിക്ഷേപകനാണ്",
+    investorDescription: "പ്രതീക്ഷ നൽകുന്ന ബിസിനസ് ആശയങ്ങൾ കണ്ടെത്താനും ഗ്രാമീണ സ്ത്രീ സംരംഭകരെ പിന്തുണയ്ക്കാനും ഞാൻ ആഗ്രഹിക്കുന്നു",
   },
 };
 
