@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Sparkles, Users, Award, TrendingUp, MapPin, Briefcase, Phone } from "lucide-react";
@@ -8,14 +8,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
+import AddToWatchlistButton from "@/components/investor/AddToWatchlistButton";
+import NotesManager from "@/components/investor/NotesManager";
 
 export default function InvestorPitches() {
   const { t } = useLanguage();
   const [search, setSearch] = useState("");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
 
   const { data: coFounders = [], isLoading } = useQuery({
     queryKey: ["co-founders"],
     queryFn: () => base44.entities.CommunityMember.list("-created_date", 100),
+  });
+
+  const { data: pitches = [] } = useQuery({
+    queryKey: ["investor-pitches"],
+    queryFn: () => base44.entities.Pitch.list("-created_date", 100),
   });
 
   const filteredCoFounders = coFounders.filter((member) => {
@@ -100,7 +112,47 @@ export default function InvestorPitches() {
           ))}
         </div>
 
+        {/* Pitches with Watchlist */}
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">Business Pitches</h2>
+          {pitches.length === 0 ? (
+            <div className="text-center py-8 bg-white rounded-xl border border-gray-200">
+              <p className="text-gray-500">No pitches available yet</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {pitches.slice(0, 6).map((pitch) => (
+                <Card key={pitch.id} className="border-gray-200 shadow-sm hover:shadow-md transition-all">
+                  <CardContent className="p-5">
+                    <h4 className="font-bold text-gray-900 mb-2">{pitch.title}</h4>
+                    {pitch.category && (
+                      <Badge variant="secondary" className="mb-3 capitalize">
+                        {pitch.category}
+                      </Badge>
+                    )}
+                    {pitch.funding_needed && (
+                      <p className="text-sm text-gray-600 mb-4">
+                        Seeking: <span className="font-semibold text-green-600">₹{pitch.funding_needed.toLocaleString()}</span>
+                      </p>
+                    )}
+                    <div className="space-y-2">
+                      <AddToWatchlistButton pitch={pitch} investorEmail={user?.email} variant="outline" />
+                      <NotesManager
+                        investorEmail={user?.email}
+                        relatedToType="pitch"
+                        relatedToId={pitch.id}
+                        relatedToName={pitch.title}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Co-Founders Grid */}
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Co-Founder Opportunities</h2>
         {isLoading ? (
           <div className="text-center py-12">
             <p className="text-gray-500">Loading co-founders...</p>
@@ -192,29 +244,37 @@ export default function InvestorPitches() {
                       </p>
 
                       {/* Action Buttons */}
-                      <div className="flex gap-2">
-                        <Button
-                          className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 rounded-lg"
-                          onClick={() => {
-                            if (member.phone) {
-                              window.open(getWhatsAppLink(member.phone), "_blank");
-                            }
-                          }}
-                        >
-                          <Phone className="w-4 h-4 mr-1" />
-                          {t("connect")}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          className="flex-1 border-green-500 text-green-600 hover:bg-green-50 rounded-lg"
-                          onClick={() => {
-                            if (member.pitch_video_url) {
-                              window.open(member.pitch_video_url, "_blank");
-                            }
-                          }}
-                        >
-                          {t("pitch")}
-                        </Button>
+                      <div className="space-y-2">
+                        <div className="flex gap-2">
+                          <Button
+                            className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 rounded-lg"
+                            onClick={() => {
+                              if (member.phone) {
+                                window.open(getWhatsAppLink(member.phone), "_blank");
+                              }
+                            }}
+                          >
+                            <Phone className="w-4 h-4 mr-1" />
+                            {t("connect")}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            className="flex-1 border-green-500 text-green-600 hover:bg-green-50 rounded-lg"
+                            onClick={() => {
+                              if (member.pitch_video_url) {
+                                window.open(member.pitch_video_url, "_blank");
+                              }
+                            }}
+                          >
+                            {t("pitch")}
+                          </Button>
+                        </div>
+                        <NotesManager
+                          investorEmail={user?.email}
+                          relatedToType="entrepreneur"
+                          relatedToId={member.id}
+                          relatedToName={member.name}
+                        />
                       </div>
                     </div>
                   </CardContent>
