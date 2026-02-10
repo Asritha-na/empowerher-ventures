@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function InvestorHome() {
+  const { t } = useLanguage();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -21,10 +23,10 @@ export default function InvestorHome() {
   });
 
   const stats = [
-    { label: "Active Pitches", value: "24", icon: Briefcase, color: "from-blue-500 to-cyan-600" },
-    { label: "Entrepreneurs", value: "156", icon: Users, color: "from-purple-500 to-pink-600" },
-    { label: "Opportunities", value: "12", icon: Target, color: "from-amber-500 to-orange-600" },
-    { label: "Growth Rate", value: "+23%", icon: TrendingUp, color: "from-green-500 to-emerald-600" },
+    { label: t("activePitches"), value: "24", icon: Briefcase, color: "from-blue-500 to-cyan-600" },
+    { label: t("entrepreneurs"), value: "156", icon: Users, color: "from-purple-500 to-pink-600" },
+    { label: t("opportunities"), value: "12", icon: Target, color: "from-amber-500 to-orange-600" },
+    { label: t("growthRate"), value: "+23%", icon: TrendingUp, color: "from-green-500 to-emerald-600" },
   ];
 
   return (
@@ -33,9 +35,9 @@ export default function InvestorHome() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            Welcome back, {user?.full_name?.split(" ")[0] || "Investor"}
+            {t("welcomeBack")}, {user?.full_name?.split(" ")[0] || "Investor"}
           </h1>
-          <p className="text-gray-600 text-lg">Discover and invest in promising women entrepreneurs</p>
+          <p className="text-gray-600 text-lg">{t("discoverInvest")}</p>
         </div>
 
         {/* Stats Grid */}
@@ -65,11 +67,11 @@ export default function InvestorHome() {
           <Card className="border-none shadow-md bg-gradient-to-br from-blue-500 to-cyan-600 text-white">
             <CardContent className="p-8">
               <Search className="w-12 h-12 mb-4" />
-              <h3 className="text-2xl font-bold mb-2">Explore Pitches</h3>
-              <p className="mb-6 text-blue-50">Browse through innovative business ideas from women entrepreneurs</p>
+              <h3 className="text-2xl font-bold mb-2">{t("explorePitches")}</h3>
+              <p className="mb-6 text-blue-50">{t("browseInnovative")}</p>
               <Link to={createPageUrl("InvestorPitches")}>
                 <Button variant="secondary" className="bg-white text-blue-600 hover:bg-blue-50">
-                  View All Pitches <ArrowRight className="w-4 h-4 ml-2" />
+                  {t("viewAllPitches")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </CardContent>
@@ -78,11 +80,11 @@ export default function InvestorHome() {
           <Card className="border-none shadow-md bg-gradient-to-br from-purple-500 to-pink-600 text-white">
             <CardContent className="p-8">
               <Briefcase className="w-12 h-12 mb-4" />
-              <h3 className="text-2xl font-bold mb-2">My Portfolio</h3>
-              <p className="mb-6 text-purple-50">Track your investments and connected entrepreneurs</p>
+              <h3 className="text-2xl font-bold mb-2">{t("myPortfolio")}</h3>
+              <p className="mb-6 text-purple-50">{t("trackInvestments")}</p>
               <Link to={createPageUrl("InvestorPortfolio")}>
                 <Button variant="secondary" className="bg-white text-purple-600 hover:bg-purple-50">
-                  View Portfolio <ArrowRight className="w-4 h-4 ml-2" />
+                  {t("viewPortfolio")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </CardContent>
@@ -93,10 +95,10 @@ export default function InvestorHome() {
         <Card className="border-none shadow-md">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Recent Pitches</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t("recentPitches")}</h2>
               <Link to={createPageUrl("InvestorPitches")}>
                 <Button variant="ghost" className="text-blue-600">
-                  View All <ArrowRight className="w-4 h-4 ml-2" />
+                  {t("viewAll")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
@@ -119,7 +121,7 @@ export default function InvestorHome() {
                 </div>
               ))}
               {pitches.length === 0 && (
-                <p className="text-center text-gray-500 py-8">No recent pitches available</p>
+                <p className="text-center text-gray-500 py-8">{t("noPitchesAvailable")}</p>
               )}
             </div>
           </CardContent>

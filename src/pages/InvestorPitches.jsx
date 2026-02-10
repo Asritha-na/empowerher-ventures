@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function InvestorPitches() {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
 
   const { data: coFounders = [], isLoading } = useQuery({
@@ -56,8 +58,8 @@ export default function InvestorPitches() {
               <Users className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-pink-600">Co-Founder Connector</h1>
-              <p className="text-sm text-gray-500">Find the perfect business partner to grow together</p>
+              <h1 className="text-2xl font-bold text-pink-600">{t("coFounderConnector")}</h1>
+              <p className="text-sm text-gray-500">{t("findPerfectPartner")}</p>
             </div>
           </div>
         </div>
@@ -67,9 +69,9 @@ export default function InvestorPitches() {
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 mt-1" />
             <div>
-              <h3 className="font-bold text-lg mb-1">AI-Powered Matching</h3>
+              <h3 className="font-bold text-lg mb-1">{t("aiPoweredMatching")}</h3>
               <p className="text-sm text-white/90">
-                Our AI analyzes your skills, experience, and goals to suggest the best co-founder matches
+                {t("aiAnalyzes")}
               </p>
             </div>
           </div>
@@ -80,7 +82,7 @@ export default function InvestorPitches() {
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <Input
-              placeholder="Search by name, skills, or location..."
+              placeholder={t("searchByName")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-12 h-14 rounded-xl border-gray-200 shadow-sm"
@@ -136,7 +138,7 @@ export default function InvestorPitches() {
                       )}
                       <div className="absolute top-3 right-3">
                         <Badge className="bg-white text-gray-900 shadow-md border-0">
-                          {member.commitment_type === "full-time" ? "Full-Time" : "Part-Time"}
+                          {member.commitment_type === "full-time" ? t("fullTime") : t("partTime")}
                         </Badge>
                       </div>
                       {member.image_url && (
@@ -157,12 +159,12 @@ export default function InvestorPitches() {
                       {/* Experience */}
                       <div className="flex items-center gap-1 text-sm text-gray-600 mb-4">
                         <Briefcase className="w-3.5 h-3.5" />
-                        <span>{member.years_experience || member.years_in_business || 0} years experience</span>
+                        <span>{member.years_experience || member.years_in_business || 0} {t("yearsExperience")}</span>
                       </div>
 
                       {/* Skills */}
                       <div className="mb-4">
-                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills</p>
+                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">{t("skills")}</p>
                         <div className="flex flex-wrap gap-1.5">
                           {member.skills?.slice(0, 6).map((skill, idx) => (
                             <Badge
@@ -178,7 +180,7 @@ export default function InvestorPitches() {
 
                       {/* Looking For */}
                       <div className="mb-4">
-                        <p className="text-xs font-semibold text-pink-600 uppercase mb-1">Looking For</p>
+                        <p className="text-xs font-semibold text-pink-600 uppercase mb-1">{t("lookingFor")}</p>
                         <p className="text-sm font-medium text-gray-900">
                           {member.looking_for || "Business Partner"}
                         </p>
@@ -200,7 +202,7 @@ export default function InvestorPitches() {
                           }}
                         >
                           <Phone className="w-4 h-4 mr-1" />
-                          Connect
+                          {t("connect")}
                         </Button>
                         <Button
                           variant="outline"
@@ -211,7 +213,7 @@ export default function InvestorPitches() {
                             }
                           }}
                         >
-                          Pitch
+                          {t("pitch")}
                         </Button>
                       </div>
                     </div>

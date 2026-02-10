@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import AINavigationBot from "@/components/AINavigationBot";
-import { LanguageProvider } from "@/components/LanguageProvider";
+import { LanguageProvider, useLanguage } from "@/components/LanguageProvider";
 import {
   Home,
   Lightbulb,
@@ -31,35 +31,34 @@ const entrepreneurNavItems = [
   { name: "Profile", icon: User, page: "Profile" },
 ];
 
-const investorNavItems = [
-  { name: "Dashboard", icon: Home, page: "InvestorHome" },
-  { name: "Explore Pitches", icon: Lightbulb, page: "InvestorPitches" },
-  { name: "My Portfolio", icon: Briefcase, page: "InvestorPortfolio" },
-  { name: "Appointments", icon: Calendar, page: "Appointments" },
-  { name: "Profile", icon: User, page: "Profile" },
+const getInvestorNavItems = (t) => [
+  { name: t("dashboard"), icon: Home, page: "InvestorHome" },
+  { name: t("coFounderConnector"), icon: Lightbulb, page: "InvestorPitches" },
+  { name: t("myPortfolio"), icon: Briefcase, page: "InvestorPortfolio" },
+  { name: t("appointments"), icon: Calendar, page: "Appointments" },
+  { name: t("profile"), icon: User, page: "Profile" },
 ];
 
-export default function Layout({ children, currentPageName }) {
-  const [user, setUser] = useState(null);
+const getEntrepreneurNavItems = (t) => [
+  { name: t("home"), icon: Home, page: "Home" },
+  { name: t("myIdea"), icon: Lightbulb, page: "MyIdea" },
+  { name: t("findInvestors"), icon: Users, page: "FindInvestors" },
+  { name: t("learningHub"), icon: BookOpen, page: "LearningHub" },
+  { name: t("cofounderConnect"), icon: Users2, page: "Community" },
+  { name: t("community"), icon: Users, page: "CommunityLeaderboard" },
+  { name: t("meetingNotes"), icon: Brain, page: "MeetingNotes" },
+  { name: t("appointments"), icon: Calendar, page: "Appointments" },
+  { name: t("profile"), icon: User, page: "Profile" },
+];
+
+function LayoutInner({ children, currentPageName, user }) {
+  const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
-
-  // If no role selected, show role select page
-  if (currentPageName === "RoleSelect") {
-    return <>{children}</>;
-  }
-
-  // Redirect to role select if no role
-  if (user && !user.user_role) {
-    window.location.href = createPageUrl("RoleSelect");
-    return null;
-  }
-
   // Determine which navigation items to show
-  const navItems = user?.user_role === "investor" ? investorNavItems : entrepreneurNavItems;
+  const navItems = user?.user_role === "investor" 
+    ? getInvestorNavItems(t) 
+    : getEntrepreneurNavItems(t);
 
   return (
     <LanguageProvider>
@@ -157,6 +156,30 @@ export default function Layout({ children, currentPageName }) {
       {/* AI Navigation Bot */}
       <AINavigationBot currentPage={currentPageName} />
       </div>
+  );
+}
+
+export default function Layout({ children, currentPageName }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
+
+  // If no role selected, show role select page
+  if (currentPageName === "RoleSelect") {
+    return <>{children}</>;
+  }
+
+  // Redirect to role select if no role
+  if (user && !user.user_role) {
+    window.location.href = createPageUrl("RoleSelect");
+    return null;
+  }
+
+  return (
+    <LanguageProvider>
+      <LayoutInner children={children} currentPageName={currentPageName} user={user} />
     </LanguageProvider>
   );
 }

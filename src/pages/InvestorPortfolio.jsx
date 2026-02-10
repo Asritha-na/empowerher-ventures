@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function InvestorPortfolio() {
+  const { t } = useLanguage();
   const [user, setUser] = useState(null);
   const [saving, setSaving] = useState(false);
   const [profileForm, setProfileForm] = useState({
@@ -72,16 +74,16 @@ export default function InvestorPortfolio() {
     <div className="min-h-screen bg-gradient-to-b from-purple-50/30 to-white p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">My Portfolio</h1>
-          <p className="text-gray-600">Track your investments and connections</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{t("myPortfolio")}</h1>
+          <p className="text-gray-600">{t("trackYourInvestments")}</p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="bg-white rounded-xl p-1 shadow-sm">
-            <TabsTrigger value="overview" className="rounded-lg">Overview</TabsTrigger>
-            <TabsTrigger value="profile" className="rounded-lg">Profile Details</TabsTrigger>
-            <TabsTrigger value="connections" className="rounded-lg">Connections</TabsTrigger>
-            <TabsTrigger value="activity" className="rounded-lg">Activity</TabsTrigger>
+            <TabsTrigger value="overview" className="rounded-lg">{t("overview")}</TabsTrigger>
+            <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
+            <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
+            <TabsTrigger value="activity" className="rounded-lg">{t("activity")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -95,7 +97,7 @@ export default function InvestorPortfolio() {
                   <p className="text-3xl font-bold text-gray-900 mb-1">
                     {currentInvestor?.investments_made || 0}
                   </p>
-                  <p className="text-sm text-gray-500">Total Investments</p>
+                  <p className="text-sm text-gray-500">{t("totalInvestments")}</p>
                 </CardContent>
               </Card>
 
@@ -107,7 +109,7 @@ export default function InvestorPortfolio() {
                   <p className="text-3xl font-bold text-gray-900 mb-1">
                     {connectedEntrepreneurs.length}
                   </p>
-                  <p className="text-sm text-gray-500">Connected Entrepreneurs</p>
+                  <p className="text-sm text-gray-500">{t("connectedEntrepreneurs")}</p>
                 </CardContent>
               </Card>
 
@@ -119,7 +121,7 @@ export default function InvestorPortfolio() {
                   <p className="text-3xl font-bold text-gray-900 mb-1">
                     {currentInvestor?.rating?.toFixed(1) || "N/A"}
                   </p>
-                  <p className="text-sm text-gray-500">Rating</p>
+                  <p className="text-sm text-gray-500">{t("rating")}</p>
                 </CardContent>
               </Card>
 
@@ -128,8 +130,8 @@ export default function InvestorPortfolio() {
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center mb-4">
                     <Calendar className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-3xl font-bold text-gray-900 mb-1">Active</p>
-                  <p className="text-sm text-gray-500">Status</p>
+                  <p className="text-3xl font-bold text-gray-900 mb-1">{t("active")}</p>
+                  <p className="text-sm text-gray-500">{t("status")}</p>
                 </CardContent>
               </Card>
             </div>
@@ -138,10 +140,10 @@ export default function InvestorPortfolio() {
             {currentInvestor && (
               <Card className="border-none shadow-md">
                 <CardContent className="p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">Investor Profile</h2>
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">{t("investorProfile")}</h2>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Focus Areas</p>
+                      <p className="text-sm text-gray-500 mb-1">{t("focusAreas")}</p>
                       <div className="flex flex-wrap gap-2">
                         {currentInvestor.focus_areas?.map((area, i) => (
                           <Badge key={i} variant="secondary">{area}</Badge>
@@ -149,17 +151,17 @@ export default function InvestorPortfolio() {
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Investment Range</p>
+                      <p className="text-sm text-gray-500 mb-1">{t("investmentRange")}</p>
                       <p className="font-semibold text-gray-900">
                         ₹{currentInvestor.min_investment?.toLocaleString()} - ₹{currentInvestor.max_investment?.toLocaleString()}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Location</p>
+                      <p className="text-sm text-gray-500 mb-1">{t("location")}</p>
                       <p className="font-semibold text-gray-900">{currentInvestor.location}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Investor Type</p>
+                      <p className="text-sm text-gray-500 mb-1">{t("investorType")}</p>
                       <Badge className="capitalize">{currentInvestor.category_label || currentInvestor.investor_type}</Badge>
                     </div>
                   </div>
@@ -172,7 +174,7 @@ export default function InvestorPortfolio() {
             {/* Profile Picture */}
             <Card className="border-none shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">Profile Picture</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-6">{t("profilePicture")}</h2>
                 <div className="flex justify-center">
                   <div className="relative">
                     {user?.profile_image ? (
@@ -198,31 +200,31 @@ export default function InvestorPortfolio() {
             {/* Complete Details Form */}
             <Card className="border-none shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">Complete Investor Details</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-6">{t("completeInvestorDetails")}</h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-600 mb-1 block">Full Name</label>
+                    <label className="text-sm font-medium text-gray-600 mb-1 block">{t("fullName")}</label>
                     <Input
                       value={profileForm.name}
                       onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
-                      placeholder="Your full name"
+                      placeholder={t("yourFullName")}
                       className="rounded-lg"
                     />
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-600 mb-1 block">Bio</label>
+                    <label className="text-sm font-medium text-gray-600 mb-1 block">{t("bio")}</label>
                     <Textarea
                       value={profileForm.bio}
                       onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
-                      placeholder="Tell us about yourself and your investment philosophy..."
+                      placeholder={t("tellAboutYourself")}
                       className="rounded-lg min-h-[100px]"
                     />
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-600 mb-1 block">Location</label>
+                      <label className="text-sm font-medium text-gray-600 mb-1 block">{t("location")}</label>
                       <Input
                         value={profileForm.location}
                         onChange={(e) => setProfileForm({ ...profileForm, location: e.target.value })}
@@ -232,7 +234,7 @@ export default function InvestorPortfolio() {
                     </div>
 
                     <div>
-                      <label className="text-sm font-medium text-gray-600 mb-1 block">Phone</label>
+                      <label className="text-sm font-medium text-gray-600 mb-1 block">{t("phoneNumber")}</label>
                       <Input
                         value={profileForm.phone}
                         onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
@@ -243,18 +245,18 @@ export default function InvestorPortfolio() {
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-600 mb-1 block">Company/Organization</label>
+                    <label className="text-sm font-medium text-gray-600 mb-1 block">{t("company")}</label>
                     <Input
                       value={profileForm.company}
                       onChange={(e) => setProfileForm({ ...profileForm, company: e.target.value })}
-                      placeholder="Your company or investment firm"
+                      placeholder={t("yourCompany")}
                       className="rounded-lg"
                     />
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-600 mb-1 block">LinkedIn URL</label>
+                      <label className="text-sm font-medium text-gray-600 mb-1 block">{t("linkedinUrl")}</label>
                       <Input
                         value={profileForm.linkedin}
                         onChange={(e) => setProfileForm({ ...profileForm, linkedin: e.target.value })}
@@ -264,7 +266,7 @@ export default function InvestorPortfolio() {
                     </div>
 
                     <div>
-                      <label className="text-sm font-medium text-gray-600 mb-1 block">Website</label>
+                      <label className="text-sm font-medium text-gray-600 mb-1 block">{t("website")}</label>
                       <Input
                         value={profileForm.website}
                         onChange={(e) => setProfileForm({ ...profileForm, website: e.target.value })}
@@ -284,7 +286,7 @@ export default function InvestorPortfolio() {
                     ) : (
                       <Save className="w-5 h-5 mr-2" />
                     )}
-                    Save Profile
+                    {t("saveProfile")}
                   </Button>
                 </div>
               </CardContent>
@@ -294,11 +296,11 @@ export default function InvestorPortfolio() {
           <TabsContent value="connections">
             <Card className="border-none shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Connected Entrepreneurs</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-4">{t("connectedEntrepreneurs")}</h2>
                 {connectedEntrepreneurs.length === 0 ? (
                   <div className="text-center py-12">
                     <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500">No connections yet</p>
+                    <p className="text-gray-500">{t("noConnectionsYet")}</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -309,11 +311,11 @@ export default function InvestorPortfolio() {
                         </div>
                         <div className="flex-1">
                           <p className="font-semibold text-gray-900">{email}</p>
-                          <p className="text-sm text-gray-500">Entrepreneur</p>
+                          <p className="text-sm text-gray-500">{t("entrepreneur")}</p>
                         </div>
                         <Button variant="outline" size="sm">
                           <Mail className="w-4 h-4 mr-2" />
-                          Contact
+                          {t("contact")}
                         </Button>
                       </div>
                     ))}
@@ -326,10 +328,10 @@ export default function InvestorPortfolio() {
           <TabsContent value="activity">
             <Card className="border-none shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Activity</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-4">{t("recentActivity")}</h2>
                 <div className="text-center py-12">
                   <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">No recent activity</p>
+                  <p className="text-gray-500">{t("noRecentActivity")}</p>
                 </div>
               </CardContent>
             </Card>
