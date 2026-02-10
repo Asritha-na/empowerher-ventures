@@ -56,6 +56,7 @@ import MeetingNotes from './pages/MeetingNotes';
 import MyIdea from './pages/MyIdea';
 import Profile from './pages/Profile';
 import RoleSelect from './pages/RoleSelect';
+import CommunityLeaderboard from './pages/CommunityLeaderboard';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +70,7 @@ export const PAGES = {
     "MyIdea": MyIdea,
     "Profile": Profile,
     "RoleSelect": RoleSelect,
+    "CommunityLeaderboard": CommunityLeaderboard,
 }
 
 export const pagesConfig = {

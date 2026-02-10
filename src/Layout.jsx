@@ -23,6 +23,7 @@ const navItems = [
   { name: "Find Investors", icon: Users, page: "FindInvestors" },
   { name: "Learning Hub", icon: BookOpen, page: "LearningHub" },
   { name: "Co-founder Connect", icon: Users2, page: "Community" },
+  { name: "Community", icon: Users, page: "CommunityLeaderboard" },
   { name: "Meeting Notes", icon: Brain, page: "MeetingNotes" },
   { name: "Appointments", icon: Calendar, page: "Appointments" },
   { name: "Profile", icon: User, page: "Profile" },
