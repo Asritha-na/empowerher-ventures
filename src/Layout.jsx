@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import AINavigationBot from "@/components/AINavigationBot";
+import BottomUtilityBar from "@/components/BottomUtilityBar";
 import { LanguageProvider, useLanguage } from "@/components/LanguageProvider";
 import {
   Home,
@@ -177,9 +178,12 @@ function LayoutInner({ children, currentPageName, user }) {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 min-h-screen md:ml-0 mt-16 md:mt-0 overflow-auto">
+      <main className="flex-1 min-h-screen md:ml-0 mt-16 md:mt-0 mb-16 overflow-auto">
         {children}
       </main>
+
+      {/* Bottom Utility Bar */}
+      <BottomUtilityBar />
 
       {/* AI Navigation Bot */}
       <AINavigationBot currentPage={currentPageName} />
