@@ -24,6 +24,13 @@ export default function InvestorHome() {
     queryFn: () => base44.entities.Pitch.list("-created_date", 5),
   });
 
+  const { data: allInvestors = [] } = useQuery({
+    queryKey: ["all-investors-data"],
+    queryFn: () => base44.entities.Investor.list(),
+  });
+
+  const currentInvestor = allInvestors.find(inv => inv.email === user?.email);
+
   const stats = [
     { label: t("activePitches"), value: "24", icon: Briefcase, color: "from-blue-500 to-cyan-600" },
     { label: t("entrepreneurs"), value: "156", icon: Users, color: "from-purple-500 to-pink-600" },
@@ -87,6 +94,16 @@ export default function InvestorHome() {
             </motion.div>
           ))}
         </div>
+
+        {/* Matching Pitches Notification */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-8"
+        >
+          <MatchingPitchesNotification currentInvestor={currentInvestor} />
+        </motion.div>
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
