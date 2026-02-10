@@ -5,6 +5,7 @@ import { base44 } from "@/api/base44Client";
 import AINavigationBot from "@/components/AINavigationBot";
 import BottomUtilityBar from "@/components/BottomUtilityBar";
 import { LanguageProvider, useLanguage } from "@/components/LanguageProvider";
+import { motion } from "framer-motion";
 import {
   Home,
   Lightbulb,
