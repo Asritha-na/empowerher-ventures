@@ -16,6 +16,7 @@ import {
   Sprout,
   Menu,
   X,
+  Briefcase,
 } from "lucide-react";
 
 const entrepreneurNavItems = [
@@ -37,8 +38,6 @@ const investorNavItems = [
   { name: "Appointments", icon: Calendar, page: "Appointments" },
   { name: "Profile", icon: User, page: "Profile" },
 ];
-
-const Briefcase = Users; // Using Users icon as fallback since Briefcase isn't imported
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
