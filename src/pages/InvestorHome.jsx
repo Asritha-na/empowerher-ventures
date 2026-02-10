@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { TrendingUp, Users, Briefcase, Target, ArrowRight, Search } from "lucide-react";
+import { TrendingUp, Users, Briefcase, Target, ArrowRight, Search, Phone } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
+import LanguageSelector from "@/components/LanguageSelector";
 
 export default function InvestorHome() {
   const { t } = useLanguage();
@@ -31,6 +32,30 @@ export default function InvestorHome() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/50 to-white p-4 md:p-8">
+      {/* Language Selector - Fixed Top Right */}
+      <div className="fixed top-6 right-6 z-50">
+        <LanguageSelector />
+      </div>
+
+      {/* Toll-Free Support - Fixed Top Left */}
+      <div className="fixed top-6 left-72 z-50">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="bg-white rounded-2xl shadow-lg p-3 flex items-center gap-2"
+        >
+          <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+            <Phone className="w-5 h-5 text-green-600" />
+          </div>
+          <div>
+            <p className="text-xs text-gray-500">{t("needHelp")}</p>
+            <a href="tel:1800-123-4567" className="font-bold text-green-600 text-base">
+              1800-123-4567
+            </a>
+          </div>
+        </motion.div>
+      </div>
+
       <div className="max-w-7xl mx-auto">
         {/* Welcome Section */}
         <div className="mb-8">
