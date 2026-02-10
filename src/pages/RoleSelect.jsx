@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
 import LanguageSelector from "@/components/LanguageSelector";
 import RoleSelectBot from "@/components/RoleSelectBot";
+import VoiceAccessibilityAssistant from "@/components/VoiceAccessibilityAssistant";
 import { Button } from "@/components/ui/button";
 
 export default function RoleSelect() {
@@ -131,6 +132,9 @@ export default function RoleSelect() {
 
       {/* AI Language Bot */}
       <RoleSelectBot />
+
+      {/* Voice Accessibility Assistant */}
+      <VoiceAccessibilityAssistant />
     </div>);
 
 }
