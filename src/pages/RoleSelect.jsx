@@ -3,6 +3,8 @@ import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "@/utils";
 import { Sprout, TrendingUp, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
+import LanguageSelector from "@/components/LanguageSelector";
 
 export default function RoleSelect() {
   const [loading, setLoading] = useState(false);
@@ -16,6 +18,10 @@ export default function RoleSelect() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 flex items-center justify-center p-4">
+      <div className="absolute top-6 right-6">
+        <LanguageSelector />
+      </div>
+      
       <div className="max-w-2xl w-full">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -25,11 +31,11 @@ export default function RoleSelect() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 mb-6">
             <Sprout className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Shakti
-
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+            {t('shakti')}
           </h1>
           <p className="text-lg text-gray-600 max-w-md mx-auto">
-            Empowering rural women to turn their dreams into thriving businesses
+            {t('empoweringRuralWomen')}
           </p>
         </motion.div>
 
@@ -46,10 +52,10 @@ export default function RoleSelect() {
               <Sprout className="w-8 h-8 text-amber-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              I'm an Entrepreneur
+              {t('imAnEntrepreneur')}
             </h2>
             <p className="text-gray-500 text-base leading-relaxed">
-              I have a business idea and want to share it with the world, find investors, and grow
+              {t('entrepreneurDescription')}
             </p>
             {loading &&
             <Loader2 className="w-5 h-5 animate-spin text-amber-600 mt-4" />
@@ -68,10 +74,10 @@ export default function RoleSelect() {
               <TrendingUp className="w-8 h-8 text-emerald-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              I'm an Investor
+              {t('imAnInvestor')}
             </h2>
             <p className="text-gray-500 text-base leading-relaxed">
-              I want to discover promising business ideas and support rural women entrepreneurs
+              {t('investorDescription')}
             </p>
             {loading &&
             <Loader2 className="w-5 h-5 animate-spin text-emerald-600 mt-4" />
