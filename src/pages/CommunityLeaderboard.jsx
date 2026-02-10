@@ -3,33 +3,34 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Trophy, Award, Heart, Users2, Star, Medal, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
 
-const badges = [
+const getBadges = (t) => [
   {
     icon: Star,
-    title: "Top Innovator",
-    subtitle: "Recognizing excellence",
+    title: t("topInnovator"),
+    subtitle: t("recognizingExcellence"),
     gradient: "from-amber-400 to-orange-500",
     bgGradient: "from-amber-50 to-orange-50",
   },
   {
     icon: Award,
-    title: "Best Pitch",
-    subtitle: "Recognizing excellence",
+    title: t("bestPitch"),
+    subtitle: t("recognizingExcellence"),
     gradient: "from-purple-400 to-pink-500",
     bgGradient: "from-purple-50 to-pink-50",
   },
   {
     icon: Heart,
-    title: "Community Helper",
-    subtitle: "Recognizing excellence",
+    title: t("communityHelper"),
+    subtitle: t("recognizingExcellence"),
     gradient: "from-rose-400 to-pink-500",
     bgGradient: "from-rose-50 to-pink-50",
   },
   {
     icon: Users2,
-    title: "Co-Founder Connector",
-    subtitle: "Recognizing excellence",
+    title: t("cofounderConnector"),
+    subtitle: t("recognizingExcellence"),
     gradient: "from-blue-400 to-cyan-500",
     bgGradient: "from-blue-50 to-cyan-50",
   },
@@ -42,6 +43,7 @@ const medalColors = {
 };
 
 export default function CommunityLeaderboard() {
+  const { t } = useLanguage();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -75,15 +77,17 @@ export default function CommunityLeaderboard() {
       .slice(0, 10);
   }, [pitches]);
 
+  const badges = getBadges(t);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-rose-50/30 to-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent mb-3">
-            Community
+            {t("community")}
           </h1>
-          <p className="text-gray-500 text-lg">Celebrating our amazing women entrepreneurs</p>
+          <p className="text-gray-500 text-lg">{t("celebratingAmazingWomen")}</p>
         </div>
 
         {/* Badges Grid */}
@@ -109,7 +113,7 @@ export default function CommunityLeaderboard() {
         <div className="bg-gradient-to-r from-rose-500 to-pink-600 rounded-3xl p-8 shadow-xl">
           <div className="flex items-center gap-3 mb-6 text-white">
             <Trophy className="w-8 h-8" />
-            <h2 className="text-2xl font-bold">Top Entrepreneurs This Month</h2>
+            <h2 className="text-2xl font-bold">{t("topEntrepreneursThisMonth")}</h2>
           </div>
 
           {isLoading ? (
