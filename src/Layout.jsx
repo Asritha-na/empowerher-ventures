@@ -56,7 +56,6 @@ const getEntrepreneurNavItems = (t) => [
 function LayoutInner({ children, currentPageName, user }) {
   const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [profileHover, setProfileHover] = useState(false);
 
   // Determine which navigation items to show
   const navItems = user?.user_role === "investor" 
@@ -166,35 +165,13 @@ function LayoutInner({ children, currentPageName, user }) {
         {/* User Info */}
         {user && (
           <div className="absolute bottom-20 left-0 right-0 p-4 border-t border-slate-800/50">
-            <div 
-              className="px-2 cursor-pointer relative h-9 flex items-center overflow-hidden"
-              onMouseEnter={() => setProfileHover(true)}
-              onMouseLeave={() => setProfileHover(false)}
-            >
-              <motion.div 
-                initial={false}
-                animate={{ 
-                  opacity: profileHover ? 0 : 1,
-                  scale: profileHover ? 0.5 : 1,
-                }}
-                transition={{ duration: 0.2 }}
-                className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-[0_0_15px_rgba(251,191,36,0.2)]"
-                style={{ pointerEvents: profileHover ? 'none' : 'auto' }}
-              >
+            <div className="flex items-center gap-3 px-2">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-[0_0_15px_rgba(251,191,36,0.2)]">
                 {user.full_name?.charAt(0)?.toUpperCase() || "?"}
-              </motion.div>
-              <motion.div
-                initial={false}
-                animate={{ 
-                  opacity: profileHover ? 1 : 0,
-                  scale: profileHover ? 1 : 0.5,
-                }}
-                transition={{ duration: 0.2 }}
-                className="absolute left-2 text-sm font-medium text-slate-200 truncate"
-                style={{ pointerEvents: profileHover ? 'auto' : 'none' }}
-              >
-                {user.full_name}
-              </motion.div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-200 truncate">{user.full_name}</p>
+              </div>
             </div>
           </div>
         )}
