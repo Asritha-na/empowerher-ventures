@@ -1,6 +1,5 @@
 import React from "react";
-import { Phone, Globe } from "lucide-react";
-import LanguageSelector from "@/components/LanguageSelector";
+import { Phone } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function BottomUtilityBar() {
@@ -11,8 +10,8 @@ export default function BottomUtilityBar() {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/50 shadow-[0_-4px_30px_rgba(0,0,0,0.3)]"
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-        {/* Toll-Free Support - Left */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-center">
+        {/* Toll-Free Support */}
         <a
           href="tel:1800-123-4567"
           className="flex items-center gap-3 text-slate-200 hover:text-amber-400 transition-all duration-200 group"
@@ -25,12 +24,6 @@ export default function BottomUtilityBar() {
             <p className="text-sm font-semibold">1800-123-4567</p>
           </div>
         </a>
-
-        {/* Language Selector - Right */}
-        <div className="flex items-center gap-3">
-          <Globe className="w-5 h-5 text-slate-400 hidden sm:block" />
-          <LanguageSelector />
-        </div>
       </div>
     </motion.div>
   );
