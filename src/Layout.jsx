@@ -18,7 +18,7 @@ import {
   X,
 } from "lucide-react";
 
-const navItems = [
+const entrepreneurNavItems = [
   { name: "Home", icon: Home, page: "Home" },
   { name: "My Idea", icon: Lightbulb, page: "MyIdea" },
   { name: "Find Investors", icon: Users, page: "FindInvestors" },
@@ -29,6 +29,16 @@ const navItems = [
   { name: "Appointments", icon: Calendar, page: "Appointments" },
   { name: "Profile", icon: User, page: "Profile" },
 ];
+
+const investorNavItems = [
+  { name: "Dashboard", icon: Home, page: "InvestorHome" },
+  { name: "Explore Pitches", icon: Lightbulb, page: "InvestorPitches" },
+  { name: "My Portfolio", icon: Briefcase, page: "InvestorPortfolio" },
+  { name: "Appointments", icon: Calendar, page: "Appointments" },
+  { name: "Profile", icon: User, page: "Profile" },
+];
+
+const Briefcase = Users; // Using Users icon as fallback since Briefcase isn't imported
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -48,6 +58,9 @@ export default function Layout({ children, currentPageName }) {
     window.location.href = createPageUrl("RoleSelect");
     return null;
   }
+
+  // Determine which navigation items to show
+  const navItems = user?.user_role === "investor" ? investorNavItems : entrepreneurNavItems;
 
   return (
     <LanguageProvider>

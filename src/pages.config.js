@@ -57,6 +57,9 @@ import MyIdea from './pages/MyIdea';
 import Profile from './pages/Profile';
 import RoleSelect from './pages/RoleSelect';
 import CommunityLeaderboard from './pages/CommunityLeaderboard';
+import InvestorHome from './pages/InvestorHome';
+import InvestorPitches from './pages/InvestorPitches';
+import InvestorPortfolio from './pages/InvestorPortfolio';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +74,9 @@ export const PAGES = {
     "Profile": Profile,
     "RoleSelect": RoleSelect,
     "CommunityLeaderboard": CommunityLeaderboard,
+    "InvestorHome": InvestorHome,
+    "InvestorPitches": InvestorPitches,
+    "InvestorPortfolio": InvestorPortfolio,
 }
 
 export const pagesConfig = {
