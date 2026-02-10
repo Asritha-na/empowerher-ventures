@@ -44,6 +44,26 @@ export default function FindInvestors() {
     });
   };
 
+  const handleAddReview = (investorId, review) => {
+    const investor = investors.find(inv => inv.id === investorId);
+    if (!investor) return;
+
+    const currentReviews = investor.reviews || [];
+    const updatedReviews = [...currentReviews, review];
+    
+    // Calculate new average rating
+    const totalRating = updatedReviews.reduce((sum, r) => sum + r.rating, 0);
+    const newAvgRating = totalRating / updatedReviews.length;
+
+    updateMutation.mutate({
+      id: investorId,
+      data: { 
+        reviews: updatedReviews,
+        rating: newAvgRating
+      },
+    });
+  };
+
   const filtered = investors.filter(
     (inv) =>
       inv.name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -92,6 +112,8 @@ export default function FindInvestors() {
                 isConnected={investor.is_connected?.includes(user?.email)}
                 onConnect={handleConnect}
                 onDisconnect={handleDisconnect}
+                onAddReview={handleAddReview}
+                currentUserEmail={user?.email}
                 index={i}
               />
             ))}

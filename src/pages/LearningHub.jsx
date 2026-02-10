@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Play, BookOpen, Filter } from "lucide-react";
+import { Search, Play, BookOpen, Filter, GraduationCap, Languages } from "lucide-react";
 import { motion } from "framer-motion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -115,13 +115,25 @@ export default function LearningHub() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
+        {/* Header Section - Exact Match */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-            <BookOpen className="w-6 h-6 text-white" />
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+            <GraduationCap className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Learning Hub</h1>
-            <p className="text-gray-500">Learn business skills with easy videos</p>
+            <h1 className="text-3xl font-bold text-rose-500">Learning Hub</h1>
+            <p className="text-gray-500 text-sm">Master the skills you need to build and grow your business</p>
+          </div>
+        </div>
+
+        {/* Multilingual Learning Banner */}
+        <div className="bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 rounded-2xl p-6 mb-8">
+          <div className="flex items-start gap-3">
+            <Languages className="w-6 h-6 text-white shrink-0 mt-0.5" />
+            <div>
+              <h2 className="text-white font-bold text-lg mb-1">Multilingual Learning</h2>
+              <p className="text-white/95 text-sm">All courses available in Hindi, English, and regional languages. Learn at your own pace with video lessons!</p>
+            </div>
           </div>
         </div>
 
@@ -169,43 +181,60 @@ export default function LearningHub() {
         {/* Video Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((video, i) => (
-            <motion.a
+            <motion.div
               key={video.id}
-              href={video.url}
-              target="_blank"
-              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
               className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
             >
-              <div className="relative aspect-video overflow-hidden bg-gray-100">
-                <img
-                  src={video.thumbnail}
-                  alt={video.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center">
-                    <Play className="w-6 h-6 text-gray-900 ml-1" />
+              <a
+                href={video.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="relative aspect-video overflow-hidden bg-gray-100">
+                  <img
+                    src={video.thumbnail}
+                    alt={video.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center">
+                      <Play className="w-6 h-6 text-gray-900 ml-1" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-lg">
+                    {video.duration}
                   </div>
                 </div>
-                <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-lg">
-                  {video.duration}
+                <div className="p-4">
+                  <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2 group-hover:text-violet-600 transition-colors">
+                    {video.title}
+                  </h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-400">{video.channel}</span>
+                    <Badge variant="secondary" className="bg-violet-50 text-violet-600 text-xs capitalize rounded-full">
+                      {video.topic}
+                    </Badge>
+                  </div>
                 </div>
+              </a>
+              
+              {/* Related Videos Section */}
+              <div className="px-4 pb-4 border-t border-gray-100 pt-3">
+                <p className="text-xs font-semibold text-gray-500 mb-2">Related Videos:</p>
+                <a
+                  href={`https://www.youtube.com/results?search_query=${encodeURIComponent(video.title + ' ' + video.topic)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-rose-500 hover:text-rose-600 font-medium flex items-center gap-1"
+                >
+                  <Play className="w-3 h-3" />
+                  Find more on YouTube →
+                </a>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2 group-hover:text-violet-600 transition-colors">
-                  {video.title}
-                </h3>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-400">{video.channel}</span>
-                  <Badge variant="secondary" className="bg-violet-50 text-violet-600 text-xs capitalize rounded-full">
-                    {video.topic}
-                  </Badge>
-                </div>
-              </div>
-            </motion.a>
+            </motion.div>
           ))}
         </div>
 
