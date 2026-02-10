@@ -1,133 +1,220 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Filter, Briefcase, TrendingUp, MapPin } from "lucide-react";
+import { Search, Sparkles, Users, Award, TrendingUp, MapPin, Briefcase, Phone } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { motion } from "framer-motion";
-
-const categories = ["all", "handicrafts", "textiles", "food", "agriculture", "retail", "services", "other"];
 
 export default function InvestorPitches() {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
 
-  const { data: pitches = [], isLoading } = useQuery({
-    queryKey: ["all-pitches"],
-    queryFn: () => base44.entities.Pitch.list("-created_date", 100),
+  const { data: coFounders = [], isLoading } = useQuery({
+    queryKey: ["co-founders"],
+    queryFn: () => base44.entities.CommunityMember.list("-created_date", 100),
   });
 
-  const filteredPitches = pitches.filter((pitch) => {
-    const matchesSearch = pitch.title?.toLowerCase().includes(search.toLowerCase()) ||
-      pitch.structured_pitch?.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = category === "all" || pitch.category === category;
-    return matchesSearch && matchesCategory;
+  const filteredCoFounders = coFounders.filter((member) => {
+    const searchLower = search.toLowerCase();
+    return (
+      member.name?.toLowerCase().includes(searchLower) ||
+      member.location?.toLowerCase().includes(searchLower) ||
+      member.skills?.some(skill => skill.toLowerCase().includes(searchLower))
+    );
   });
+
+  const stats = [
+    { label: "Active Co-Founders", value: coFounders.length, color: "text-pink-600" },
+    { label: "Skills Available", value: `${coFounders.length * 3}+`, color: "text-blue-600" },
+    { label: "Successful Matches", value: "120", color: "text-green-600" },
+    { label: "Other Connect", value: "15+", color: "text-purple-600" },
+  ];
+
+  const skillColors = [
+    "bg-pink-100 text-pink-700",
+    "bg-blue-100 text-blue-700",
+    "bg-green-100 text-green-700",
+    "bg-purple-100 text-purple-700",
+    "bg-amber-100 text-amber-700",
+    "bg-cyan-100 text-cyan-700",
+  ];
+
+  const getWhatsAppLink = (phone) => {
+    const cleanPhone = phone?.replace(/\D/g, "");
+    return `https://wa.me/${cleanPhone}`;
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50/30 to-white p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Explore Pitches</h1>
-          <p className="text-gray-600">Discover innovative business ideas from women entrepreneurs</p>
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center">
+              <Users className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-pink-600">Co-Founder Connector</h1>
+              <p className="text-sm text-gray-500">Find the perfect business partner to grow together</p>
+            </div>
+          </div>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+        {/* AI-Powered Matching Banner */}
+        <div className="mb-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-400 rounded-2xl p-6 text-white shadow-lg">
+          <div className="flex items-start gap-3">
+            <Sparkles className="w-6 h-6 mt-1" />
+            <div>
+              <h3 className="font-bold text-lg mb-1">AI-Powered Matching</h3>
+              <p className="text-sm text-white/90">
+                Our AI analyzes your skills, experience, and goals to suggest the best co-founder matches
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <Input
-              placeholder="Search pitches..."
+              placeholder="Search by name, skills, or location..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 h-12 rounded-xl"
+              className="pl-12 h-14 rounded-xl border-gray-200 shadow-sm"
             />
           </div>
-          <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="w-full md:w-48 h-12 rounded-xl">
-              <Filter className="w-4 h-4 mr-2" />
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              {categories.slice(1).map((cat) => (
-                <SelectItem key={cat} value={cat} className="capitalize">
-                  {cat}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
 
-        {/* Pitches Grid */}
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {stats.map((stat, i) => (
+            <div key={i} className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+              <p className={`text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</p>
+              <p className="text-xs text-gray-500">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Co-Founders Grid */}
         {isLoading ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">Loading pitches...</p>
+            <p className="text-gray-500">Loading co-founders...</p>
           </div>
-        ) : filteredPitches.length === 0 ? (
+        ) : filteredCoFounders.length === 0 ? (
           <div className="text-center py-12">
-            <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No pitches found</p>
+            <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500">No co-founders found</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPitches.map((pitch, i) => (
+            {filteredCoFounders.map((member, i) => (
               <motion.div
-                key={pitch.id}
+                key={member.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
               >
-                <Card className="border-none shadow-md hover:shadow-xl transition-all h-full">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-white font-bold shrink-0">
-                        {pitch.created_by?.charAt(0)?.toUpperCase() || "?"}
+                <Card className="border-gray-200 shadow-sm hover:shadow-md transition-all h-full">
+                  <CardContent className="p-0">
+                    {/* Image */}
+                    <div className="relative">
+                      {member.image_url ? (
+                        <img
+                          src={member.image_url}
+                          alt={member.name}
+                          className="w-full h-48 object-cover rounded-t-lg"
+                        />
+                      ) : (
+                        <div className="w-full h-48 bg-gradient-to-br from-pink-400 to-purple-500 rounded-t-lg flex items-center justify-center">
+                          <span className="text-6xl font-bold text-white">
+                            {member.name?.charAt(0)?.toUpperCase() || "?"}
+                          </span>
+                        </div>
+                      )}
+                      <div className="absolute top-3 right-3">
+                        <Badge className="bg-white text-gray-900 shadow-md border-0">
+                          {member.commitment_type === "full-time" ? "Full-Time" : "Part-Time"}
+                        </Badge>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-gray-900 mb-1 line-clamp-1">{pitch.title}</h3>
-                        <p className="text-xs text-gray-500">{pitch.created_by}</p>
-                      </div>
+                      {member.image_url && (
+                        <p className="absolute bottom-2 right-2 text-[10px] text-white/60 bg-black/20 px-2 py-0.5 rounded">
+                          {member.image_url.includes('unsplash') ? 'unsplash.com' : 'image'}
+                        </p>
+                      )}
                     </div>
 
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                      {pitch.structured_pitch || pitch.raw_speech || "No description available"}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {pitch.category && (
-                        <Badge variant="outline" className="capitalize">
-                          {pitch.category}
-                        </Badge>
-                      )}
-                      {pitch.status && (
-                        <Badge variant="secondary" className="capitalize">
-                          {pitch.status}
-                        </Badge>
-                      )}
-                    </div>
-
-                    {pitch.funding_needed && (
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <span className="text-sm text-gray-500">Funding needed</span>
-                        <span className="font-bold text-blue-600">
-                          ₹{pitch.funding_needed.toLocaleString()}
-                        </span>
+                    <div className="p-5">
+                      {/* Name & Location */}
+                      <h3 className="font-bold text-gray-900 mb-1">{member.name}</h3>
+                      <div className="flex items-center gap-1 text-sm text-gray-500 mb-3">
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>{member.location || "Location not specified"}</span>
                       </div>
-                    )}
 
-                    <Button className="w-full mt-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 rounded-xl">
-                      View Details
-                    </Button>
+                      {/* Experience */}
+                      <div className="flex items-center gap-1 text-sm text-gray-600 mb-4">
+                        <Briefcase className="w-3.5 h-3.5" />
+                        <span>{member.years_experience || member.years_in_business || 0} years experience</span>
+                      </div>
+
+                      {/* Skills */}
+                      <div className="mb-4">
+                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {member.skills?.slice(0, 6).map((skill, idx) => (
+                            <Badge
+                              key={idx}
+                              variant="secondary"
+                              className={`${skillColors[idx % skillColors.length]} text-xs px-2 py-0.5`}
+                            >
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Looking For */}
+                      <div className="mb-4">
+                        <p className="text-xs font-semibold text-pink-600 uppercase mb-1">Looking For</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {member.looking_for || "Business Partner"}
+                        </p>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                        {member.description || "Passionate entrepreneur looking to collaborate and grow together."}
+                      </p>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        <Button
+                          className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 rounded-lg"
+                          onClick={() => {
+                            if (member.phone) {
+                              window.open(getWhatsAppLink(member.phone), "_blank");
+                            }
+                          }}
+                        >
+                          <Phone className="w-4 h-4 mr-1" />
+                          Connect
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="flex-1 border-green-500 text-green-600 hover:bg-green-50 rounded-lg"
+                          onClick={() => {
+                            if (member.pitch_video_url) {
+                              window.open(member.pitch_video_url, "_blank");
+                            }
+                          }}
+                        >
+                          Pitch
+                        </Button>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
