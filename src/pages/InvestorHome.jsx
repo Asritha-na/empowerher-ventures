@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { TrendingUp, Users, Briefcase, Target, ArrowRight, Search, Phone } from "lucide-react";
+import { TrendingUp, Users, Briefcase, Target, ArrowRight, Search, Phone, Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
 import LanguageSelector from "@/components/LanguageSelector";
 import MatchingPitchesNotification from "@/components/matching/MatchingPitchesNotification";
+import WatchlistManager from "@/components/investor/WatchlistManager";
 
 export default function InvestorHome() {
   const { t } = useLanguage();
@@ -133,6 +134,22 @@ export default function InvestorHome() {
             </CardContent>
           </Card>
         </div>
+
+        {/* My Watchlist Section */}
+        <Card className="border-none shadow-md bg-gradient-to-br from-amber-500 to-orange-600 text-white mb-8">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <Star className="w-12 h-12" />
+              <div>
+                <h2 className="text-2xl font-bold">My Watchlist</h2>
+                <p className="text-amber-50">Track opportunities and manage follow-ups</p>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+              <WatchlistManager investorEmail={user?.email} />
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Recent Pitches */}
         <Card className="border-none shadow-md">
