@@ -157,6 +157,10 @@ const translations = {
     entrepreneurDescription: "I have a business idea and want to share it with the world, find investors, and grow",
     imAnInvestor: "I'm an Investor",
     investorDescription: "I want to discover promising business ideas and support rural women entrepreneurs",
+    watchDemo: "Watch Demo",
+    needHelp: "Need Help?",
+    callTollFree: "Call Toll-Free",
+    selectLanguageToStart: "Select your language to get started",
   },
   hi: {
     // Navigation
@@ -260,6 +264,10 @@ const translations = {
     entrepreneurDescription: "मेरे पास एक व्यवसाय विचार है और मैं इसे दुनिया के साथ साझा करना चाहता हूं, निवेशक खोजना चाहता हूं, और बढ़ना चाहता हूं",
     imAnInvestor: "मैं एक निवेशक हूं",
     investorDescription: "मैं आशाजनक व्यवसाय विचारों की खोज करना चाहता हूं और ग्रामीण महिला उद्यमियों का समर्थन करना चाहता हूं",
+    watchDemo: "डेमो देखें",
+    needHelp: "मदद चाहिए?",
+    callTollFree: "टोल-फ्री कॉल करें",
+    selectLanguageToStart: "शुरू करने के लिए अपनी भाषा चुनें",
   },
   ta: {
     // Navigation
