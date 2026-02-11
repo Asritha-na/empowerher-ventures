@@ -18,6 +18,10 @@ import SuccessStoriesCarousel from "@/components/landing/SuccessStoriesCarousel.
 
 export default function Home() {
   const handleLogin = () => base44.auth.redirectToLogin(createPageUrl("Dashboard"));
+  const handleContinue = (role) => {
+    try { localStorage.setItem("intended_role", role); } catch {}
+    window.location.href = `/login?role=${role}`;
+  };
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -71,7 +75,15 @@ export default function Home() {
                 Learn More
               </Button>
             </div>
-          </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Button onClick={() => handleContinue('entrepreneur')} className="rounded-full px-5 py-2 h-auto border border-gray-300 bg-white text-gray-900">
+                Continue as Entrepreneur
+              </Button>
+              <Button onClick={() => handleContinue('investor')} variant="outline" className="rounded-full px-5 py-2 h-auto border-gray-300">
+                Continue as Investor
+              </Button>
+            </div>
+            </div>
 
           {/* Right visual (replace with your image asset later) */}
           <div className="relative">

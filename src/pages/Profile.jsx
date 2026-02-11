@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { createPageUrl } from "@/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +39,8 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
+    full_name: "",
+    user_role: "",
     phone: "",
     location: "",
     bio: "",
@@ -50,6 +53,8 @@ export default function Profile() {
     base44.auth.me().then((u) => {
       setUser(u);
       setForm({
+        full_name: u.full_name || "",
+        user_role: u.user_role || "",
         phone: u.phone || "",
         location: u.location || "",
         bio: u.bio || "",
@@ -63,8 +68,14 @@ export default function Profile() {
 
   const handleSave = async () => {
     setSaving(true);
-    await base44.auth.updateMe(form);
+    await base44.auth.updateMe({
+      ...form,
+      full_name: form.full_name,
+      user_role: form.user_role,
+      profile_completed: true,
+    });
     setSaving(false);
+    window.location.href = createPageUrl("Dashboard");
   };
 
   const handleImageUpload = async (e) => {
@@ -132,9 +143,12 @@ export default function Profile() {
                 <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
                   <User className="w-3.5 h-3.5" /> {t("fullName")}
                 </label>
-                <div className="h-12 bg-gray-50 rounded-xl flex items-center px-4 text-gray-700 font-medium">
-                  {user?.full_name || t("notSet")}
-                </div>
+                <Input
+                  value={form.full_name}
+                  onChange={(e) => setForm({ ...form, full_name: e.target.value })}
+                  placeholder={t("fullName")}
+                  className="rounded-xl h-12"
+                />
               </div>
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
@@ -197,6 +211,20 @@ export default function Profile() {
                         {t(bt.value)}
                       </SelectItem>
                     ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Role */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-500">Role</label>
+                <Select value={form.user_role} onValueChange={(v) => setForm({ ...form, user_role: v })}>
+                  <SelectTrigger className="rounded-xl h-12">
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="entrepreneur">Entrepreneur</SelectItem>
+                    <SelectItem value="investor">Investor</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

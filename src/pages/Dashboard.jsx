@@ -14,6 +14,18 @@ export default function Dashboard() {
     }).catch(() => {});
   }, []);
 
+  useEffect(() => {
+    base44.auth.me().then((u) => {
+      if (!u) {
+        window.location.href = createPageUrl("Home");
+        return;
+      }
+      if (!u.profile_completed) {
+        window.location.href = createPageUrl("Profile");
+      }
+    }).catch(() => {});
+  }, []);
+
   const goToMyIdea = () => {
     window.location.href = createPageUrl("MyIdea");
   };
