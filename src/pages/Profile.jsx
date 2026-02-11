@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { User, Save, Loader2, Camera, Mail, Phone, MapPin, Building2, LogOut, PhoneCall } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -33,11 +35,16 @@ const languages = [
   { value: "ml", label: "Malayalam" },
 ];
 
+const investorSkillsOptions = ["Finance", "Marketing", "Tech", "Legal", "Operations", "Strategy"];
+const investorSectionsOptions = ["Agriculture", "Handmade Products", "Technology", "Retail", "Social Impact", "Education", "Healthcare"];
+const entrepreneurSkillsNeededOptions = ["Marketing", "Finance", "Technical Co-founder", "Legal Support", "Operations", "Supply Chain"];
+
 export default function Profile() {
   const { t } = useLanguage();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [budgetError, setBudgetError] = useState("");
   const [form, setForm] = useState({
     full_name: "",
     user_role: "",
@@ -47,6 +54,11 @@ export default function Profile() {
     business_name: "",
     business_type: "",
     preferred_language: "en",
+    investor_skills: [],
+    investor_budget_min: "",
+    investor_budget_max: "",
+    investor_sections_of_interest: [],
+    entrepreneur_skills_needed: [],
   });
 
   useEffect(() => {
@@ -61,19 +73,44 @@ export default function Profile() {
         business_name: u.business_name || "",
         business_type: u.business_type || "",
         preferred_language: u.preferred_language || "en",
+        investor_skills: u.investor_skills || [],
+        investor_budget_min: typeof u.investor_budget_min === 'number' ? String(u.investor_budget_min) : "",
+        investor_budget_max: typeof u.investor_budget_max === 'number' ? String(u.investor_budget_max) : "",
+        investor_sections_of_interest: u.investor_sections_of_interest || [],
+        entrepreneur_skills_needed: u.entrepreneur_skills_needed || [],
       });
       setLoading(false);
     });
   }, []);
 
   const handleSave = async () => {
+    setBudgetError("");
     setSaving(true);
-    await base44.auth.updateMe({
+
+    // Validate investor budget range if investor
+    if (form.user_role === 'investor') {
+      const min = form.investor_budget_min === "" ? null : Number(form.investor_budget_min);
+      const max = form.investor_budget_max === "" ? null : Number(form.investor_budget_max);
+      if (min !== null && max !== null && (isNaN(min) || isNaN(max) || min >= max)) {
+        setBudgetError("Minimum must be less than Maximum");
+        setSaving(false);
+        return;
+      }
+    }
+
+    const payload = {
       ...form,
       full_name: form.full_name,
       user_role: form.user_role,
       profile_completed: true,
-    });
+    };
+
+    if (form.user_role === 'investor') {
+      if (form.investor_budget_min !== "") payload.investor_budget_min = Number(form.investor_budget_min);
+      if (form.investor_budget_max !== "") payload.investor_budget_max = Number(form.investor_budget_max);
+    }
+
+    await base44.auth.updateMe(payload);
     setSaving(false);
     window.location.href = createPageUrl("Dashboard");
   };
@@ -84,6 +121,14 @@ export default function Profile() {
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
     await base44.auth.updateMe({ profile_image: file_url });
     setUser({ ...user, profile_image: file_url });
+  };
+
+  const toggleInArray = (field, value) => {
+    setForm((prev) => {
+      const set = new Set(prev[field] || []);
+      if (set.has(value)) set.delete(value); else set.add(value);
+      return { ...prev, [field]: Array.from(set) };
+    });
   };
 
   if (loading) {
@@ -228,6 +273,71 @@ export default function Profile() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Investor-specific fields */}
+              {form.user_role === 'investor' && (
+                <>
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-500">Skills Area</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {investorSkillsOptions.map((opt) => (
+                        <label key={opt} className="flex items-center gap-2 h-12 rounded-xl border border-gray-200 bg-white px-3 cursor-pointer">
+                          <Checkbox checked={form.investor_skills?.includes(opt)} onCheckedChange={() => toggleInArray('investor_skills', opt)} />
+                          <span className="text-sm text-gray-700">{opt}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-500">Investment Budget Range</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Input type="number" min={0} placeholder="Minimum Budget" className="rounded-xl h-12" value={form.investor_budget_min} onChange={(e) => { setForm({ ...form, investor_budget_min: e.target.value }); setBudgetError(""); }} />
+                      <Input type="number" min={0} placeholder="Maximum Budget" className="rounded-xl h-12" value={form.investor_budget_max} onChange={(e) => { setForm({ ...form, investor_budget_max: e.target.value }); setBudgetError(""); }} />
+                    </div>
+                    {(form.investor_budget_min && form.investor_budget_max) && (
+                      <div className="text-sm text-gray-500 mt-1">{form.investor_budget_min} amount - {form.investor_budget_max} amount</div>
+                    )}
+                    {budgetError && <div className="text-sm text-red-600 mt-1">{budgetError}</div>}
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-500">Sections of Interest</label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button type="button" className="w-full h-12 rounded-xl border border-gray-200 bg-white px-4 text-left">
+                          {form.investor_sections_of_interest?.length ? form.investor_sections_of_interest.join(', ') : 'Select sections'}
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-72 p-3">
+                        <div className="space-y-2">
+                          {investorSectionsOptions.map((opt) => (
+                            <label key={opt} className="flex items-center gap-2 cursor-pointer">
+                              <Checkbox checked={form.investor_sections_of_interest?.includes(opt)} onCheckedChange={() => toggleInArray('investor_sections_of_interest', opt)} />
+                              <span className="text-sm text-gray-700">{opt}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </>
+              )}
+
+              {/* Entrepreneur-specific fields */}
+              {form.user_role === 'entrepreneur' && (
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-gray-500">Skills They Are Looking For</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {entrepreneurSkillsNeededOptions.map((opt) => (
+                      <label key={opt} className="flex items-center gap-2 h-12 rounded-xl border border-gray-200 bg-white px-3 cursor-pointer">
+                        <Checkbox checked={form.entrepreneur_skills_needed?.includes(opt)} onCheckedChange={() => toggleInArray('entrepreneur_skills_needed', opt)} />
+                        <span className="text-sm text-gray-700">{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-500">{t("preferredLanguage")}</label>
