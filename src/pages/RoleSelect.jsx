@@ -20,7 +20,7 @@ export default function RoleSelect() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#0f0b1f] via-[#1a1433] to-[#2d1b69]">
       <div className="absolute top-6 right-6 flex items-center gap-3">
         <LanguageSelector />
       </div>
@@ -99,7 +99,7 @@ export default function RoleSelect() {
             onClick={() => window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")}
             variant="outline"
             size="lg"
-            className="rounded-full border-2 border-indigo-900 text-indigo-900 hover:bg-indigo-50 px-8 py-6 text-base"
+            className="rounded-full border-2 border-purple-500 text-white hover:bg-purple-900/30 px-8 py-6 text-base"
           >
             <PlayCircle className="w-5 h-5 mr-2" />
             {t("watchDemo")}

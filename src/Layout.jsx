@@ -63,12 +63,12 @@ function LayoutInner({ children, currentPageName, user }) {
     : getEntrepreneurNavItems(t);
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
+    <div className="min-h-screen flex bg-gradient-to-br from-[#0f0b1f] via-[#1a1433] to-[#2d1b69]">
       <style>{`
         :root {
-          --color-primary: #1E3A8A;
-          --color-secondary: #9CA3AF;
-          --color-accent: #3B82F6;
+          --color-primary: #6366f1;
+          --color-secondary: #ec4899;
+          --color-accent: #8b5cf6;
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -79,32 +79,32 @@ function LayoutInner({ children, currentPageName, user }) {
           height: 8px;
         }
         ::-webkit-scrollbar-track {
-          background: rgba(241, 245, 249, 0.5);
+          background: rgba(26, 20, 51, 0.5);
         }
         ::-webkit-scrollbar-thumb {
-          background: rgba(156, 163, 175, 0.5);
+          background: rgba(99, 102, 241, 0.5);
           border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-          background: rgba(156, 163, 175, 0.7);
+          background: rgba(99, 102, 241, 0.7);
         }
       `}</style>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 glass border-b flex items-center justify-between px-4 z-50">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 dark-sidebar border-b border-purple-500/20 flex items-center justify-between px-4 z-50">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl overflow-hidden border border-indigo-900/30 shadow-sm">
+          <div className="w-9 h-9 rounded-xl overflow-hidden border border-purple-500/30 shadow-sm">
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
               alt="Shakti Logo" 
               className="w-full h-full object-cover"
             />
           </div>
-          <span className="font-bold text-indigo-900">Shakti</span>
+          <span className="font-bold text-white">Shakti</span>
         </div>
         <button 
           onClick={() => setMobileOpen(!mobileOpen)} 
-          className="p-2 text-gray-600 hover:text-indigo-900 transition-colors"
+          className="p-2 text-gray-300 hover:text-white transition-colors"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -120,13 +120,13 @@ function LayoutInner({ children, currentPageName, user }) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed md:static top-0 left-0 h-full w-64 glass border-r z-50 transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 h-full w-64 dark-sidebar border-r border-purple-500/20 z-50 transform transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         <div className="p-5">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl overflow-hidden border border-indigo-200 glow-indigo">
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-purple-500/30 glow-purple">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
                 alt="Shakti Logo" 
@@ -134,8 +134,8 @@ function LayoutInner({ children, currentPageName, user }) {
               />
             </div>
             <div>
-              <span className="font-bold text-indigo-900 text-lg">Shakti</span>
-              <p className="text-xs text-gray-500">Empowering Women</p>
+              <span className="font-bold text-white text-lg">Shakti</span>
+              <p className="text-xs text-purple-300">Empowering Women</p>
             </div>
           </div>
 
@@ -149,11 +149,11 @@ function LayoutInner({ children, currentPageName, user }) {
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "glass-dark text-indigo-900 glow-indigo border border-indigo-200"
-                      : "text-gray-600 hover:glass-dark hover:text-indigo-900 border border-transparent"
+                      ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white glow-purple"
+                      : "text-gray-300 hover:bg-purple-900/30 hover:text-white"
                   }`}
                 >
-                  <item.icon className={`w-5 h-5 ${isActive ? "text-indigo-900" : ""}`} />
+                  <item.icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-400"}`} />
                   {item.name}
                 </Link>
               );
