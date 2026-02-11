@@ -249,21 +249,21 @@ export default function LearningHub() {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
       <div className="max-w-6xl mx-auto">
         {/* Header Section - Exact Match */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-md">
             <GraduationCap className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-indigo-900">Learning Hub</h1>
-            <p className="text-gray-500 text-sm">Master the skills you need to build and grow your business</p>
+            <h1 className="text-3xl font-bold text-gray-900">Learning Hub</h1>
+            <p className="text-gray-700 text-sm">Master the skills you need to build and grow your business</p>
           </div>
         </div>
 
         {/* Multilingual Learning Banner */}
-        <div className="bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-700 rounded-2xl p-6 mb-8">
+        <div className="gradient-depth rounded-2xl p-6 mb-8 shadow-lg">
           <div className="flex items-start gap-3">
             <Languages className="w-6 h-6 text-white shrink-0 mt-0.5" />
             <div>
@@ -281,8 +281,8 @@ export default function LearningHub() {
               onClick={() => setSelectedTopic(topic.id)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                 selectedTopic === topic.id
-                  ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
-                  : "glass-card text-gray-700"
+                  ? "gradient-primary text-white shadow-md"
+                  : "glass-card text-gray-700 hover:border-[#DC586D]/30"
               }`}
             >
               {topic.label}
@@ -296,8 +296,8 @@ export default function LearningHub() {
             onClick={() => setViewMode("videos")}
             className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${
               viewMode === "videos"
-                ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
-                : "glass-card text-gray-700"
+                ? "gradient-primary text-white shadow-md"
+                : "glass-card text-gray-700 hover:border-[#DC586D]/30"
             }`}
           >
             Individual Videos
@@ -306,8 +306,8 @@ export default function LearningHub() {
             onClick={() => setViewMode("playlists")}
             className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${
               viewMode === "playlists"
-                ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
-                : "glass-card text-gray-700"
+                ? "gradient-primary text-white shadow-md"
+                : "glass-card text-gray-700 hover:border-[#DC586D]/30"
             }`}
           >
             Course Playlists
@@ -491,7 +491,7 @@ export default function LearningHub() {
                         href={playlist.playlistUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all mb-3"
+                        className="w-full inline-flex items-center justify-center gap-2 gradient-primary hover:opacity-90 text-white font-semibold py-3 rounded-xl transition-all mb-3 shadow-sm"
                       >
                         <Play className="w-5 h-5" />
                         Watch Course

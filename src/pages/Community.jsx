@@ -52,21 +52,21 @@ export default function CoFounderConnect() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-md">
             <Users2 className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gradient-indigo">Co-Founder Connector</h1>
-            <p className="text-gray-500 text-sm">Find the perfect business partner to grow together</p>
+            <h1 className="text-3xl font-bold text-gradient-rose">Co-Founder Connector</h1>
+            <p className="text-gray-700 text-sm">Find the perfect business partner to grow together</p>
           </div>
         </div>
 
         {/* AI-Powered Matching Banner */}
-        <div className="bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-700 rounded-2xl p-6 mb-8 text-white">
+        <div className="gradient-depth rounded-2xl p-6 mb-8 text-white shadow-lg">
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 shrink-0 mt-0.5" />
             <div>
@@ -264,7 +264,7 @@ export default function CoFounderConnect() {
                           rel="noopener noreferrer"
                           className="flex-1"
                         >
-                          <Button className="w-full bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 text-white font-semibold shadow-md">
+                          <Button className="w-full gradient-primary hover:opacity-90 text-white font-semibold shadow-md">
                             <MessageCircle className="w-4 h-4 mr-1" />
                             Connect
                           </Button>

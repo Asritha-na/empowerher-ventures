@@ -63,21 +63,21 @@ export default function Appointments() {
   });
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-md">
               <Calendar className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Appointments</h1>
-              <p className="text-gray-500">Meet people with common interests</p>
+              <p className="text-gray-700">Meet people with common interests</p>
             </div>
           </div>
           <Button
             onClick={() => setShowForm(true)}
-            className="bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 rounded-xl h-12 px-6"
+            className="gradient-primary hover:opacity-90 rounded-xl h-12 px-6"
           >
             <Plus className="w-4 h-4 mr-2" />
             New Meeting
@@ -138,7 +138,7 @@ export default function Appointments() {
               <Button
                 onClick={() => createMutation.mutate(form)}
                 disabled={!form.title || !form.date || !form.time || createMutation.isPending}
-                className="w-full bg-gradient-to-r from-teal-500 to-cyan-600 rounded-xl h-12"
+                className="w-full gradient-primary hover:opacity-90 rounded-xl h-12"
               >
                 {createMutation.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />

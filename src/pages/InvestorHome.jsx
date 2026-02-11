@@ -122,25 +122,25 @@ export default function InvestorHome() {
         </div>
 
         {/* My Watchlist Section */}
-        <Card className="border border-gray-200 shadow-sm bg-white mb-8">
+        <Card className="glass-card mb-8">
           <CardContent className="p-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-14 h-14 rounded-xl bg-amber-50 flex items-center justify-center">
-                <Star className="w-7 h-7 text-amber-500" />
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-md">
+                <Star className="w-7 h-7 text-white" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">My Watchlist</h2>
-                <p className="text-gray-600">Track opportunities and manage follow-ups</p>
+                <p className="text-gray-700">Track opportunities and manage follow-ups</p>
               </div>
             </div>
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+            <div className="glass rounded-xl p-6">
               <WatchlistManager investorEmail={user?.email} />
             </div>
           </CardContent>
         </Card>
 
         {/* Recent Pitches */}
-        <Card className="bg-white border border-gray-200 shadow-sm">
+        <Card className="glass-card">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">{t("recentPitches")}</h2>
@@ -150,21 +150,21 @@ export default function InvestorHome() {
                 </Button>
               </Link>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {pitches.slice(0, 3).map((pitch) => (
-                <div key={pitch.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E31B23] to-[#C9161D] flex items-center justify-center text-white font-bold shadow-sm">
+                <div key={pitch.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-all border border-transparent hover:border-[#DC586D]/20 hover:shadow-sm">
+                  <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center text-white font-bold shadow-sm">
                     {pitch.created_by?.charAt(0)?.toUpperCase() || "?"}
                   </div>
                   <div className="flex-1">
                     <h4 className="font-semibold text-gray-900">{pitch.title}</h4>
-                    <p className="text-sm text-gray-500">{pitch.category}</p>
+                    <p className="text-sm text-gray-600">{pitch.category}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">
                       {pitch.funding_needed ? `₹${pitch.funding_needed.toLocaleString()}` : "N/A"}
                     </p>
-                    <p className="text-xs text-gray-500">Funding needed</p>
+                    <p className="text-xs text-gray-600">Funding needed</p>
                   </div>
                 </div>
               ))}

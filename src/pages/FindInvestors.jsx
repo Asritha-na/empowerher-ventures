@@ -79,15 +79,15 @@ export default function FindInvestors() {
   );
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-md">
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Find Investors</h1>
-            <p className="text-gray-500">Connect with people who want to support your business</p>
+            <p className="text-gray-700">Connect with people who want to support your business</p>
           </div>
         </div>
 

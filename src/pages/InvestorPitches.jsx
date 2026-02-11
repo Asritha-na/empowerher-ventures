@@ -61,28 +61,28 @@ export default function InvestorPitches() {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center shadow-md">
               <Users className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-indigo-900">{t("coFounderConnector")}</h1>
-              <p className="text-sm text-gray-500">{t("findPerfectPartner")}</p>
+              <h1 className="text-2xl font-bold text-gray-900">{t("coFounderConnector")}</h1>
+              <p className="text-sm text-gray-700">{t("findPerfectPartner")}</p>
             </div>
           </div>
         </div>
 
         {/* AI-Powered Matching Banner */}
-        <div className="mb-6 bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-700 rounded-2xl p-6 text-white shadow-lg">
+        <div className="mb-6 gradient-depth rounded-2xl p-6 text-white shadow-lg">
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 mt-1" />
             <div>
               <h3 className="font-bold text-lg mb-1">{t("aiPoweredMatching")}</h3>
-              <p className="text-sm text-white/90">
+              <p className="text-sm text-white/95">
                 {t("aiAnalyzes")}
               </p>
             </div>
@@ -247,7 +247,7 @@ export default function InvestorPitches() {
                       <div className="space-y-2">
                         <div className="flex gap-2">
                           <Button
-                            className="flex-1 bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 rounded-lg"
+                            className="flex-1 gradient-primary hover:opacity-90 rounded-lg"
                             onClick={() => {
                               if (member.phone) {
                                 window.open(getWhatsAppLink(member.phone), "_blank");
