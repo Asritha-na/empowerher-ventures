@@ -63,7 +63,7 @@ function LayoutInner({ children, currentPageName, user }) {
     : getEntrepreneurNavItems(t);
 
   return (
-    <div className="min-h-screen flex" style={{ background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)' }}>
+    <div className="min-h-screen flex items-stretch" style={{ background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)' }}>
       <style>{`
         :root {
           --color-primary: #8B1E1E;
@@ -121,7 +121,7 @@ function LayoutInner({ children, currentPageName, user }) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed md:static top-0 left-0 h-screen w-[260px] z-50 transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 h-screen md:h-auto md:self-stretch w-[260px] z-50 transform transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
         style={{ background: '#E79A9A' }}
@@ -165,7 +165,7 @@ function LayoutInner({ children, currentPageName, user }) {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 min-h-screen md:ml-0 mt-16 md:mt-0 mb-16 overflow-auto">
+      <main className="flex-1 min-h-screen md:ml-0 mt-16 md:mt-0 mb-16">
         {children}
       </main>
 
