@@ -31,13 +31,13 @@ export default function RoleSelect() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12">
 
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-indigo-900 to-blue-800 mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 mb-6 glow-purple">
             <Sprout className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
             {t('shakti')}
           </h1>
-          <p className="text-lg text-gray-600 max-w-md mx-auto">
+          <p className="text-lg text-purple-200 max-w-md mx-auto">
             {t('empoweringRuralWomen')}
           </p>
         </motion.div>
@@ -49,19 +49,19 @@ export default function RoleSelect() {
             transition={{ delay: 0.2 }}
             onClick={() => selectRole("entrepreneur")}
             disabled={loading}
-            className="group glass-card rounded-3xl p-8 hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-indigo-900 text-left">
+            className="group glass-card rounded-3xl p-8 hover:glow-purple transition-all duration-300 border border-purple-500/30 hover:border-purple-500 text-left">
 
-            <div className="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-6 group-hover:bg-indigo-200 transition-colors">
-              <Sprout className="w-8 h-8 text-indigo-900" />
+            <div className="w-16 h-16 rounded-2xl bg-purple-600/30 flex items-center justify-center mb-6 group-hover:bg-purple-600/50 transition-colors">
+              <Sprout className="w-8 h-8 text-purple-400" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold text-white mb-2">
               {t('imAnEntrepreneur')}
             </h2>
-            <p className="text-gray-500 text-base leading-relaxed">
+            <p className="text-purple-200 text-base leading-relaxed">
               {t('entrepreneurDescription')}
             </p>
             {loading &&
-            <Loader2 className="w-5 h-5 animate-spin text-indigo-900 mt-4" />
+            <Loader2 className="w-5 h-5 animate-spin text-purple-400 mt-4" />
             }
           </motion.button>
 
@@ -71,19 +71,19 @@ export default function RoleSelect() {
             transition={{ delay: 0.3 }}
             onClick={() => selectRole("investor")}
             disabled={loading}
-            className="group glass-card rounded-3xl p-8 hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-gray-600 text-left">
+            className="group glass-card rounded-3xl p-8 hover:glow-pink transition-all duration-300 border border-pink-500/30 hover:border-pink-500 text-left">
 
-            <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-6 group-hover:bg-gray-200 transition-colors">
-              <TrendingUp className="w-8 h-8 text-gray-700" />
+            <div className="w-16 h-16 rounded-2xl bg-pink-600/30 flex items-center justify-center mb-6 group-hover:bg-pink-600/50 transition-colors">
+              <TrendingUp className="w-8 h-8 text-pink-400" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold text-white mb-2">
               {t('imAnInvestor')}
             </h2>
-            <p className="text-gray-500 text-base leading-relaxed">
+            <p className="text-purple-200 text-base leading-relaxed">
               {t('investorDescription')}
             </p>
             {loading &&
-            <Loader2 className="w-5 h-5 animate-spin text-gray-700 mt-4" />
+            <Loader2 className="w-5 h-5 animate-spin text-pink-400 mt-4" />
             }
           </motion.button>
         </div>
@@ -104,7 +104,7 @@ export default function RoleSelect() {
             <PlayCircle className="w-5 h-5 mr-2" />
             {t("watchDemo")}
           </Button>
-          <p className="text-sm text-gray-500 mt-3">
+          <p className="text-sm text-purple-300 mt-3">
             Learn about the app and understand the difference between roles
           </p>
         </motion.div>
