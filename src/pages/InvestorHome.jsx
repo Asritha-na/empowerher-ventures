@@ -40,7 +40,8 @@ export default function InvestorHome() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #000000 0%, #0a0a14 50%, #1a0b2e 100%)'}}>
+
       {/* Language Selector - Fixed Top Right */}
       <div className="fixed top-6 right-6 z-50">
         <LanguageSelector />
@@ -49,10 +50,10 @@ export default function InvestorHome() {
 <div className="max-w-7xl mx-auto">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
             {t("welcomeBack")}, {user?.full_name?.split(" ")[0] || "Investor"}
           </h1>
-          <p className="text-gray-600 text-lg">{t("discoverInvest")}</p>
+          <p className="text-gray-300 text-lg">{t("discoverInvest")}</p>
         </div>
 
         {/* Stats Grid */}
@@ -69,8 +70,8 @@ export default function InvestorHome() {
                   <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4`}>
                     <stat.icon className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
-                  <p className="text-sm text-gray-500">{stat.label}</p>
+                  <p className="text-3xl font-bold text-white mb-1">{stat.value}</p>
+                  <p className="text-sm text-gray-300">{stat.label}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -89,26 +90,26 @@ export default function InvestorHome() {
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card className="border-none shadow-md bg-gradient-to-br from-indigo-900 to-blue-800 text-white">
+          <Card className="border-none shadow-md bg-gradient-to-br from-purple-600 to-purple-700 text-white">
             <CardContent className="p-8">
               <Search className="w-12 h-12 mb-4" />
               <h3 className="text-2xl font-bold mb-2">{t("explorePitches")}</h3>
-              <p className="mb-6 text-blue-50">{t("browseInnovative")}</p>
+              <p className="mb-6 text-purple-50">{t("browseInnovative")}</p>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button variant="secondary" className="bg-white text-blue-600 hover:bg-blue-50">
+                <Button variant="secondary" className="bg-white text-purple-600 hover:bg-purple-50">
                   {t("viewAllPitches")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-md bg-gradient-to-br from-gray-700 to-gray-600 text-white">
+          <Card className="border-none shadow-md bg-gradient-to-br from-pink-600 to-pink-700 text-white">
             <CardContent className="p-8">
               <Briefcase className="w-12 h-12 mb-4" />
               <h3 className="text-2xl font-bold mb-2">{t("myPortfolio")}</h3>
-              <p className="mb-6 text-purple-50">{t("trackInvestments")}</p>
+              <p className="mb-6 text-pink-50">{t("trackInvestments")}</p>
               <Link to={createPageUrl("InvestorPortfolio")}>
-                <Button variant="secondary" className="bg-white text-purple-600 hover:bg-purple-50">
+                <Button variant="secondary" className="bg-white text-pink-600 hover:bg-pink-50">
                   {t("viewPortfolio")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -117,13 +118,13 @@ export default function InvestorHome() {
         </div>
 
         {/* My Watchlist Section */}
-        <Card className="border-none shadow-md bg-gradient-to-br from-indigo-800 to-blue-700 text-white mb-8">
+        <Card className="border-none shadow-md bg-gradient-to-br from-purple-700 to-purple-800 text-white mb-8">
           <CardContent className="p-8">
             <div className="flex items-center gap-3 mb-6">
               <Star className="w-12 h-12" />
               <div>
                 <h2 className="text-2xl font-bold">My Watchlist</h2>
-                <p className="text-amber-50">Track opportunities and manage follow-ups</p>
+                <p className="text-purple-50">Track opportunities and manage follow-ups</p>
               </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
@@ -136,33 +137,33 @@ export default function InvestorHome() {
         <Card className="glass-card border-none">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{t("recentPitches")}</h2>
+              <h2 className="text-2xl font-bold text-white">{t("recentPitches")}</h2>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button variant="ghost" className="text-blue-600">
+                <Button variant="ghost" className="text-purple-400">
                   {t("viewAll")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
             <div className="space-y-4">
               {pitches.slice(0, 3).map((pitch) => (
-                <div key={pitch.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold">
+                <div key={pitch.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-purple-900/20 transition-colors">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white font-bold">
                     {pitch.created_by?.charAt(0)?.toUpperCase() || "?"}
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{pitch.title}</h4>
-                    <p className="text-sm text-gray-500">{pitch.category}</p>
+                    <h4 className="font-semibold text-white">{pitch.title}</h4>
+                    <p className="text-sm text-gray-300">{pitch.category}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-white">
                       {pitch.funding_needed ? `₹${pitch.funding_needed.toLocaleString()}` : "N/A"}
                     </p>
-                    <p className="text-xs text-gray-500">Funding needed</p>
+                    <p className="text-xs text-gray-300">Funding needed</p>
                   </div>
                 </div>
               ))}
               {pitches.length === 0 && (
-                <p className="text-center text-gray-500 py-8">{t("noPitchesAvailable")}</p>
+                <p className="text-center text-gray-400 py-8">{t("noPitchesAvailable")}</p>
               )}
             </div>
           </CardContent>
