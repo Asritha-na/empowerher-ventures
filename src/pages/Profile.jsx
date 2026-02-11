@@ -84,16 +84,11 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-[#8B1E1E] flex items-center justify-center shadow-md">
-            <User className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{t("myProfile")}</h1>
-            <p className="text-gray-700">{t("yourPersonalDetails")}</p>
-          </div>
+    <div className="min-h-screen p-4 md:p-8" style={{background: '#F8FAFC'}}>
+      <div className="max-w-[1200px] mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">{t("myProfile")}</h1>
+          <p className="text-slate-600">{t("yourPersonalDetails")}</p>
         </div>
 
         {/* Language Selector */}
@@ -112,7 +107,7 @@ export default function Profile() {
                   className="w-28 h-28 rounded-3xl object-cover shadow-lg"
                 />
               ) : (
-                <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-lg">
+                <div className="w-28 h-28 rounded-xl bg-emerald-600 flex items-center justify-center">
                   <span className="text-4xl font-bold text-white">
                     {user?.full_name?.charAt(0)?.toUpperCase() || "?"}
                   </span>
@@ -125,29 +120,29 @@ export default function Profile() {
             </div>
           </div>
 
-          <Card className="glass-card">
+          <Card>
             <CardContent className="p-8 space-y-5">
               {/* Read-only fields */}
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                <label className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
                   <User className="w-3.5 h-3.5" /> {t("fullName")}
                 </label>
-                <div className="h-12 bg-gray-50 rounded-xl flex items-center px-4 text-gray-700 font-medium">
+                <div className="h-12 bg-gray-50 rounded-lg flex items-center px-4 text-slate-900 font-medium">
                   {user?.full_name || t("notSet")}
                 </div>
               </div>
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                <label className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
                   <Mail className="w-3.5 h-3.5" /> {t("email")}
                 </label>
-                <div className="h-12 bg-gray-50 rounded-xl flex items-center px-4 text-gray-700">
+                <div className="h-12 bg-gray-50 rounded-lg flex items-center px-4 text-slate-900">
                   {user?.email || t("notSet")}
                 </div>
               </div>
 
               {/* Editable fields */}
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                <label className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5" /> {t("phoneNumber")}
                 </label>
                 <Input
@@ -158,7 +153,7 @@ export default function Profile() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                <label className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5" /> {t("location")}
                 </label>
                 <Input
@@ -169,7 +164,7 @@ export default function Profile() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                <label className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
                   <Building2 className="w-3.5 h-3.5" /> {t("businessName")}
                 </label>
                 <Input
@@ -180,7 +175,7 @@ export default function Profile() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-500">{t("businessType")}</label>
+                <label className="text-sm font-medium text-slate-600">{t("businessType")}</label>
                 <Select
                   value={form.business_type}
                   onValueChange={(v) => setForm({ ...form, business_type: v })}
@@ -199,7 +194,7 @@ export default function Profile() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-500">{t("preferredLanguage")}</label>
+                <label className="text-sm font-medium text-slate-600">{t("preferredLanguage")}</label>
                 <Select
                   value={form.preferred_language}
                   onValueChange={(v) => setForm({ ...form, preferred_language: v })}
@@ -218,13 +213,12 @@ export default function Profile() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-500">{t("aboutMe")}</label>
+                <label className="text-sm font-medium text-slate-600">{t("aboutMe")}</label>
                 <Textarea
                   value={form.bio}
                   onChange={(e) => setForm({ ...form, bio: e.target.value })}
                   placeholder={t("tellUsAboutYourself")}
                   className="min-h-[100px]"
-                  style={{ borderRadius: '18px' }}
                 />
               </div>
 
@@ -255,14 +249,14 @@ export default function Profile() {
           </Card>
 
           {/* Toll-Free Support */}
-          <Card className="glass-card mt-6 card-hover">
+          <Card className="mt-6">
             <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center mx-auto mb-5 shadow-lg">
-                <PhoneCall className="w-9 h-9 text-white" />
+              <div className="w-16 h-16 rounded-lg bg-emerald-600 flex items-center justify-center mx-auto mb-5">
+                <PhoneCall className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{t("tollFreeSupport")}</h3>
-              <p className="text-4xl font-bold text-[#4F46E5] mb-2">1800-123-123</p>
-              <p className="text-sm text-gray-500">{t("available24x7")}</p>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{t("tollFreeSupport")}</h3>
+              <p className="text-3xl font-bold text-emerald-600 mb-2">1800-123-123</p>
+              <p className="text-sm text-slate-600">{t("available24x7")}</p>
             </CardContent>
           </Card>
         </motion.div>
