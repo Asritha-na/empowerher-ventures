@@ -88,11 +88,11 @@ export default function RoleSelect() {
         </motion.div>
 
         {/* Central Search / Location */}
-        <div className="max-w-3xl mx-auto mb-8">
+        <div className="max-w-3xl mx-auto mb-8 sticky top-24 z-40">
           <StickySearchBar />
         </div>
 
-         {/* Success Stories Strip */
+         {/* Success Stories Strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -208,7 +208,7 @@ export default function RoleSelect() {
         </section>
         </div>
 
-        {/* AI Language Bot */
+        {/* AI Language Bot */}
       <RoleSelectBot />
 
       {/* Voice Accessibility Assistant */}
