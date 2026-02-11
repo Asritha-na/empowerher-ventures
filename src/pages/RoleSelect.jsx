@@ -14,7 +14,7 @@ import ServiceTiles from "../components/role-select/ServiceTiles";
 export default function RoleSelect() {
   const [loading, setLoading] = useState(false);
   const { t } = useLanguage();
-  const handleLogin = () => base44.auth.redirectToLogin(createPageUrl("Profile"));
+  const handleLogin = () => base44.auth.redirectToLogin(createPageUrl("Dashboard"));
   const scrollTo = (id) => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); };
 
   const selectRole = async (role) => {
@@ -132,7 +132,7 @@ export default function RoleSelect() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            onClick={handleLogin}
+            onClick={() => selectRole("entrepreneur")}
             disabled={loading}
             className="glass-card p-8 text-left rounded-3xl group transition-all duration-300 border border-white/20 hover:border-pink-300/50 hover:shadow-2xl hover:shadow-pink-500/30 hover:-translate-y-1 disabled:opacity-50">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300" style={{ background: 'rgba(185, 75, 90, 0.3)', boxShadow: '0 4px 20px rgba(185, 75, 90, 0.2)' }}>
@@ -160,7 +160,7 @@ export default function RoleSelect() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            onClick={handleLogin}
+            onClick={() => selectRole("investor")}
             disabled={loading}
             className="glass-card p-8 text-left rounded-3xl group transition-all duration-300 border border-white/20 hover:border-purple-300/50 hover:shadow-2xl hover:shadow-purple-500/30 hover:-translate-y-1 disabled:opacity-50">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300" style={{ background: 'rgba(139, 30, 95, 0.3)', boxShadow: '0 4px 20px rgba(139, 30, 95, 0.2)' }}>

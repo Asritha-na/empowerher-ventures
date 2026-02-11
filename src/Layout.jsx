@@ -42,7 +42,7 @@ const getInvestorNavItems = (t) => [
 ];
 
 const getEntrepreneurNavItems = (t) => [
-  { name: t("home"), icon: Home, page: "Dashboard" },
+  { name: t("home"), icon: Home, page: "Home" },
   { name: t("myIdea"), icon: Lightbulb, page: "MyIdea" },
   { name: t("findInvestors"), icon: Users, page: "FindInvestors" },
   { name: t("learningHub"), icon: BookOpen, page: "LearningHub" },
@@ -189,7 +189,16 @@ export default function Layout({ children, currentPageName }) {
       .finally(() => setLoading(false));
   }, []);
 
-  // Public pages (no sidebar/layout)
+  // Public landing at Home when unauthenticated only
+  if (currentPageName === "Home") {
+    if (loading) return null;
+    if (user) {
+      window.location.href = createPageUrl("Dashboard");
+      return null;
+    }
+    return children;
+  }
+  // Keep legacy Landing page public (if used elsewhere)
   if (currentPageName === "Landing") {
     return children;
   }
@@ -203,24 +212,20 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
-  // Wait for auth check (avoid loops)
-  if (loading) return null;
+  // Wait for auth check
+  if (loading) {
+    return null;
+  }
 
   // Redirect to public Home if not authenticated
   if (!user) {
-    base44.auth.redirectToLogin(createPageUrl("Profile"));
+    window.location.href = createPageUrl("Home");
     return null;
   }
 
-  // Enforce profile completion before accessing the app (except Profile)
-  const isProfileComplete = Boolean(user?.phone);
-  if (!isProfileComplete && currentPageName !== "Profile") {
-    window.location.href = createPageUrl("Profile");
-    return null;
-  }
-  // If profile is complete and user visits Profile, send to Dashboard
-  if (isProfileComplete && currentPageName === "Profile") {
-    window.location.href = createPageUrl("Dashboard");
+  // Redirect to role select if no role
+  if (user && !user.user_role) {
+    window.location.href = createPageUrl("RoleSelect");
     return null;
   }
 
