@@ -72,7 +72,7 @@ export default function Home() {
       </div>
 
       {/* Success Stories Section */}
-      <div className="py-20">
+      <div className="py-20 pb-32">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="text-center mb-12">
             <motion.h2
@@ -92,7 +92,9 @@ export default function Home() {
             </motion.p>
           </div>
 
-          <SuccessStoriesCarousel />
+          <div className="max-w-[1100px] mx-auto">
+            <SuccessStoriesCarousel />
+          </div>
         </div>
       </div>
     </div>);

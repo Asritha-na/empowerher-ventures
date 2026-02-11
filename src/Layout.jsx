@@ -121,7 +121,7 @@ function LayoutInner({ children, currentPageName, user }) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed md:static top-0 left-0 h-full w-[260px] z-50 transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 h-screen w-[260px] z-50 transform transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
         style={{ background: '#E79A9A' }}
