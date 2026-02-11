@@ -20,7 +20,7 @@ export default function RoleSelect() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{background: 'linear-gradient(135deg, #A8515B 0%, #DC586D 100%)'}}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'linear-gradient(135deg, #A8515B 0%, #DC586D 100%)' }}>
 
       <div className="absolute top-6 right-6 flex items-center gap-3">
         <LanguageSelector />
@@ -49,8 +49,8 @@ export default function RoleSelect() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
             onClick={() => selectRole("entrepreneur")}
-            disabled={loading}
-            className="group glass-card rounded-3xl p-8 hover:glow-purple transition-all duration-300 border border-purple-500/30 hover:border-purple-500 text-left">
+            disabled={loading} className="group glass-card rounded-3xl p-8 hover:glow-purple transition-all duration-300 border border-black-500/30 hover:border-purple-500 text-left">
+
 
             <div className="w-16 h-16 rounded-2xl bg-purple-600/30 flex items-center justify-center mb-6 group-hover:bg-purple-600/50 transition-colors">
               <Sprout className="w-8 h-8 text-purple-400" />
@@ -71,8 +71,8 @@ export default function RoleSelect() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
             onClick={() => selectRole("investor")}
-            disabled={loading}
-            className="group glass-card rounded-3xl p-8 hover:glow-pink transition-all duration-300 border border-pink-500/30 hover:border-pink-500 text-left">
+            disabled={loading} className="group glass-card rounded-3xl p-8 hover:glow-pink transition-all duration-300 border border-black-500/30 hover:border-pink-500 text-left">
+
 
             <div className="w-16 h-16 rounded-2xl bg-pink-600/30 flex items-center justify-center mb-6 group-hover:bg-pink-600/50 transition-colors">
               <TrendingUp className="w-8 h-8 text-pink-400" />
@@ -94,14 +94,14 @@ export default function RoleSelect() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-8 text-center"
-        >
+          className="mt-8 text-center">
+
           <Button
             onClick={() => window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")}
             variant="outline"
-            size="lg"
-            className="rounded-full border-2 border-purple-500 text-white hover:bg-purple-900/30 px-8 py-6 text-base"
-          >
+            size="lg" className="bg-gray-400 text-zinc-900 px-8 py-6 text-base font-medium rounded-full inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 shadow-sm hover:text-accent-foreground h-12 border-2 border-purple-500 hover:bg-purple-900/30">
+
+
             <PlayCircle className="w-5 h-5 mr-2" />
             {t("watchDemo")}
           </Button>
