@@ -20,8 +20,11 @@ export default function Dashboard() {
         window.location.href = createPageUrl("Home");
         return;
       }
-      if (!u.profile_completed) {
+      const role = u.user_role || u.role;
+      const emptyProfile = !u.full_name || !role || !u.location;
+      if (!u.profile_completed || emptyProfile) {
         window.location.href = createPageUrl("Profile");
+        return;
       }
     }).catch(() => {});
   }, []);

@@ -44,6 +44,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [budgetError, setBudgetError] = useState("");
+  const effectiveRole = form.user_role || user?.user_role || user?.role || "";
   const [form, setForm] = useState({
     full_name: "",
     user_role: "",
@@ -84,7 +85,7 @@ export default function Profile() {
 
   const handleSave = async () => {
     setBudgetError("");
-    if (form.user_role === "investor") {
+    if (effectiveRole === "investor") {
       const min = Number(form.investor_budget_min);
       const max = Number(form.investor_budget_max);
       if (!Number.isNaN(min) && !Number.isNaN(max) && min >= max) {
@@ -279,7 +280,7 @@ export default function Profile() {
                 </Select>
               </div>
 
-              {form.user_role === "investor" && (
+              {effectiveRole === "investor" && (
                 <>
                   <div className="space-y-1">
                     <label className="text-sm font-medium text-gray-500">Skills Area</label>
@@ -357,7 +358,7 @@ export default function Profile() {
                 </>
               )}
 
-              {form.user_role === "entrepreneur" && (
+              {effectiveRole === "entrepreneur" && (
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-500">Skills They Are Looking For</label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
