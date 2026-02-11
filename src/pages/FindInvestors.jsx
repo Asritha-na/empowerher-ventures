@@ -79,7 +79,7 @@ export default function FindInvestors() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">

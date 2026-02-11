@@ -20,7 +20,7 @@ export default function RoleSelect() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="absolute top-6 right-6 flex items-center gap-3">
         <LanguageSelector />
       </div>
@@ -31,7 +31,7 @@ export default function RoleSelect() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12">
 
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-indigo-900 to-blue-800 mb-6">
             <Sprout className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
@@ -49,10 +49,10 @@ export default function RoleSelect() {
             transition={{ delay: 0.2 }}
             onClick={() => selectRole("entrepreneur")}
             disabled={loading}
-            className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-amber-400 text-left">
+            className="group glass-card rounded-3xl p-8 hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-indigo-900 text-left">
 
-            <div className="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center mb-6 group-hover:bg-amber-200 transition-colors">
-              <Sprout className="w-8 h-8 text-amber-600" />
+            <div className="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-6 group-hover:bg-indigo-200 transition-colors">
+              <Sprout className="w-8 h-8 text-indigo-900" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               {t('imAnEntrepreneur')}
@@ -61,7 +61,7 @@ export default function RoleSelect() {
               {t('entrepreneurDescription')}
             </p>
             {loading &&
-            <Loader2 className="w-5 h-5 animate-spin text-amber-600 mt-4" />
+            <Loader2 className="w-5 h-5 animate-spin text-indigo-900 mt-4" />
             }
           </motion.button>
 
@@ -71,10 +71,10 @@ export default function RoleSelect() {
             transition={{ delay: 0.3 }}
             onClick={() => selectRole("investor")}
             disabled={loading}
-            className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-emerald-400 text-left">
+            className="group glass-card rounded-3xl p-8 hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-gray-600 text-left">
 
-            <div className="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center mb-6 group-hover:bg-emerald-200 transition-colors">
-              <TrendingUp className="w-8 h-8 text-emerald-600" />
+            <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-6 group-hover:bg-gray-200 transition-colors">
+              <TrendingUp className="w-8 h-8 text-gray-700" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               {t('imAnInvestor')}
@@ -83,7 +83,7 @@ export default function RoleSelect() {
               {t('investorDescription')}
             </p>
             {loading &&
-            <Loader2 className="w-5 h-5 animate-spin text-emerald-600 mt-4" />
+            <Loader2 className="w-5 h-5 animate-spin text-gray-700 mt-4" />
             }
           </motion.button>
         </div>
@@ -99,7 +99,7 @@ export default function RoleSelect() {
             onClick={() => window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")}
             variant="outline"
             size="lg"
-            className="rounded-full border-2 border-amber-400 text-amber-700 hover:bg-amber-50 px-8 py-6 text-base"
+            className="rounded-full border-2 border-indigo-900 text-indigo-900 hover:bg-indigo-50 px-8 py-6 text-base"
           >
             <PlayCircle className="w-5 h-5 mr-2" />
             {t("watchDemo")}
