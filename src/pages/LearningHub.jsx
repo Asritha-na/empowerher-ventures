@@ -263,7 +263,7 @@ export default function LearningHub() {
         </div>
 
         {/* Multilingual Learning Banner */}
-        <div className="bg-gradient-to-br from-[#B94B5A] to-[#D8707C] rounded-2xl p-6 mb-8 shadow-lg">
+        <div className="bg-gradient-to-br from-[#4F46E5] to-[#6366F1] rounded-xl p-6 mb-8 shadow-lg">
           <div className="flex items-start gap-3">
             <Languages className="w-6 h-6 text-white shrink-0 mt-0.5" />
             <div>
@@ -279,12 +279,12 @@ export default function LearningHub() {
             <button
               key={topic.id}
               onClick={() => setSelectedTopic(topic.id)}
-              className={`px-5 py-3 text-sm font-semibold whitespace-nowrap transition-all ${
+              className={`px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-all ${
                 selectedTopic === topic.id
-                  ? "bg-[#7A1C1C] text-white shadow-[0_4px_14px_rgba(122,28,28,0.25)]"
+                  ? "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)]"
                   : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
               }`}
-              style={{ borderRadius: '24px' }}
+              style={{ borderRadius: '20px' }}
             >
               {topic.label}
             </button>
@@ -297,10 +297,10 @@ export default function LearningHub() {
             onClick={() => setViewMode("videos")}
             className={`px-6 py-3 text-sm font-semibold transition-all ${
               viewMode === "videos"
-                ? "bg-[#7A1C1C] text-white shadow-[0_4px_14px_rgba(122,28,28,0.25)]"
+                ? "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)]"
                 : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
             }`}
-            style={{ borderRadius: '18px' }}
+            style={{ borderRadius: '12px' }}
           >
             Individual Videos
           </button>
@@ -308,10 +308,10 @@ export default function LearningHub() {
             onClick={() => setViewMode("playlists")}
             className={`px-6 py-3 text-sm font-semibold transition-all ${
               viewMode === "playlists"
-                ? "bg-[#7A1C1C] text-white shadow-[0_4px_14px_rgba(122,28,28,0.25)]"
+                ? "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)]"
                 : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
             }`}
-            style={{ borderRadius: '18px' }}
+            style={{ borderRadius: '12px' }}
           >
             Course Playlists
           </button>

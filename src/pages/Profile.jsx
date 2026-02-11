@@ -112,7 +112,7 @@ export default function Profile() {
                   className="w-28 h-28 rounded-3xl object-cover shadow-lg"
                 />
               ) : (
-                <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center shadow-lg">
+                <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-lg">
                   <span className="text-4xl font-bold text-white">
                     {user?.full_name?.charAt(0)?.toUpperCase() || "?"}
                   </span>
@@ -257,11 +257,11 @@ export default function Profile() {
           {/* Toll-Free Support */}
           <Card className="glass-card mt-6 card-hover">
             <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center mx-auto mb-5 shadow-lg">
+              <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center mx-auto mb-5 shadow-lg">
                 <PhoneCall className="w-9 h-9 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">{t("tollFreeSupport")}</h3>
-              <p className="text-4xl font-bold text-[#7A1C1C] mb-2">1800-123-123</p>
+              <p className="text-4xl font-bold text-[#4F46E5] mb-2">1800-123-123</p>
               <p className="text-sm text-gray-500">{t("available24x7")}</p>
             </CardContent>
           </Card>

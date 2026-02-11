@@ -63,11 +63,11 @@ export default function Appointments() {
   });
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#8B1E1E] flex items-center justify-center shadow-md">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-md">
               <Calendar className="w-6 h-6 text-white" />
             </div>
             <div>

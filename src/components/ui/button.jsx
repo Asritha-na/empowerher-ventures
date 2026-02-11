@@ -10,18 +10,18 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-[#7A1C1C] text-white shadow-[0_4px_14px_rgba(122,28,28,0.25)] hover:bg-[#8B1E1E] hover:shadow-[0_6px_20px_rgba(122,28,28,0.35)] hover:-translate-y-0.5 active:translate-y-0",
+          "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)] hover:bg-[#4338CA] hover:shadow-[0_6px_20px_rgba(79,70,229,0.35)] hover:-translate-y-0.5 active:translate-y-0",
         destructive:
           "bg-destructive text-destructive-foreground shadow-md hover:bg-destructive/90",
         outline:
           "border-2 border-gray-200 bg-white shadow-sm hover:bg-gray-50 hover:border-gray-300",
         secondary:
-          "bg-gradient-to-br from-[#B94B5A] to-[#D8707C] text-white shadow-md hover:opacity-90",
+          "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200",
         ghost: "hover:bg-gray-100 hover:text-gray-900",
-        link: "text-[#7A1C1C] underline-offset-4 hover:underline",
+        link: "text-[#4F46E5] underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-11 px-5 py-2",
+        default: "h-10 px-5 py-2",
         sm: "h-9 px-4 text-xs",
         lg: "h-12 px-8 text-base",
         icon: "h-10 w-10",
@@ -39,7 +39,7 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
   return (
     (<Comp
       className={cn(buttonVariants({ variant, size }), className)}
-      style={{ borderRadius: '18px', ...props.style }}
+      style={{ borderRadius: '12px', ...props.style }}
       ref={ref}
       {...props} />)
   );

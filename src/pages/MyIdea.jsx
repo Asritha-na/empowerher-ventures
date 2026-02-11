@@ -187,7 +187,7 @@ Funding Needed: ₹${formData.funding_needed}
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
 
       <div className="max-w-5xl mx-auto">
         {/* Header */}

@@ -63,13 +63,11 @@ function LayoutInner({ children, currentPageName, user }) {
     : getEntrepreneurNavItems(t);
 
   return (
-    <div className="min-h-screen flex" style={{ background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)' }}>
+    <div className="min-h-screen flex" style={{ background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)' }}>
       <style>{`
         :root {
-          --color-primary: #8B1E1E;
-          --color-sidebar: #E79A9A;
-          --color-hero-start: #B94B5A;
-          --color-hero-end: #D8707C;
+          --color-primary: #4F46E5;
+          --color-sidebar: #1F2937;
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -80,32 +78,32 @@ function LayoutInner({ children, currentPageName, user }) {
           height: 8px;
         }
         ::-webkit-scrollbar-track {
-          background: #FDE8EC;
+          background: #F9FAFB;
         }
         ::-webkit-scrollbar-thumb {
-          background: #E79A9A;
+          background: #D1D5DB;
           border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-          background: #B94B5A;
+          background: #4F46E5;
         }
       `}</style>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 flex items-center justify-between px-4 z-50 shadow-lg" style={{ background: '#E8A1A6' }}>
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 flex items-center justify-between px-4 z-50 shadow-lg sidebar-dark">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#E31B23] to-[#C9161D] flex items-center justify-center shadow-md">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-md">
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
               alt="Shakti Logo" 
               className="w-6 h-6 object-cover rounded-full"
             />
           </div>
-          <span className="font-bold text-gray-900">Shakti</span>
+          <span className="font-bold text-white">Shakti</span>
         </div>
         <button 
           onClick={() => setMobileOpen(!mobileOpen)} 
-          className="p-2 text-gray-900 hover:text-[#7A1C1C] transition-colors"
+          className="p-2 text-gray-300 hover:text-white transition-colors"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -121,14 +119,13 @@ function LayoutInner({ children, currentPageName, user }) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed md:static top-0 left-0 h-full w-64 z-50 transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 h-full w-64 z-50 transform transition-transform duration-300 sidebar-dark ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
-        style={{ background: '#E8A1A6' }}
       >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-10">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E31B23] to-[#C9161D] flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-lg">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
                 alt="Shakti Logo" 
@@ -136,12 +133,12 @@ function LayoutInner({ children, currentPageName, user }) {
               />
             </div>
             <div>
-              <span className="font-bold text-gray-900 text-lg">Shakti</span>
-              <p className="text-xs text-gray-700">Empowering Women</p>
+              <span className="font-bold text-white text-lg">Shakti</span>
+              <p className="text-xs text-gray-400">Empowering Women</p>
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {navItems.map((item, index) => {
               const isActive = currentPageName === item.page;
               return (
@@ -154,17 +151,13 @@ function LayoutInner({ children, currentPageName, user }) {
                   <Link
                     to={createPageUrl(item.page)}
                     onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 px-5 py-3.5 text-sm font-medium transition-all duration-200 text-white ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                       isActive 
-                        ? 'shadow-[0_4px_16px_rgba(122,28,28,0.4)]' 
-                        : 'shadow-[0_2px_8px_rgba(122,28,28,0.25)] hover:shadow-[0_6px_20px_rgba(122,28,28,0.35)] hover:-translate-y-0.5'
+                        ? 'bg-[#4F46E5] text-white shadow-[0_4px_16px_rgba(79,70,229,0.3)]' 
+                        : 'text-gray-300 hover:bg-[#374151] hover:text-white'
                     }`}
-                    style={{
-                      background: isActive ? '#8B1E1E' : '#7A1C1C',
-                      borderRadius: '24px'
-                    }}
                   >
-                    <item.icon className="w-5 h-5 text-white" />
+                    <item.icon className="w-5 h-5" />
                     {item.name}
                   </Link>
                 </motion.div>

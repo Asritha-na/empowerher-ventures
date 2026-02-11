@@ -40,7 +40,7 @@ export default function InvestorHome() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
 
       {/* Language Selector - Fixed Top Right */}
       <div className="fixed top-6 right-6 z-50">
@@ -92,7 +92,7 @@ export default function InvestorHome() {
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           <Card className="glass-card hover:shadow-xl transition-all card-hover">
             <CardContent className="p-8">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center mb-5 shadow-md">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center mb-5 shadow-md">
                 <Search className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-3 text-gray-900">{t("explorePitches")}</h3>
@@ -107,7 +107,7 @@ export default function InvestorHome() {
 
           <Card className="glass-card hover:shadow-xl transition-all card-hover">
             <CardContent className="p-8">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#D8707C] to-[#E89BAA] flex items-center justify-center mb-5 shadow-md">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#818CF8] flex items-center justify-center mb-5 shadow-md">
                 <Briefcase className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-3 text-gray-900">{t("myPortfolio")}</h3>
@@ -145,15 +145,15 @@ export default function InvestorHome() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">{t("recentPitches")}</h2>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button variant="ghost" className="text-[#7A1C1C] hover:bg-[#E8A1A6]/20">
+                <Button variant="ghost" className="text-[#4F46E5] hover:bg-indigo-50">
                   {t("viewAll")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
             <div className="space-y-3">
               {pitches.slice(0, 3).map((pitch) => (
-                <div key={pitch.id} className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-all border border-transparent hover:border-[#E8A1A6]/40 hover:shadow-sm" style={{ borderRadius: '18px' }}>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center text-white font-bold shadow-md">
+                <div key={pitch.id} className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-all border border-transparent hover:border-gray-200 hover:shadow-sm" style={{ borderRadius: '12px' }}>
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center text-white font-bold shadow-md">
                     {pitch.created_by?.charAt(0)?.toUpperCase() || "?"}
                   </div>
                   <div className="flex-1">
