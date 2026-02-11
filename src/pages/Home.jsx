@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { Button } from "@/components/ui/button";
 import EntrepreneurCarousel from "@/components/home/EntrepreneurCarousel";
 import { useLanguage } from "@/components/LanguageProvider";
 
