@@ -6,52 +6,31 @@ import { motion } from "framer-motion";
 const successStories = [
   {
     id: 1,
-    name: "Priya Sharma",
-    businessType: "Textiles",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
-    quote: "Shakti helped me connect with investors who believed in my handloom business. Today, I employ 25 women from my village.",
-    metric: "₹4.5L raised • 25 employees"
+    category: "Handicraft Cooperative",
+    title: "Collective Sisters",
+    description: "Four women came together to form a handicraft collective. They create embroidered textiles, bags, and home décor. Their cooperative now supports 30 families and has become a model for neighboring villages.",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/9186105cf_WhatsAppImage2026-02-11at20335PM.jpg"
   },
   {
     id: 2,
-    name: "Anjali Patel",
-    businessType: "Food & Catering",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=400&fit=crop",
-    quote: "From my kitchen to 3 cities! The AI coaching and investor network transformed my home-based catering into a thriving enterprise.",
-    metric: "₹2.5L raised • 150+ customers"
+    category: "Tailoring & Embroidery",
+    title: "Geeta & Amma",
+    description: "Two generations, one dream. Grandmother taught her granddaughter the art of stitching. Today, they run a successful tailoring business from home, creating beautiful sarees and training young girls in the village.",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/c2404b3a7_WhatsAppImage2026-02-11at20342PM.jpg"
   },
   {
     id: 3,
-    name: "Meera Reddy",
-    businessType: "Handicrafts",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop",
-    quote: "The platform gave me the confidence to pitch my pottery business. Now I'm exporting to international markets.",
-    metric: "₹6L raised • 3 countries"
-  },
-  {
-    id: 4,
-    name: "Sunita Kumar",
-    businessType: "Agriculture",
-    image: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=400&fit=crop",
-    quote: "With Shakti's support, my organic farming venture now supplies to 50+ retail stores across the state.",
-    metric: "₹8L raised • 50+ stores"
-  },
-  {
-    id: 5,
-    name: "Kavita Singh",
-    businessType: "Tech Solutions",
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=400&fit=crop",
-    quote: "Shakti connected me with mentors who helped scale my tech startup. We've now launched in 5 cities.",
-    metric: "₹12L raised • 5 cities"
+    category: "Traditional Bangle Making",
+    title: "Kamala & Savita",
+    description: "Started with just ₹500 and basic tools. Now they create stunning glass bangles and train 15 women in their village. Their designs are sold across 8 states and have become a symbol of hope for rural artisans.",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/cc2c93dd0_WhatsAppImage2026-02-11at20350PM.jpg"
   }
 ];
 
 export default function SuccessStoriesCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true,
-    align: "start",
-    skipSnaps: false,
-    slidesToScroll: 1
+    align: "center"
   });
 
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -72,10 +51,10 @@ export default function SuccessStoriesCarousel() {
     setScrollSnaps(emblaApi.scrollSnapList());
     emblaApi.on("select", onSelect);
     
-    // Auto-scroll every 4 seconds
+    // Auto-scroll every 5 seconds
     const interval = setInterval(() => {
       emblaApi.scrollNext();
-    }, 4000);
+    }, 5000);
 
     return () => {
       clearInterval(interval);
@@ -84,11 +63,11 @@ export default function SuccessStoriesCarousel() {
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {/* Navigation Buttons */}
       <button
         onClick={scrollPrev}
-        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-all"
+        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center text-gray-800 hover:bg-white transition-all"
         aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6" />
@@ -96,62 +75,70 @@ export default function SuccessStoriesCarousel() {
 
       <button
         onClick={scrollNext}
-        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-all"
+        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center text-gray-800 hover:bg-white transition-all"
         aria-label="Next slide"
       >
         <ChevronRight className="w-6 h-6" />
       </button>
 
       {/* Carousel */}
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-6">
-          {successStories.map((story, index) => (
-            <motion.div
+      <div className="overflow-hidden rounded-2xl" ref={emblaRef}>
+        <div className="flex">
+          {successStories.map((story) => (
+            <div
               key={story.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex-[0_0_100%] md:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)] min-w-0"
+              className="flex-[0_0_100%] min-w-0 relative"
             >
-              <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 p-6 h-full">
-                {/* Profile Section */}
-                <div className="flex items-center gap-4 mb-4">
-                  <img
-                    src={story.image}
-                    alt={story.name}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
-                  />
-                  <div>
-                    <h3 className="font-bold text-gray-900 text-lg">{story.name}</h3>
-                    <span className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
-                      {story.businessType}
+              {/* Background Image with Gradient Overlay */}
+              <div className="relative h-[500px] md:h-[600px] w-full">
+                <img
+                  src={story.image}
+                  alt={story.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                {/* Dark gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+                
+                {/* Content */}
+                <div className="relative h-full flex flex-col justify-end p-8 md:p-16">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="max-w-2xl"
+                  >
+                    {/* Category Badge */}
+                    <span className="inline-block px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-semibold rounded-full mb-4">
+                      {story.category}
                     </span>
-                  </div>
-                </div>
 
-                {/* Quote */}
-                <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                  "{story.quote}"
-                </p>
+                    {/* Title */}
+                    <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+                      {story.title}
+                    </h3>
 
-                {/* Metric */}
-                <div className="pt-4 border-t border-gray-100">
-                  <p className="text-xs font-semibold text-[#8B1E1E]">{story.metric}</p>
+                    {/* Description */}
+                    <p className="text-lg md:text-xl text-white/95 leading-relaxed mb-6">
+                      {story.description}
+                    </p>
+                  </motion.div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
 
       {/* Dot Indicators */}
-      <div className="flex justify-center gap-2 mt-8">
+      <div className="flex justify-center gap-2 mt-6">
         {scrollSnaps.map((_, index) => (
           <button
             key={index}
             onClick={() => scrollTo(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === selectedIndex ? "bg-[#8B1E1E] w-8" : "bg-gray-300"
+            className={`h-2 rounded-full transition-all ${
+              index === selectedIndex 
+                ? "bg-gradient-to-r from-orange-500 to-amber-500 w-8" 
+                : "bg-gray-300 w-2"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

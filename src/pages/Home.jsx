@@ -72,26 +72,28 @@ export default function Home() {
       </div>
 
       {/* Success Stories Section */}
-      <div className="max-w-7xl mx-auto px-8 py-24">
-        <div className="text-center mb-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
-          >
-            Success Stories
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-600 text-lg max-w-2xl mx-auto"
-          >
-            Women entrepreneurs building impactful businesses through Shakti
-          </motion.p>
-        </div>
+      <div className="py-24 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+            >
+              Success Stories
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-gray-600 text-lg max-w-2xl mx-auto"
+            >
+              Women entrepreneurs building impactful businesses through Shakti
+            </motion.p>
+          </div>
 
-        <SuccessStoriesCarousel />
+          <SuccessStoriesCarousel />
+        </div>
       </div>
     </div>);
 
