@@ -20,7 +20,7 @@ export default function RoleSelect() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="bg-red-400 p-4 min-h-screen flex items-center justify-center from-gray-50 to-gray-100">
 
       <div className="absolute top-6 right-6 flex items-center gap-3">
         <LanguageSelector />
