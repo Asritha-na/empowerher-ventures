@@ -17,7 +17,7 @@ import {
 import SuccessStoriesCarousel from "@/components/landing/SuccessStoriesCarousel.jsx";
 
 export default function Home() {
-  const handleLogin = () => base44.auth.redirectToLogin(window.location.href);
+  const handleLogin = () => base44.auth.redirectToLogin(createPageUrl("Dashboard"));
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });

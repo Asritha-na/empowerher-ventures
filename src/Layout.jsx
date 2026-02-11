@@ -193,8 +193,7 @@ export default function Layout({ children, currentPageName }) {
   if (currentPageName === "Home") {
     if (loading) return null;
     if (user) {
-      const next = user.user_role === "investor" ? "InvestorHome" : "MyIdea";
-      window.location.href = createPageUrl(next);
+      window.location.href = createPageUrl("Dashboard");
       return null;
     }
     return children;

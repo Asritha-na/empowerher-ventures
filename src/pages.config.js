@@ -61,6 +61,7 @@ import MeetingNotes from './pages/MeetingNotes';
 import MyIdea from './pages/MyIdea';
 import Profile from './pages/Profile';
 import RoleSelect from './pages/RoleSelect';
+import Dashboard from './pages/Dashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -79,6 +80,7 @@ export const PAGES = {
     "MyIdea": MyIdea,
     "Profile": Profile,
     "RoleSelect": RoleSelect,
+    "Dashboard": Dashboard,
 }
 
 export const pagesConfig = {
