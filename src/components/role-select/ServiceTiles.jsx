@@ -20,8 +20,8 @@ export default function ServiceTiles() {
           <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${f.color} text-white flex items-center justify-center mb-3`}>
             <f.icon className="w-5 h-5" />
           </div>
-          <div className="font-semibold text-white/90">{f.title}</div>
-          <div className="text-sm text-pink-50/90 mt-1">{f.desc}</div>
+          <div className="font-semibold text-gray-900">{f.title}</div>
+          <div className="text-sm text-gray-600 mt-1">{f.desc}</div>
         </div>
       ))}
     </div>

@@ -92,7 +92,7 @@ export default function RoleSelect() {
           <StickySearchBar />
         </div>
 
-         {/* Success Stories Strip */}}
+         {/* Success Stories Strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -208,7 +208,7 @@ export default function RoleSelect() {
         </section>
         </div>
 
-        {/* AI Language Bot */}}
+        {/* AI Language Bot */}
       <RoleSelectBot />
 
       {/* Voice Accessibility Assistant */}
