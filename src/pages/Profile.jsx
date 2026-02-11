@@ -84,10 +84,10 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
             <User className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -112,7 +112,7 @@ export default function Profile() {
                   className="w-28 h-28 rounded-3xl object-cover shadow-lg"
                 />
               ) : (
-                <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg">
+                <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center shadow-lg">
                   <span className="text-4xl font-bold text-white">
                     {user?.full_name?.charAt(0)?.toUpperCase() || "?"}
                   </span>
@@ -125,7 +125,7 @@ export default function Profile() {
             </div>
           </div>
 
-          <Card className="rounded-3xl shadow-sm border border-gray-100">
+          <Card className="glass-card rounded-3xl">
             <CardContent className="p-6 space-y-5">
               {/* Read-only fields */}
               <div className="space-y-1">
@@ -233,7 +233,7 @@ export default function Profile() {
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 rounded-xl h-12 text-base"
+                className="w-full bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 rounded-xl h-12 text-base"
               >
                 {saving ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -255,13 +255,13 @@ export default function Profile() {
           </Card>
 
           {/* Toll-Free Support */}
-          <Card className="rounded-3xl shadow-sm border border-gray-100 mt-6 bg-gradient-to-br from-pink-50 to-white">
+          <Card className="glass-card rounded-3xl mt-6">
             <CardContent className="p-6 text-center">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center mx-auto mb-4">
                 <PhoneCall className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-700 mb-2">{t("tollFreeSupport")}</h3>
-              <p className="text-4xl font-bold text-red-500 mb-2">1800-123-123</p>
+              <p className="text-4xl font-bold text-indigo-900 mb-2">1800-123-123</p>
               <p className="text-sm text-gray-500">{t("available24x7")}</p>
             </CardContent>
           </Card>
