@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox"; // role-based multi-selects
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { User, Save, Loader2, Camera, Mail, Phone, MapPin, Building2, LogOut, PhoneCall } from "lucide-react";
 import { motion } from "framer-motion";
@@ -99,6 +99,7 @@ export default function Profile() {
       full_name: form.full_name,
       user_role: form.user_role,
       profile_completed: true,
+      profileCompleted: true,
     };
     const minNum = Number(form.investor_budget_min);
     const maxNum = Number(form.investor_budget_max);

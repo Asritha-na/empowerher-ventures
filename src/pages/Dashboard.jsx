@@ -22,7 +22,8 @@ export default function Dashboard() {
       }
       const role = u.user_role || u.role;
       const emptyProfile = !u.full_name || !role || !u.location;
-      if (!u.profile_completed || emptyProfile) {
+      const profileDone = (typeof u.profile_completed !== 'undefined' ? u.profile_completed : u.profileCompleted) || false;
+      if (!profileDone || emptyProfile) {
         window.location.href = createPageUrl("Profile");
         return;
       }
