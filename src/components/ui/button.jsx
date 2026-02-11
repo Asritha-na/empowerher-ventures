@@ -10,15 +10,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)] hover:bg-[#4338CA] hover:shadow-[0_6px_20px_rgba(79,70,229,0.35)] hover:-translate-y-0.5 active:translate-y-0",
+          "bg-emerald-600 text-white hover:bg-emerald-700",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-md hover:bg-destructive/90",
+          "bg-red-600 text-white hover:bg-red-700",
         outline:
-          "border-2 border-gray-200 bg-white shadow-sm hover:bg-gray-50 hover:border-gray-300",
+          "border border-emerald-600 bg-white text-emerald-600 hover:bg-emerald-50",
         secondary:
-          "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200",
-        ghost: "hover:bg-gray-100 hover:text-gray-900",
-        link: "text-[#4F46E5] underline-offset-4 hover:underline",
+          "bg-slate-100 text-slate-900 hover:bg-slate-200",
+        ghost: "hover:bg-slate-100 hover:text-slate-900",
+        link: "text-emerald-600 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-5 py-2",
@@ -39,7 +39,7 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
   return (
     (<Comp
       className={cn(buttonVariants({ variant, size }), className)}
-      style={{ borderRadius: '12px', ...props.style }}
+      style={{ borderRadius: '10px', ...props.style }}
       ref={ref}
       {...props} />)
   );

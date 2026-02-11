@@ -5,31 +5,31 @@ css
 
 @layer base {
   :root {
-    --sidebar-dark: #1F2937;
-    --primary-indigo: #4F46E5;
-    --deep-plum: #5B3A82;
-    --neutral-bg: #F5F5F7;
+    --sidebar-dark: #0F172A;
+    --primary-emerald: #059669;
+    --primary-hover: #047857;
+    --neutral-bg: #F8FAFC;
     
     --background: 0 0% 98%;
-    --foreground: 222 47% 11%;
+    --foreground: 222 84% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 222 84% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 243 75% 59%;
+    --popover-foreground: 222 84% 10%;
+    --primary: 160 84% 39%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 220 14% 96%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 84% 10%;
+    --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
-    --accent: 243 75% 59%;
+    --accent: 160 84% 39%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 243 75% 59%;
-    --radius: 1rem;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 160 84% 39%;
+    --radius: 0.875rem;
   }
 }
 
@@ -40,67 +40,62 @@ css
   body {
     font-feature-settings: "rlig" 1, "calt" 1;
     min-height: 100vh;
-    color: #1F2937;
-    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    color: #0F172A;
+    background: #F8FAFC;
   }
 }
 
 @layer utilities {
   .glass {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(229, 231, 235, 0.6);
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 16px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 14px;
   }
   
   .glass-card {
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid rgba(229, 231, 235, 0.5);
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
-    border-radius: 16px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 14px;
   }
   
   .card-hover {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease;
   }
   
   .card-hover:hover {
-    box-shadow: 0 12px 32px 0 rgba(79, 70, 229, 0.15);
-    transform: translateY(-4px);
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
   }
   
-  .text-gradient-indigo {
-    background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%);
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .gradient-primary {
-    background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%);
+    background: #059669;
   }
   
   .gradient-hero {
-    background: linear-gradient(135deg, #F9FAFB 0%, #EEF2FF 100%);
+    background: #F8FAFC;
   }
   
   .sidebar-dark {
-    background: #1F2937;
+    background: #0F172A;
   }
   
-  .button-indigo {
-    background: #4F46E5;
+  .button-emerald {
+    background: #059669;
     color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+    border-radius: 10px;
     transition: all 0.2s ease;
   }
   
-  .button-indigo:hover {
-    background: #4338CA;
-    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
-    transform: translateY(-2px);
+  .button-emerald:hover {
+    background: #047857;
   }
 }
