@@ -189,8 +189,8 @@ export default function Layout({ children, currentPageName }) {
       .finally(() => setLoading(false));
   }, []);
 
-  // Show landing page (no layout)
-  if (currentPageName === "Landing") {
+  // Show public Home/Landing page (no layout)
+  if (currentPageName === "Landing" || currentPageName === "Home") {
     return children;
   }
 
@@ -208,9 +208,9 @@ export default function Layout({ children, currentPageName }) {
     return null;
   }
 
-  // Redirect to landing if not authenticated
+  // Redirect to public Home if not authenticated
   if (!user) {
-    window.location.href = createPageUrl("Landing");
+    window.location.href = createPageUrl("Home");
     return null;
   }
 
