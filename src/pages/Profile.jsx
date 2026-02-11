@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox"; // role-based multi-selects
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { User, Save, Loader2, Camera, Mail, Phone, MapPin, Building2, LogOut, PhoneCall } from "lucide-react";
 import { motion } from "framer-motion";
@@ -34,17 +33,11 @@ const languages = [
   { value: "ml", label: "Malayalam" },
 ];
 
-const investorSkillsOptions = ["Finance", "Marketing", "Tech", "Legal", "Operations", "Strategy"];
-const investorInterestOptions = ["Agriculture", "Handmade Products", "Technology", "Retail", "Social Impact", "Education", "Healthcare"];
-const entrepreneurSkillsNeededOptions = ["Marketing", "Finance", "Technical Co-founder", "Legal Support", "Operations", "Supply Chain"];
-
 export default function Profile() {
   const { t } = useLanguage();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [budgetError, setBudgetError] = useState("");
-  const effectiveRole = form.user_role || user?.user_role || user?.role || "";
   const [form, setForm] = useState({
     full_name: "",
     user_role: "",
@@ -54,11 +47,6 @@ export default function Profile() {
     business_name: "",
     business_type: "",
     preferred_language: "en",
-    investor_skills: [],
-    investor_budget_min: "",
-    investor_budget_max: "",
-    investor_sections_of_interest: [],
-    entrepreneur_looking_for_skills: [],
   });
 
   useEffect(() => {
@@ -73,40 +61,19 @@ export default function Profile() {
         business_name: u.business_name || "",
         business_type: u.business_type || "",
         preferred_language: u.preferred_language || "en",
-        investor_skills: u.investor_skills || [],
-        investor_budget_min: (typeof u.investor_budget_min === "number" ? u.investor_budget_min : ""),
-        investor_budget_max: (typeof u.investor_budget_max === "number" ? u.investor_budget_max : ""),
-        investor_sections_of_interest: u.investor_sections_of_interest || [],
-        entrepreneur_looking_for_skills: u.entrepreneur_looking_for_skills || [],
       });
       setLoading(false);
     });
   }, []);
 
   const handleSave = async () => {
-    setBudgetError("");
-    if (effectiveRole === "investor") {
-      const min = Number(form.investor_budget_min);
-      const max = Number(form.investor_budget_max);
-      if (!Number.isNaN(min) && !Number.isNaN(max) && min >= max) {
-        setBudgetError("Minimum budget must be less than maximum budget.");
-        return;
-      }
-    }
     setSaving(true);
-    const payload = {
+    await base44.auth.updateMe({
       ...form,
       full_name: form.full_name,
       user_role: form.user_role,
       profile_completed: true,
-      profileCompleted: true,
-    };
-    const minNum = Number(form.investor_budget_min);
-    const maxNum = Number(form.investor_budget_max);
-    if (!Number.isNaN(minNum)) payload.investor_budget_min = minNum;
-    if (!Number.isNaN(maxNum)) payload.investor_budget_max = maxNum;
-
-    await base44.auth.updateMe(payload);
+    });
     setSaving(false);
     window.location.href = createPageUrl("Dashboard");
   };
@@ -280,110 +247,6 @@ export default function Profile() {
                   </SelectContent>
                 </Select>
               </div>
-
-              {effectiveRole === "investor" && (
-                <>
-                  <div className="space-y-1">
-                    <label className="text-sm font-medium text-gray-500">Skills Area</label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      {investorSkillsOptions.map((opt) => {
-                        const checked = form.investor_skills?.includes(opt);
-                        return (
-                          <label key={opt} className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${checked ? "bg-emerald-50 border-emerald-200" : "bg-gray-50 border-gray-200"} cursor-pointer`}>
-                            <Checkbox
-                              checked={checked}
-                              onCheckedChange={(v) => {
-                                setForm((prev) => {
-                                  const arr = new Set(prev.investor_skills || []);
-                                  if (v) arr.add(opt); else arr.delete(opt);
-                                  return { ...prev, investor_skills: Array.from(arr) };
-                                });
-                              }}
-                            />
-                            <span className="text-sm">{opt}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-sm font-medium text-gray-500">Investment Budget Range</label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <Input
-                        type="number"
-                        min="0"
-                        placeholder="Minimum Budget"
-                        value={form.investor_budget_min}
-                        onChange={(e) => setForm({ ...form, investor_budget_min: e.target.value })}
-                        className={`rounded-xl h-12 ${budgetError ? "border-red-300" : ""}`}
-                      />
-                      <Input
-                        type="number"
-                        min="0"
-                        placeholder="Maximum Budget"
-                        value={form.investor_budget_max}
-                        onChange={(e) => setForm({ ...form, investor_budget_max: e.target.value })}
-                        className={`rounded-xl h-12 ${budgetError ? "border-red-300" : ""}`}
-                      />
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {form.investor_budget_min || form.investor_budget_max ? `₹${form.investor_budget_min || "0"} - ₹${form.investor_budget_max || "0"}` : "Enter your investment range"}
-                    </div>
-                    {budgetError && <div className="text-sm text-red-600">{budgetError}</div>}
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-sm font-medium text-gray-500">Sections of Interest</label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      {investorInterestOptions.map((opt) => {
-                        const checked = form.investor_sections_of_interest?.includes(opt);
-                        return (
-                          <label key={opt} className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${checked ? "bg-emerald-50 border-emerald-200" : "bg-gray-50 border-gray-200"} cursor-pointer`}>
-                            <Checkbox
-                              checked={checked}
-                              onCheckedChange={(v) => {
-                                setForm((prev) => {
-                                  const arr = new Set(prev.investor_sections_of_interest || []);
-                                  if (v) arr.add(opt); else arr.delete(opt);
-                                  return { ...prev, investor_sections_of_interest: Array.from(arr) };
-                                });
-                              }}
-                            />
-                            <span className="text-sm">{opt}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {effectiveRole === "entrepreneur" && (
-                <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-500">Skills They Are Looking For</label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {entrepreneurSkillsNeededOptions.map((opt) => {
-                      const checked = form.entrepreneur_looking_for_skills?.includes(opt);
-                      return (
-                        <label key={opt} className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${checked ? "bg-emerald-50 border-emerald-200" : "bg-gray-50 border-gray-200"} cursor-pointer`}>
-                          <Checkbox
-                            checked={checked}
-                            onCheckedChange={(v) => {
-                              setForm((prev) => {
-                                const arr = new Set(prev.entrepreneur_looking_for_skills || []);
-                                if (v) arr.add(opt); else arr.delete(opt);
-                                return { ...prev, entrepreneur_looking_for_skills: Array.from(arr) };
-                              });
-                            }}
-                          />
-                          <span className="text-sm">{opt}</span>
-                        </label>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
 
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-500">{t("aboutMe")}</label>

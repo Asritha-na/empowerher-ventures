@@ -50,6 +50,7 @@
 import Appointments from './pages/Appointments';
 import Community from './pages/Community';
 import CommunityLeaderboard from './pages/CommunityLeaderboard';
+import Dashboard from './pages/Dashboard';
 import FindInvestors from './pages/FindInvestors';
 import Home from './pages/Home';
 import InvestorHome from './pages/InvestorHome';
@@ -61,7 +62,6 @@ import MeetingNotes from './pages/MeetingNotes';
 import MyIdea from './pages/MyIdea';
 import Profile from './pages/Profile';
 import RoleSelect from './pages/RoleSelect';
-import Dashboard from './pages/Dashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +69,7 @@ export const PAGES = {
     "Appointments": Appointments,
     "Community": Community,
     "CommunityLeaderboard": CommunityLeaderboard,
+    "Dashboard": Dashboard,
     "FindInvestors": FindInvestors,
     "Home": Home,
     "InvestorHome": InvestorHome,
@@ -80,7 +81,6 @@ export const PAGES = {
     "MyIdea": MyIdea,
     "Profile": Profile,
     "RoleSelect": RoleSelect,
-    "Dashboard": Dashboard,
 }
 
 export const pagesConfig = {

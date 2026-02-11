@@ -20,12 +20,8 @@ export default function Dashboard() {
         window.location.href = createPageUrl("Home");
         return;
       }
-      const role = u.user_role || u.role;
-      const emptyProfile = !u.full_name || !role || !u.location;
-      const profileDone = (typeof u.profile_completed !== 'undefined' ? u.profile_completed : u.profileCompleted) || false;
-      if (!profileDone || emptyProfile) {
+      if (!u.profile_completed) {
         window.location.href = createPageUrl("Profile");
-        return;
       }
     }).catch(() => {});
   }, []);
