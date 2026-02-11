@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
+import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -17,7 +18,7 @@ import {
 import SuccessStoriesCarousel from "@/components/landing/SuccessStoriesCarousel.jsx";
 
 export default function Home() {
-  const handleLogin = () => base44.auth.redirectToLogin(createPageUrl("Dashboard"));
+  const handleLogin = () => base44.auth.redirectToLogin(createPageUrl("Profile"));
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
