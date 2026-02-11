@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Sparkles, Users, Award, TrendingUp, MapPin, Briefcase, Phone } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
 import AddToWatchlistButton from "@/components/investor/AddToWatchlistButton";
@@ -20,7 +19,8 @@ export default function InvestorPitches() {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const { data: coFounders = [], isLoading } = useQuery({
+  // Keep co-founders query only for dashboard stats context (no UI section rendered)
+  const { data: coFounders = [] } = useQuery({
     queryKey: ["co-founders"],
     queryFn: () => base44.entities.CommunityMember.list("-created_date", 100),
   });
@@ -30,15 +30,6 @@ export default function InvestorPitches() {
     queryFn: () => base44.entities.Pitch.list("-created_date", 100),
   });
 
-  const filteredCoFounders = coFounders.filter((member) => {
-    const searchLower = search.toLowerCase();
-    return (
-      member.name?.toLowerCase().includes(searchLower) ||
-      member.location?.toLowerCase().includes(searchLower) ||
-      member.skills?.some(skill => skill.toLowerCase().includes(searchLower))
-    );
-  });
-
   const stats = [
     { label: "Active Co-Founders", value: coFounders.length, color: "text-pink-600" },
     { label: "Skills Available", value: `${coFounders.length * 3}+`, color: "text-blue-600" },
@@ -46,29 +37,13 @@ export default function InvestorPitches() {
     { label: "Other Connect", value: "15+", color: "text-purple-600" },
   ];
 
-  const skillColors = [
-    "bg-pink-100 text-pink-700",
-    "bg-blue-100 text-blue-700",
-    "bg-green-100 text-green-700",
-    "bg-purple-100 text-purple-700",
-    "bg-amber-100 text-amber-700",
-    "bg-cyan-100 text-cyan-700",
-  ];
-
-  const getWhatsAppLink = (phone) => {
-    const cleanPhone = phone?.replace(/\D/g, "");
-    return `https://wa.me/${cleanPhone}`;
-  };
-
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{ background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)' }}>
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header (renamed tab label only) */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-[#8B1E1E] flex items-center justify-center shadow-md">
-              <Users className="w-5 h-5 text-white" />
-            </div>
+            <div className="w-10 h-10 rounded-full bg-[#8B1E1E] flex items-center justify-center shadow-md" />
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Find Pitches</h1>
               <p className="text-sm text-gray-700">{t("findPerfectPartner")}</p>
@@ -82,9 +57,7 @@ export default function InvestorPitches() {
             <Sparkles className="w-6 h-6 mt-1" />
             <div>
               <h3 className="font-bold text-lg mb-1">{t("aiPoweredMatching")}</h3>
-              <p className="text-sm text-white/95">
-                {t("aiAnalyzes")}
-              </p>
+              <p className="text-sm text-white/95">{t("aiAnalyzes")}</p>
             </div>
           </div>
         </div>
@@ -150,61 +123,6 @@ export default function InvestorPitches() {
             </div>
           )}
         </div>
-
-                        </div>
-                      </div>
-
-                      {/* Looking For */}
-                      <div className="mb-4">
-                        <p className="text-xs font-semibold text-pink-600 uppercase mb-1">{t("lookingFor")}</p>
-                        <p className="text-sm font-medium text-gray-900">
-                          {member.looking_for || "Business Partner"}
-                        </p>
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                        {member.description || "Passionate entrepreneur looking to collaborate and grow together."}
-                      </p>
-
-                      {/* Action Buttons */}
-                      <div className="space-y-2">
-                        <div className="flex gap-2">
-                          <Button
-                            className="flex-1 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl shadow-md"
-                            onClick={() => {
-                              if (member.phone) {
-                                window.open(getWhatsAppLink(member.phone), "_blank");
-                              }
-                            }}
-                          >
-                            <Phone className="w-4 h-4 mr-1" />
-                            {t("connect")}
-                          </Button>
-                          <Button
-                            variant="outline"
-                            className="flex-1 border-green-500 text-green-600 hover:bg-green-50 rounded-lg"
-                            onClick={() => {
-                              if (member.pitch_video_url) {
-                                window.open(member.pitch_video_url, "_blank");
-                              }
-                            }}
-                          >
-                            {t("pitch")}
-                          </Button>
-                        </div>
-                        <NotesManager
-                          investorEmail={user?.email}
-                          relatedToType="entrepreneur"
-                          relatedToId={member.id}
-                          relatedToName={member.name}
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
       </div>
     </div>
   );
