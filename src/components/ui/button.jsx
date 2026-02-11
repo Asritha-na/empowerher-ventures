@@ -5,26 +5,26 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)] hover:bg-[#4338CA] hover:shadow-[0_6px_20px_rgba(79,70,229,0.35)] hover:-translate-y-0.5 active:translate-y-0",
+          "bg-[#8B1E1E] text-white shadow-md hover:opacity-90 active:opacity-80",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-md hover:bg-destructive/90",
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
-          "border-2 border-gray-200 bg-white shadow-sm hover:bg-gray-50 hover:border-gray-300",
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200",
-        ghost: "hover:bg-gray-100 hover:text-gray-900",
-        link: "text-[#4F46E5] underline-offset-4 hover:underline",
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-5 py-2",
-        sm: "h-9 px-4 text-xs",
-        lg: "h-12 px-8 text-base",
-        icon: "h-10 w-10",
+        default: "h-10 px-4 py-2 rounded-2xl",
+        sm: "h-8 px-3 text-xs rounded-2xl",
+        lg: "h-12 px-8 rounded-2xl",
+        icon: "h-9 w-9 rounded-2xl",
       },
     },
     defaultVariants: {
@@ -38,8 +38,7 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
   const Comp = asChild ? Slot : "button"
   return (
     (<Comp
-      className={cn(buttonVariants({ variant, size }), className)}
-      style={{ borderRadius: '12px', ...props.style }}
+      className={cn(buttonVariants({ variant, size, className }))}
       ref={ref}
       {...props} />)
   );

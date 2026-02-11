@@ -76,10 +76,10 @@ Be warm, supportive, and use simple language. Remember this person may not have 
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-md">
+          <div className="w-12 h-12 rounded-2xl bg-[#8B1E1E] flex items-center justify-center shadow-md">
             <Brain className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -140,6 +140,7 @@ Be warm, supportive, and use simple language. Remember this person may not have 
                     <Button
                       onClick={() => analyzePitch(pitch)}
                       disabled={isAnalyzing && selectedPitch === pitch.id}
+                      className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl shadow-md"
                     >
                       {isAnalyzing && selectedPitch === pitch.id ? (
                         <>
@@ -179,7 +180,7 @@ Be warm, supportive, and use simple language. Remember this person may not have 
                     >
                       {/* Score */}
                       <div className="flex items-center gap-3">
-                        <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-md">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center shadow-md">
                           <span className="text-2xl font-bold text-white">{feedback.overall_score}</span>
                         </div>
                         <div>

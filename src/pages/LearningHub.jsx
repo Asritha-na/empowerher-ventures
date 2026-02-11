@@ -263,7 +263,7 @@ export default function LearningHub() {
         </div>
 
         {/* Multilingual Learning Banner */}
-        <div className="bg-gradient-to-br from-[#4F46E5] to-[#6366F1] rounded-xl p-6 mb-8 shadow-lg">
+        <div className="bg-gradient-to-br from-[#B94B5A] to-[#D8707C] rounded-2xl p-6 mb-8 shadow-lg">
           <div className="flex items-start gap-3">
             <Languages className="w-6 h-6 text-white shrink-0 mt-0.5" />
             <div>
@@ -279,12 +279,12 @@ export default function LearningHub() {
             <button
               key={topic.id}
               onClick={() => setSelectedTopic(topic.id)}
-              className={`px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-all ${
+              className={`px-5 py-2.5 text-sm font-medium whitespace-nowrap transition-all shadow-md ${
                 selectedTopic === topic.id
-                  ? "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)]"
-                  : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
+                  ? "bg-[#8B1E1E] text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
-              style={{ borderRadius: '20px' }}
+              style={{ borderRadius: '24px' }}
             >
               {topic.label}
             </button>
@@ -295,23 +295,23 @@ export default function LearningHub() {
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => setViewMode("videos")}
-            className={`px-6 py-3 text-sm font-semibold transition-all ${
+            className={`px-6 py-2.5 text-sm font-medium transition-all shadow-md ${
               viewMode === "videos"
-                ? "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)]"
-                : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
+                ? "bg-[#8B1E1E] text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
-            style={{ borderRadius: '12px' }}
+            style={{ borderRadius: '16px' }}
           >
             Individual Videos
           </button>
           <button
             onClick={() => setViewMode("playlists")}
-            className={`px-6 py-3 text-sm font-semibold transition-all ${
+            className={`px-6 py-2.5 text-sm font-medium transition-all shadow-md ${
               viewMode === "playlists"
-                ? "bg-[#4F46E5] text-white shadow-[0_4px_14px_rgba(79,70,229,0.25)]"
-                : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
+                ? "bg-[#8B1E1E] text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
-            style={{ borderRadius: '12px' }}
+            style={{ borderRadius: '16px' }}
           >
             Course Playlists
           </button>
@@ -494,8 +494,8 @@ export default function LearningHub() {
                         href={playlist.playlistUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-2 bg-[#7A1C1C] hover:bg-[#8B1E1E] text-white font-semibold py-3.5 transition-all mb-3 shadow-[0_4px_14px_rgba(122,28,28,0.25)] hover:shadow-[0_6px_20px_rgba(122,28,28,0.35)] hover:-translate-y-0.5"
-                        style={{ borderRadius: '18px' }}
+                        className="w-full inline-flex items-center justify-center gap-2 bg-[#8B1E1E] hover:opacity-90 text-white font-semibold py-3 transition-all mb-3 shadow-md"
+                        style={{ borderRadius: '16px' }}
                       >
                         <Play className="w-5 h-5" />
                         Watch Course

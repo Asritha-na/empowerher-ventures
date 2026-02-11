@@ -63,11 +63,11 @@ export default function Appointments() {
   });
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-[#8B1E1E] flex items-center justify-center shadow-md">
               <Calendar className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -77,10 +77,9 @@ export default function Appointments() {
           </div>
           <Button
             onClick={() => setShowForm(true)}
-            size="lg"
-            className="px-6"
+            className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-6 shadow-md"
           >
-            <Plus className="w-5 h-5 mr-2" />
+            <Plus className="w-4 h-4 mr-2" />
             New Meeting
           </Button>
         </div>
@@ -93,48 +92,53 @@ export default function Appointments() {
             </DialogHeader>
             <div className="space-y-4">
               <Input
-              placeholder="Meeting title..."
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
+                placeholder="Meeting title..."
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                className="rounded-xl h-12"
               />
               <Input
-              placeholder="Who are you meeting?"
-              value={form.with_name}
-              onChange={(e) => setForm({ ...form, with_name: e.target.value })}
+                placeholder="Who are you meeting?"
+                value={form.with_name}
+                onChange={(e) => setForm({ ...form, with_name: e.target.value })}
+                className="rounded-xl h-12"
               />
               <div className="grid grid-cols-2 gap-3">
                 <Input
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm({ ...form, date: e.target.value })}
+                  className="rounded-xl h-12"
                 />
                 <Input
                   type="time"
                   value={form.time}
                   onChange={(e) => setForm({ ...form, time: e.target.value })}
+                  className="rounded-xl h-12"
                 />
               </div>
               <Input
                 placeholder="Location (optional)"
                 value={form.location}
                 onChange={(e) => setForm({ ...form, location: e.target.value })}
+                className="rounded-xl h-12"
               />
               <Input
                 placeholder="Purpose of meeting"
                 value={form.purpose}
                 onChange={(e) => setForm({ ...form, purpose: e.target.value })}
+                className="rounded-xl h-12"
               />
               <Textarea
                 placeholder="Additional notes..."
                 value={form.notes}
                 onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                style={{ borderRadius: '18px' }}
+                className="rounded-xl"
               />
               <Button
                 onClick={() => createMutation.mutate(form)}
                 disabled={!form.title || !form.date || !form.time || createMutation.isPending}
-                size="lg"
-                className="w-full"
+                className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
               >
                 {createMutation.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />

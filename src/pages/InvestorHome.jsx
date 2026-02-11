@@ -40,7 +40,7 @@ export default function InvestorHome() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
 
       {/* Language Selector - Fixed Top Right */}
       <div className="fixed top-6 right-6 z-50">
@@ -59,22 +59,22 @@ export default function InvestorHome() {
         {/* Stats Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <Card className="glass-card card-hover">
-              <CardContent className="p-6">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4 shadow-lg`}>
-                  <stat.icon className="w-7 h-7 text-white" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
-                <p className="text-sm text-gray-600">{stat.label}</p>
-              </CardContent>
-            </Card>
-          </motion.div>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card className="bg-white border border-gray-200 hover:shadow-md transition-all card-hover">
+                <CardContent className="p-6">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4 shadow-sm`}>
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
+                  <p className="text-sm text-gray-600">{stat.label}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
 
@@ -90,30 +90,30 @@ export default function InvestorHome() {
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card className="glass-card hover:shadow-xl transition-all card-hover">
+          <Card className="glass-card hover:shadow-lg transition-all">
             <CardContent className="p-8">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center mb-5 shadow-md">
-                <Search className="w-8 h-8 text-white" />
+              <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center mb-4 shadow-md">
+                <Search className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-gray-900">{t("explorePitches")}</h3>
-              <p className="mb-6 text-gray-600 leading-relaxed">{t("browseInnovative")}</p>
+              <h3 className="text-2xl font-bold mb-2 text-gray-900">{t("explorePitches")}</h3>
+              <p className="mb-6 text-gray-700">{t("browseInnovative")}</p>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button size="lg" className="w-full">
+                <Button className="gradient-primary hover:opacity-90 text-white">
                   {t("viewAllPitches")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
-          <Card className="glass-card hover:shadow-xl transition-all card-hover">
+          <Card className="glass-card hover:shadow-lg transition-all">
             <CardContent className="p-8">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#818CF8] flex items-center justify-center mb-5 shadow-md">
-                <Briefcase className="w-8 h-8 text-white" />
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 shadow-md" style={{background: '#A8515B'}}>
+                <Briefcase className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-gray-900">{t("myPortfolio")}</h3>
-              <p className="mb-6 text-gray-600 leading-relaxed">{t("trackInvestments")}</p>
+              <h3 className="text-2xl font-bold mb-2 text-gray-900">{t("myPortfolio")}</h3>
+              <p className="mb-6 text-gray-700">{t("trackInvestments")}</p>
               <Link to={createPageUrl("InvestorPortfolio")}>
-                <Button variant="secondary" size="lg" className="w-full">
+                <Button className="hover:opacity-90 text-white" style={{background: '#A8515B'}}>
                   {t("viewPortfolio")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -122,18 +122,18 @@ export default function InvestorHome() {
         </div>
 
         {/* My Watchlist Section */}
-        <Card className="glass-card mb-8 card-hover">
+        <Card className="glass-card mb-8">
           <CardContent className="p-8">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg">
-                <Star className="w-8 h-8 text-white" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-md">
+                <Star className="w-7 h-7 text-white" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">My Watchlist</h2>
-                <p className="text-gray-600">Track opportunities and manage follow-ups</p>
+                <p className="text-gray-700">Track opportunities and manage follow-ups</p>
               </div>
             </div>
-            <div className="glass p-6">
+            <div className="glass rounded-xl p-6">
               <WatchlistManager investorEmail={user?.email} />
             </div>
           </CardContent>
@@ -145,15 +145,15 @@ export default function InvestorHome() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">{t("recentPitches")}</h2>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button variant="ghost" className="text-[#4F46E5] hover:bg-indigo-50">
+                <Button variant="ghost" className="text-[#DC586D] hover:bg-[#DC586D]/10">
                   {t("viewAll")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
             <div className="space-y-3">
               {pitches.slice(0, 3).map((pitch) => (
-                <div key={pitch.id} className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-all border border-transparent hover:border-gray-200 hover:shadow-sm" style={{ borderRadius: '12px' }}>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center text-white font-bold shadow-md">
+                <div key={pitch.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-all border border-transparent hover:border-[#DC586D]/20 hover:shadow-sm">
+                  <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center text-white font-bold shadow-sm">
                     {pitch.created_by?.charAt(0)?.toUpperCase() || "?"}
                   </div>
                   <div className="flex-1">

@@ -52,11 +52,11 @@ export default function CoFounderConnect() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-md">
+          <div className="w-12 h-12 rounded-2xl bg-[#8B1E1E] flex items-center justify-center shadow-md">
             <Users2 className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -66,7 +66,7 @@ export default function CoFounderConnect() {
         </div>
 
         {/* AI-Powered Matching Banner */}
-        <div className="bg-gradient-to-br from-[#4F46E5] to-[#6366F1] rounded-xl p-6 mb-8 text-white shadow-lg">
+        <div className="bg-gradient-to-br from-[#B94B5A] to-[#D8707C] rounded-2xl p-6 mb-8 text-white shadow-lg">
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 shrink-0 mt-0.5" />
             <div>
@@ -83,7 +83,7 @@ export default function CoFounderConnect() {
             placeholder="Search by name, skills, or location..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-12 h-14 text-base"
+            className="pl-12 h-14 rounded-2xl border-gray-200 bg-white shadow-sm text-base"
           />
         </div>
 
@@ -264,7 +264,7 @@ export default function CoFounderConnect() {
                           rel="noopener noreferrer"
                           className="flex-1"
                         >
-                          <Button className="w-full font-semibold">
+                          <Button className="w-full bg-[#8B1E1E] hover:opacity-90 text-white font-semibold shadow-md rounded-2xl">
                             <MessageCircle className="w-4 h-4 mr-1" />
                             Connect
                           </Button>
@@ -277,7 +277,7 @@ export default function CoFounderConnect() {
                           rel="noopener noreferrer"
                           className="flex-1"
                         >
-                          <Button variant="outline" className="w-full border-2 border-green-400 text-green-700 hover:bg-green-50 hover:border-green-500 font-semibold">
+                          <Button variant="outline" className="w-full border-2 border-green-500 text-green-600 hover:bg-green-50 font-semibold">
                             <Play className="w-4 h-4 mr-1" />
                             Pitch
                           </Button>

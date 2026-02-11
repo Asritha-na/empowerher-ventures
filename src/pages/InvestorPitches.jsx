@@ -61,12 +61,12 @@ export default function InvestorPitches() {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#4F46E5] to-[#6366F1] flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 rounded-full bg-[#8B1E1E] flex items-center justify-center shadow-md">
               <Users className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -77,7 +77,7 @@ export default function InvestorPitches() {
         </div>
 
         {/* AI-Powered Matching Banner */}
-        <div className="mb-6 bg-gradient-to-br from-[#4F46E5] to-[#6366F1] rounded-xl p-6 text-white shadow-lg">
+        <div className="mb-6 bg-gradient-to-br from-[#B94B5A] to-[#D8707C] rounded-2xl p-6 text-white shadow-lg">
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 mt-1" />
             <div>
@@ -97,7 +97,7 @@ export default function InvestorPitches() {
               placeholder={t("searchByName")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-12 h-14"
+              className="pl-12 h-14 rounded-xl border-gray-200 shadow-sm"
             />
           </div>
         </div>
@@ -247,7 +247,7 @@ export default function InvestorPitches() {
                       <div className="space-y-2">
                         <div className="flex gap-2">
                           <Button
-                            className="flex-1"
+                            className="flex-1 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl shadow-md"
                             onClick={() => {
                               if (member.phone) {
                                 window.open(getWhatsAppLink(member.phone), "_blank");
@@ -259,7 +259,7 @@ export default function InvestorPitches() {
                           </Button>
                           <Button
                             variant="outline"
-                            className="flex-1 border-green-400 text-green-700 hover:bg-green-50 hover:border-green-500"
+                            className="flex-1 border-green-500 text-green-600 hover:bg-green-50 rounded-lg"
                             onClick={() => {
                               if (member.pitch_video_url) {
                                 window.open(member.pitch_video_url, "_blank");

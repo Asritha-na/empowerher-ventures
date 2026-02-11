@@ -187,7 +187,7 @@ Funding Needed: ₹${formData.funding_needed}
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
 
       <div className="max-w-5xl mx-auto">
         {/* Header */}
@@ -272,10 +272,10 @@ Funding Needed: ₹${formData.funding_needed}
                 placeholder="Give your idea a name..."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="text-lg h-14"
+                className="text-lg rounded-xl h-14 border-gray-200"
               />
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="h-14 text-base">
+                <SelectTrigger className="rounded-xl h-14 border-gray-200 text-base">
                   <SelectValue placeholder="Choose your business type..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -321,14 +321,13 @@ Funding Needed: ₹${formData.funding_needed}
                     <Textarea
                       value={speechText}
                       onChange={(e) => setSpeechText(e.target.value)}
-                      className="min-h-[120px] text-base"
+                      className="min-h-[120px] rounded-xl border-gray-200 text-base"
                       placeholder="Your speech will appear here, or type your idea..."
-                      style={{ borderRadius: '18px' }}
                     />
                     <Button
                       onClick={refinePitch}
                       disabled={isRefining}
-                      size="lg"
+                      className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-6 shadow-md"
                     >
                       {isRefining ? (
                         <>
@@ -360,8 +359,7 @@ Funding Needed: ₹${formData.funding_needed}
                     <Button
                       onClick={submitVoicePitch}
                       disabled={createMutation.isPending}
-                      size="lg"
-                      className="mt-4"
+                      className="mt-4 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-8 shadow-md"
                     >
                       {createMutation.isPending ? (
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -398,12 +396,10 @@ Funding Needed: ₹${formData.funding_needed}
                       onChange={handleVideoUpload}
                       className="hidden"
                     />
-                    <Button asChild size="lg">
-                      <span className="cursor-pointer">
-                        <Upload className="w-5 h-5 mr-2" />
-                        Choose Video File
-                      </span>
-                    </Button>
+                    <span className="inline-flex items-center gap-2 bg-[#8B1E1E] text-white font-medium px-6 py-3 cursor-pointer hover:opacity-90 shadow-md" style={{ borderRadius: '16px' }}>
+                      <Upload className="w-4 h-4" />
+                      Choose Video File
+                    </span>
                   </label>
 
                   {videoFile && (
@@ -417,8 +413,7 @@ Funding Needed: ₹${formData.funding_needed}
                   <Button
                     onClick={submitVideoPitch}
                     disabled={isUploading || createMutation.isPending}
-                    size="lg"
-                    className="w-full"
+                    className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
                   >
                     {isUploading || createMutation.isPending ? (
                       <>
@@ -501,8 +496,7 @@ Funding Needed: ₹${formData.funding_needed}
                     <Button
                       onClick={submitFormPitch}
                       disabled={createMutation.isPending || !formData.problem || !formData.solution}
-                      size="lg"
-                      className="w-full"
+                      className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
                     >
                       {createMutation.isPending ? (
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -550,14 +544,13 @@ Funding Needed: ₹${formData.funding_needed}
                 <Button
                   onClick={() => setCurrentStep(1)}
                   variant="outline"
-                  size="lg"
+                  className="rounded-xl h-12"
                 >
                   ← Back to Edit
                 </Button>
                 <Button
                   onClick={() => setCurrentStep(3)}
-                  size="lg"
-                  className="flex-1"
+                  className="flex-1 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
                 >
                   Continue to Find Investors →
                 </Button>
@@ -585,14 +578,13 @@ Funding Needed: ₹${formData.funding_needed}
                 <Button
                   onClick={() => setCurrentStep(2)}
                   variant="outline"
-                  size="lg"
+                  className="rounded-xl h-12"
                 >
                   ← Back to Review
                 </Button>
                 <Button
                   onClick={() => window.location.href = createPageUrl("FindInvestors")}
-                  size="lg"
-                  className="px-8"
+                  className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-8 shadow-md"
                 >
                   Browse Investors →
                 </Button>
