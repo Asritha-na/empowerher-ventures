@@ -282,7 +282,7 @@ export default function LearningHub() {
               className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                 selectedTopic === topic.id
                   ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
-                  : "glass-card text-gray-600 hover:bg-gray-50"
+                  : "glass-card text-gray-700"
               }`}
             >
               {topic.label}
@@ -297,7 +297,7 @@ export default function LearningHub() {
             className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${
               viewMode === "videos"
                 ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
-                : "glass-card text-gray-600 hover:bg-gray-50"
+                : "glass-card text-gray-700"
             }`}
           >
             Individual Videos
@@ -307,7 +307,7 @@ export default function LearningHub() {
             className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${
               viewMode === "playlists"
                 ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
-                : "glass-card text-gray-600 hover:bg-gray-50"
+                : "glass-card text-gray-700"
             }`}
           >
             Course Playlists
