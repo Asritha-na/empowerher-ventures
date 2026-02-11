@@ -187,13 +187,13 @@ Funding Needed: ₹${formData.funding_needed}
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-3">
             <span className="text-gray-900">Share Your </span>
-            <span className="text-rose-600">Brilliant Idea</span>
+            <span className="text-gradient-indigo">Brilliant Idea</span>
           </h1>
           <p className="text-gray-500 text-lg mb-8">
             Record your pitch, upload video, and get expert AI feedback
@@ -207,9 +207,9 @@ Funding Needed: ₹${formData.funding_needed}
             >
               <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg shadow-lg transition-all ${
                 currentStep === 1 
-                  ? 'bg-gradient-to-br from-rose-500 to-pink-600 text-white' 
+                  ? 'bg-gradient-to-br from-indigo-900 to-blue-800 text-white' 
                   : currentStep > 1
-                  ? 'bg-green-500 text-white'
+                  ? 'bg-gray-600 text-white'
                   : 'bg-gray-200 text-gray-400'
               }`}>
                 1
@@ -259,8 +259,8 @@ Funding Needed: ₹${formData.funding_needed}
 
         {/* Step 1: Share Your Idea */}
         {currentStep === 1 && (
-        <Card className="mb-8 border-0 shadow-lg rounded-3xl overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-rose-50 to-pink-50 border-b">
+        <Card className="mb-8 glass-card border-0 rounded-3xl overflow-hidden">
+          <CardHeader className="glass border-b">
             <CardTitle className="text-xl text-gray-800">Step 1: Share Your Idea</CardTitle>
             <p className="text-sm text-gray-500 mt-1">Choose voice recording OR video upload (or skip to form)</p>
           </CardHeader>

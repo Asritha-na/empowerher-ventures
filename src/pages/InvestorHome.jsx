@@ -40,7 +40,7 @@ export default function InvestorHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50/50 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       {/* Language Selector - Fixed Top Right */}
       <div className="fixed top-6 right-6 z-50">
         <LanguageSelector />
@@ -64,7 +64,7 @@ export default function InvestorHome() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
             >
-              <Card className="border-none shadow-md hover:shadow-xl transition-all">
+              <Card className="glass-card border-none hover:shadow-xl transition-all">
                 <CardContent className="p-6">
                   <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4`}>
                     <stat.icon className="w-6 h-6 text-white" />
@@ -89,7 +89,7 @@ export default function InvestorHome() {
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card className="border-none shadow-md bg-gradient-to-br from-blue-500 to-cyan-600 text-white">
+          <Card className="border-none shadow-md bg-gradient-to-br from-indigo-900 to-blue-800 text-white">
             <CardContent className="p-8">
               <Search className="w-12 h-12 mb-4" />
               <h3 className="text-2xl font-bold mb-2">{t("explorePitches")}</h3>
@@ -102,7 +102,7 @@ export default function InvestorHome() {
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-md bg-gradient-to-br from-purple-500 to-pink-600 text-white">
+          <Card className="border-none shadow-md bg-gradient-to-br from-gray-700 to-gray-600 text-white">
             <CardContent className="p-8">
               <Briefcase className="w-12 h-12 mb-4" />
               <h3 className="text-2xl font-bold mb-2">{t("myPortfolio")}</h3>
@@ -117,7 +117,7 @@ export default function InvestorHome() {
         </div>
 
         {/* My Watchlist Section */}
-        <Card className="border-none shadow-md bg-gradient-to-br from-amber-500 to-orange-600 text-white mb-8">
+        <Card className="border-none shadow-md bg-gradient-to-br from-indigo-800 to-blue-700 text-white mb-8">
           <CardContent className="p-8">
             <div className="flex items-center gap-3 mb-6">
               <Star className="w-12 h-12" />
@@ -133,7 +133,7 @@ export default function InvestorHome() {
         </Card>
 
         {/* Recent Pitches */}
-        <Card className="border-none shadow-md">
+        <Card className="glass-card border-none">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">{t("recentPitches")}</h2>
