@@ -5,29 +5,29 @@ css
 
 @layer base {
   :root {
-    --brand-red: #E31B23;
-    --brand-red-hover: #C9161D;
-    --brand-red-pressed: #A31217;
+    --deep-berry: #A33757;
+    --salmon-rose: #DC586D;
+    --rose-quartz: #A8515B;
     
-    --background: 0 0% 100%;
+    --background: 0 0% 98%;
     --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 357 80% 51%;
+    --primary: 345 48% 55%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 345 32% 51%;
+    --secondary-foreground: 0 0% 100%;
     --muted: 220 14% 96%;
     --muted-foreground: 215 16% 47%;
-    --accent: 220 14% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 345 32% 51%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 357 80% 51%;
+    --ring: 345 48% 55%;
     --radius: 0.875rem;
   }
 }
@@ -41,23 +41,23 @@ css
     font-feature-settings: "rlig" 1, "calt" 1;
     min-height: 100vh;
     color: #1F2937;
-    background: #FAFAFA;
+    background: linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%);
   }
 }
 
 @layer utilities {
   .glass {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid #E5E7EB;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(220, 88, 109, 0.2);
+    box-shadow: 0 4px 12px 0 rgba(163, 55, 87, 0.1);
   }
   
   .glass-card {
-    background: white;
-    border: 1px solid #E5E7EB;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(220, 88, 109, 0.15);
+    box-shadow: 0 2px 8px 0 rgba(163, 55, 87, 0.08);
   }
   
   .card-hover {
@@ -65,11 +65,27 @@ css
   }
   
   .card-hover:hover {
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px 0 rgba(163, 55, 87, 0.15);
     transform: translateY(-2px);
   }
   
-  .text-gradient-red {
-    @apply bg-gradient-to-r from-red-600 via-red-500 to-red-600 bg-clip-text text-transparent;
+  .text-gradient-rose {
+    background: linear-gradient(135deg, #A8515B 0%, #DC586D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-primary {
+    background: linear-gradient(135deg, #A8515B 0%, #DC586D 100%);
+  }
+  
+  .gradient-depth {
+    background: linear-gradient(180deg, #A33757 0%, #A8515B 100%);
+  }
+  
+  .sidebar-berry {
+    background: rgba(163, 55, 87, 0.95);
+    backdrop-filter: blur(20px);
   }
 }

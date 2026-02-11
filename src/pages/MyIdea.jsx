@@ -187,16 +187,16 @@ Funding Needed: ₹${formData.funding_needed}
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8 bg-[#FAFAFA]">
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
 
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-3">
             <span className="text-gray-900">Share Your </span>
-            <span className="text-[#E31B23]">Brilliant Idea</span>
+            <span className="text-gradient-rose">Brilliant Idea</span>
           </h1>
-          <p className="text-gray-600 text-lg mb-8">
+          <p className="text-gray-700 text-lg mb-8">
             Record your pitch, upload video, and get expert AI feedback
           </p>
 
@@ -208,14 +208,14 @@ Funding Needed: ₹${formData.funding_needed}
             >
               <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg shadow-sm transition-all ${
                 currentStep === 1 
-                  ? 'bg-[#E31B23] text-white' 
+                  ? 'gradient-primary text-white' 
                   : currentStep > 1
                   ? 'bg-green-500 text-white'
                   : 'bg-gray-200 text-gray-400'
               }`}>
                 1
               </div>
-              <span className={`text-base font-semibold ${currentStep >= 1 ? 'text-gray-900' : 'text-gray-400'}`}>
+              <span className={`text-base font-semibold ${currentStep >= 1 ? 'text-gray-900' : 'text-gray-500'}`}>
                 Share Your Idea
               </span>
             </button>
@@ -227,14 +227,14 @@ Funding Needed: ₹${formData.funding_needed}
             >
               <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg transition-all ${
                 currentStep === 2 
-                  ? 'bg-[#E31B23] text-white shadow-sm' 
+                  ? 'gradient-primary text-white shadow-sm' 
                   : currentStep > 2
                   ? 'bg-green-500 text-white'
                   : 'bg-gray-200 text-gray-400'
               }`}>
                 2
               </div>
-              <span className={`text-base font-medium ${currentStep >= 2 ? 'text-gray-900' : 'text-gray-400'}`}>
+              <span className={`text-base font-medium ${currentStep >= 2 ? 'text-gray-900' : 'text-gray-500'}`}>
                 AI Review
               </span>
             </button>
@@ -246,12 +246,12 @@ Funding Needed: ₹${formData.funding_needed}
             >
               <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg transition-all ${
                 currentStep === 3 
-                  ? 'bg-[#E31B23] text-white shadow-sm' 
+                  ? 'gradient-primary text-white shadow-sm' 
                   : 'bg-gray-200 text-gray-400'
               }`}>
                 3
               </div>
-              <span className={`text-base font-medium ${currentStep >= 3 ? 'text-gray-900' : 'text-gray-400'}`}>
+              <span className={`text-base font-medium ${currentStep >= 3 ? 'text-gray-900' : 'text-gray-500'}`}>
                 Find Investors
               </span>
             </button>

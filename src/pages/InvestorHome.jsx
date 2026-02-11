@@ -40,7 +40,7 @@ export default function InvestorHome() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8 bg-[#FAFAFA]">
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
 
       {/* Language Selector - Fixed Top Right */}
       <div className="fixed top-6 right-6 z-50">
@@ -90,30 +90,30 @@ export default function InvestorHome() {
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card className="border border-gray-200 shadow-sm bg-gradient-to-br from-gray-50 to-white hover:shadow-md transition-all">
+          <Card className="glass-card hover:shadow-lg transition-all">
             <CardContent className="p-8">
-              <div className="w-14 h-14 rounded-xl bg-[#E31B23] flex items-center justify-center mb-4 shadow-sm">
+              <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center mb-4 shadow-md">
                 <Search className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-2 text-gray-900">{t("explorePitches")}</h3>
-              <p className="mb-6 text-gray-600">{t("browseInnovative")}</p>
+              <p className="mb-6 text-gray-700">{t("browseInnovative")}</p>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button className="bg-[#E31B23] hover:bg-[#C9161D] text-white">
+                <Button className="gradient-primary hover:opacity-90 text-white">
                   {t("viewAllPitches")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
-          <Card className="border border-gray-200 shadow-sm bg-gradient-to-br from-gray-50 to-white hover:shadow-md transition-all">
+          <Card className="glass-card hover:shadow-lg transition-all">
             <CardContent className="p-8">
-              <div className="w-14 h-14 rounded-xl bg-gray-900 flex items-center justify-center mb-4 shadow-sm">
+              <div className="w-14 h-14 rounded-xl" style={{background: '#A8515B'}} flex items-center justify-center mb-4 shadow-md">
                 <Briefcase className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-2 text-gray-900">{t("myPortfolio")}</h3>
-              <p className="mb-6 text-gray-600">{t("trackInvestments")}</p>
+              <p className="mb-6 text-gray-700">{t("trackInvestments")}</p>
               <Link to={createPageUrl("InvestorPortfolio")}>
-                <Button className="bg-gray-900 hover:bg-gray-800 text-white">
+                <Button style={{background: '#A8515B'}} className="hover:opacity-90 text-white">
                   {t("viewPortfolio")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -145,7 +145,7 @@ export default function InvestorHome() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">{t("recentPitches")}</h2>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button variant="ghost" className="text-[#E31B23] hover:bg-red-50">
+                <Button variant="ghost" className="text-[#DC586D] hover:bg-[#DC586D]/10">
                   {t("viewAll")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
