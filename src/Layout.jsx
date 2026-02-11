@@ -42,7 +42,7 @@ const getInvestorNavItems = (t) => [
 ];
 
 const getEntrepreneurNavItems = (t) => [
-  { name: t("home"), icon: Home, page: "Home" },
+  { name: t("home"), icon: Home, page: "MyIdea" },
   { name: t("myIdea"), icon: Lightbulb, page: "MyIdea" },
   { name: t("findInvestors"), icon: Users, page: "FindInvestors" },
   { name: t("learningHub"), icon: BookOpen, page: "LearningHub" },
