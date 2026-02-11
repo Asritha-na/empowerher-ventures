@@ -125,8 +125,8 @@ export default function Profile() {
             </div>
           </div>
 
-          <Card className="glass-card rounded-3xl">
-            <CardContent className="p-6 space-y-5">
+          <Card className="glass-card">
+            <CardContent className="p-8 space-y-5">
               {/* Read-only fields */}
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
@@ -154,7 +154,6 @@ export default function Profile() {
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   placeholder={t("yourPhoneNumber")}
-                  className="rounded-xl h-12"
                 />
               </div>
 
@@ -166,7 +165,6 @@ export default function Profile() {
                   value={form.location}
                   onChange={(e) => setForm({ ...form, location: e.target.value })}
                   placeholder={t("villageCityState")}
-                  className="rounded-xl h-12"
                 />
               </div>
 
@@ -178,7 +176,6 @@ export default function Profile() {
                   value={form.business_name}
                   onChange={(e) => setForm({ ...form, business_name: e.target.value })}
                   placeholder={t("yourBusinessName")}
-                  className="rounded-xl h-12"
                 />
               </div>
 
@@ -188,7 +185,7 @@ export default function Profile() {
                   value={form.business_type}
                   onValueChange={(v) => setForm({ ...form, business_type: v })}
                 >
-                  <SelectTrigger className="rounded-xl h-12">
+                  <SelectTrigger>
                     <SelectValue placeholder={t("selectBusinessType")} />
                   </SelectTrigger>
                   <SelectContent>
@@ -207,7 +204,7 @@ export default function Profile() {
                   value={form.preferred_language}
                   onValueChange={(v) => setForm({ ...form, preferred_language: v })}
                 >
-                  <SelectTrigger className="rounded-xl h-12">
+                  <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -226,14 +223,16 @@ export default function Profile() {
                   value={form.bio}
                   onChange={(e) => setForm({ ...form, bio: e.target.value })}
                   placeholder={t("tellUsAboutYourself")}
-                  className="rounded-xl min-h-[100px]"
+                  className="min-h-[100px]"
+                  style={{ borderRadius: '18px' }}
                 />
               </div>
 
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 text-base shadow-md"
+                size="lg"
+                className="w-full text-base"
               >
                 {saving ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -246,7 +245,8 @@ export default function Profile() {
               <Button
                 variant="outline"
                 onClick={() => base44.auth.logout()}
-                className="w-full rounded-xl h-12 text-red-500 border-red-200 hover:bg-red-50"
+                size="lg"
+                className="w-full text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 {t("logout")}
@@ -255,14 +255,14 @@ export default function Profile() {
           </Card>
 
           {/* Toll-Free Support */}
-          <Card className="glass-card mt-6">
-            <CardContent className="p-6 text-center">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center mx-auto mb-4 shadow-md">
-                <PhoneCall className="w-8 h-8 text-white" />
+          <Card className="glass-card mt-6 card-hover">
+            <CardContent className="p-8 text-center">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center mx-auto mb-5 shadow-lg">
+                <PhoneCall className="w-9 h-9 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t("tollFreeSupport")}</h3>
-              <p className="text-4xl font-bold text-[#8B1E1E] mb-2">1800-123-123</p>
-              <p className="text-sm text-gray-600">{t("available24x7")}</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">{t("tollFreeSupport")}</h3>
+              <p className="text-4xl font-bold text-[#7A1C1C] mb-2">1800-123-123</p>
+              <p className="text-sm text-gray-500">{t("available24x7")}</p>
             </CardContent>
           </Card>
         </motion.div>

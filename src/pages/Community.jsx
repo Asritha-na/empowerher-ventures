@@ -83,7 +83,7 @@ export default function CoFounderConnect() {
             placeholder="Search by name, skills, or location..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-12 h-14 rounded-2xl border-gray-200 bg-white shadow-sm text-base"
+            className="pl-12 h-14 text-base"
           />
         </div>
 
@@ -264,7 +264,7 @@ export default function CoFounderConnect() {
                           rel="noopener noreferrer"
                           className="flex-1"
                         >
-                          <Button className="w-full bg-[#8B1E1E] hover:opacity-90 text-white font-semibold shadow-md rounded-2xl">
+                          <Button className="w-full font-semibold">
                             <MessageCircle className="w-4 h-4 mr-1" />
                             Connect
                           </Button>
@@ -277,7 +277,7 @@ export default function CoFounderConnect() {
                           rel="noopener noreferrer"
                           className="flex-1"
                         >
-                          <Button variant="outline" className="w-full border-2 border-green-500 text-green-600 hover:bg-green-50 font-semibold">
+                          <Button variant="outline" className="w-full border-2 border-green-400 text-green-700 hover:bg-green-50 hover:border-green-500 font-semibold">
                             <Play className="w-4 h-4 mr-1" />
                             Pitch
                           </Button>

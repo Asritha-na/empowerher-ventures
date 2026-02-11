@@ -97,7 +97,7 @@ export default function InvestorPitches() {
               placeholder={t("searchByName")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-12 h-14 rounded-xl border-gray-200 shadow-sm"
+              className="pl-12 h-14"
             />
           </div>
         </div>
@@ -247,7 +247,7 @@ export default function InvestorPitches() {
                       <div className="space-y-2">
                         <div className="flex gap-2">
                           <Button
-                            className="flex-1 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl shadow-md"
+                            className="flex-1"
                             onClick={() => {
                               if (member.phone) {
                                 window.open(getWhatsAppLink(member.phone), "_blank");
@@ -259,7 +259,7 @@ export default function InvestorPitches() {
                           </Button>
                           <Button
                             variant="outline"
-                            className="flex-1 border-green-500 text-green-600 hover:bg-green-50 rounded-lg"
+                            className="flex-1 border-green-400 text-green-700 hover:bg-green-50 hover:border-green-500"
                             onClick={() => {
                               if (member.pitch_video_url) {
                                 window.open(member.pitch_video_url, "_blank");

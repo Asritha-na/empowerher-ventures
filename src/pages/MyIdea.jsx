@@ -272,10 +272,10 @@ Funding Needed: ₹${formData.funding_needed}
                 placeholder="Give your idea a name..."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="text-lg rounded-xl h-14 border-gray-200"
+                className="text-lg h-14"
               />
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="rounded-xl h-14 border-gray-200 text-base">
+                <SelectTrigger className="h-14 text-base">
                   <SelectValue placeholder="Choose your business type..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -321,13 +321,14 @@ Funding Needed: ₹${formData.funding_needed}
                     <Textarea
                       value={speechText}
                       onChange={(e) => setSpeechText(e.target.value)}
-                      className="min-h-[120px] rounded-xl border-gray-200 text-base"
+                      className="min-h-[120px] text-base"
                       placeholder="Your speech will appear here, or type your idea..."
+                      style={{ borderRadius: '18px' }}
                     />
                     <Button
                       onClick={refinePitch}
                       disabled={isRefining}
-                      className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-6 shadow-md"
+                      size="lg"
                     >
                       {isRefining ? (
                         <>
@@ -359,7 +360,8 @@ Funding Needed: ₹${formData.funding_needed}
                     <Button
                       onClick={submitVoicePitch}
                       disabled={createMutation.isPending}
-                      className="mt-4 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-8 shadow-md"
+                      size="lg"
+                      className="mt-4"
                     >
                       {createMutation.isPending ? (
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -396,10 +398,12 @@ Funding Needed: ₹${formData.funding_needed}
                       onChange={handleVideoUpload}
                       className="hidden"
                     />
-                    <span className="inline-flex items-center gap-2 bg-[#8B1E1E] text-white font-medium px-6 py-3 cursor-pointer hover:opacity-90 shadow-md" style={{ borderRadius: '16px' }}>
-                      <Upload className="w-4 h-4" />
-                      Choose Video File
-                    </span>
+                    <Button asChild size="lg">
+                      <span className="cursor-pointer">
+                        <Upload className="w-5 h-5 mr-2" />
+                        Choose Video File
+                      </span>
+                    </Button>
                   </label>
 
                   {videoFile && (
@@ -413,7 +417,8 @@ Funding Needed: ₹${formData.funding_needed}
                   <Button
                     onClick={submitVideoPitch}
                     disabled={isUploading || createMutation.isPending}
-                    className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
+                    size="lg"
+                    className="w-full"
                   >
                     {isUploading || createMutation.isPending ? (
                       <>
@@ -496,7 +501,8 @@ Funding Needed: ₹${formData.funding_needed}
                     <Button
                       onClick={submitFormPitch}
                       disabled={createMutation.isPending || !formData.problem || !formData.solution}
-                      className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
+                      size="lg"
+                      className="w-full"
                     >
                       {createMutation.isPending ? (
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -544,13 +550,14 @@ Funding Needed: ₹${formData.funding_needed}
                 <Button
                   onClick={() => setCurrentStep(1)}
                   variant="outline"
-                  className="rounded-xl h-12"
+                  size="lg"
                 >
                   ← Back to Edit
                 </Button>
                 <Button
                   onClick={() => setCurrentStep(3)}
-                  className="flex-1 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
+                  size="lg"
+                  className="flex-1"
                 >
                   Continue to Find Investors →
                 </Button>
@@ -578,13 +585,14 @@ Funding Needed: ₹${formData.funding_needed}
                 <Button
                   onClick={() => setCurrentStep(2)}
                   variant="outline"
-                  className="rounded-xl h-12"
+                  size="lg"
                 >
                   ← Back to Review
                 </Button>
                 <Button
                   onClick={() => window.location.href = createPageUrl("FindInvestors")}
-                  className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-8 shadow-md"
+                  size="lg"
+                  className="px-8"
                 >
                   Browse Investors →
                 </Button>

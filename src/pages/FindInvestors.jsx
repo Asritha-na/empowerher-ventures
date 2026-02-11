@@ -102,7 +102,7 @@ export default function FindInvestors() {
             placeholder="Search by name, location, or interest..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-12 h-14 rounded-2xl border-gray-200 text-base bg-white shadow-sm"
+            className="pl-12 h-14 text-base"
           />
         </div>
 

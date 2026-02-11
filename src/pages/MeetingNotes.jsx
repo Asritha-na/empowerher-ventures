@@ -140,7 +140,6 @@ Be warm, supportive, and use simple language. Remember this person may not have 
                     <Button
                       onClick={() => analyzePitch(pitch)}
                       disabled={isAnalyzing && selectedPitch === pitch.id}
-                      className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl shadow-md"
                     >
                       {isAnalyzing && selectedPitch === pitch.id ? (
                         <>

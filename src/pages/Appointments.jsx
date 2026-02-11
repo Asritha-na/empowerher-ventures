@@ -77,9 +77,10 @@ export default function Appointments() {
           </div>
           <Button
             onClick={() => setShowForm(true)}
-            className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-6 shadow-md"
+            size="lg"
+            className="px-6"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-5 h-5 mr-2" />
             New Meeting
           </Button>
         </div>
@@ -92,53 +93,48 @@ export default function Appointments() {
             </DialogHeader>
             <div className="space-y-4">
               <Input
-                placeholder="Meeting title..."
-                value={form.title}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
-                className="rounded-xl h-12"
+              placeholder="Meeting title..."
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
               />
               <Input
-                placeholder="Who are you meeting?"
-                value={form.with_name}
-                onChange={(e) => setForm({ ...form, with_name: e.target.value })}
-                className="rounded-xl h-12"
+              placeholder="Who are you meeting?"
+              value={form.with_name}
+              onChange={(e) => setForm({ ...form, with_name: e.target.value })}
               />
               <div className="grid grid-cols-2 gap-3">
                 <Input
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm({ ...form, date: e.target.value })}
-                  className="rounded-xl h-12"
                 />
                 <Input
                   type="time"
                   value={form.time}
                   onChange={(e) => setForm({ ...form, time: e.target.value })}
-                  className="rounded-xl h-12"
                 />
               </div>
               <Input
                 placeholder="Location (optional)"
                 value={form.location}
                 onChange={(e) => setForm({ ...form, location: e.target.value })}
-                className="rounded-xl h-12"
               />
               <Input
                 placeholder="Purpose of meeting"
                 value={form.purpose}
                 onChange={(e) => setForm({ ...form, purpose: e.target.value })}
-                className="rounded-xl h-12"
               />
               <Textarea
                 placeholder="Additional notes..."
                 value={form.notes}
                 onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                className="rounded-xl"
+                style={{ borderRadius: '18px' }}
               />
               <Button
                 onClick={() => createMutation.mutate(form)}
                 disabled={!form.title || !form.date || !form.time || createMutation.isPending}
-                className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
+                size="lg"
+                className="w-full"
               >
                 {createMutation.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
