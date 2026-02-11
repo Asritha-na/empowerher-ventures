@@ -18,9 +18,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)' }}>
       {/* Hero Section */}
-      <div className="relative overflow-hidden text-white" style={{ background: 'linear-gradient(135deg, #B94B5A 0%, #D8707C 100%)' }}>
+      <div className="relative overflow-hidden text-white" style={{ background: 'linear-gradient(135deg, #D8707C 0%, #E89AA8 100%)' }}>
         {/* Decorative Circles */}
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-[400px] h-[400px] rounded-full bg-white/15 blur-3xl" />
