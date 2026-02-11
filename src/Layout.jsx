@@ -189,17 +189,8 @@ export default function Layout({ children, currentPageName }) {
       .finally(() => setLoading(false));
   }, []);
 
-  // Public landing at Home when unauthenticated only
-  if (currentPageName === "Home") {
-    if (loading) return null;
-    if (user) {
-      window.location.href = createPageUrl("Dashboard");
-      return null;
-    }
-    return children;
-  }
-  // Keep legacy Landing page public (if used elsewhere)
-  if (currentPageName === "Landing") {
+  // Public pages (no sidebar/layout)
+  if (currentPageName === "Home" || currentPageName === "Landing") {
     return children;
   }
 
@@ -219,13 +210,19 @@ export default function Layout({ children, currentPageName }) {
 
   // Redirect to public Home if not authenticated
   if (!user) {
-    window.location.href = createPageUrl("Home");
+    base44.auth.redirectToLogin(createPageUrl("Profile"));
     return null;
   }
 
-  // Redirect to role select if no role
-  if (user && !user.user_role) {
-    window.location.href = createPageUrl("RoleSelect");
+  // Enforce profile completion before accessing the app (except Profile)
+  const isProfileComplete = Boolean(user?.full_name && user?.phone);
+  if (!isProfileComplete && currentPageName !== "Profile") {
+    window.location.href = createPageUrl("Profile");
+    return null;
+  }
+  // If profile is complete and user visits Profile, send to Dashboard
+  if (isProfileComplete && currentPageName === "Profile") {
+    window.location.href = createPageUrl("Dashboard");
     return null;
   }
 
