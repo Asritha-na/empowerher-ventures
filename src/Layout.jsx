@@ -63,12 +63,12 @@ function LayoutInner({ children, currentPageName, user }) {
     : getEntrepreneurNavItems(t);
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-[#0f0b1f] via-[#1a1433] to-[#2d1b69]">
+    <div className="min-h-screen flex" style={{background: 'linear-gradient(135deg, #000000 0%, #0a0a14 50%, #1a0b2e 100%)'}}>
       <style>{`
         :root {
-          --color-primary: #6366f1;
+          --color-primary: #7c3aed;
           --color-secondary: #ec4899;
-          --color-accent: #8b5cf6;
+          --color-accent: #3b82f6;
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -79,19 +79,19 @@ function LayoutInner({ children, currentPageName, user }) {
           height: 8px;
         }
         ::-webkit-scrollbar-track {
-          background: rgba(26, 20, 51, 0.5);
+          background: rgba(10, 10, 20, 0.5);
         }
         ::-webkit-scrollbar-thumb {
-          background: rgba(99, 102, 241, 0.5);
+          background: rgba(124, 58, 237, 0.5);
           border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-          background: rgba(99, 102, 241, 0.7);
+          background: rgba(124, 58, 237, 0.7);
         }
       `}</style>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 dark-sidebar border-b border-purple-500/20 flex items-center justify-between px-4 z-50">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-black border-b border-purple-500/20 flex items-center justify-between px-4 z-50">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-xl overflow-hidden border border-purple-500/30 shadow-sm">
             <img 
@@ -120,7 +120,7 @@ function LayoutInner({ children, currentPageName, user }) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed md:static top-0 left-0 h-full w-64 dark-sidebar border-r border-purple-500/20 z-50 transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 h-full w-64 bg-black border-r border-purple-500/20 z-50 transform transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
