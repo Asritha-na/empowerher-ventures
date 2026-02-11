@@ -52,7 +52,7 @@ export default function CoFounderConnect() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50/30 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">

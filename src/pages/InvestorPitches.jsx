@@ -61,23 +61,23 @@ export default function InvestorPitches() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
               <Users className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-pink-600">{t("coFounderConnector")}</h1>
+              <h1 className="text-2xl font-bold text-indigo-900">{t("coFounderConnector")}</h1>
               <p className="text-sm text-gray-500">{t("findPerfectPartner")}</p>
             </div>
           </div>
         </div>
 
         {/* AI-Powered Matching Banner */}
-        <div className="mb-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-400 rounded-2xl p-6 text-white shadow-lg">
+        <div className="mb-6 bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-700 rounded-2xl p-6 text-white shadow-lg">
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 mt-1" />
             <div>
@@ -105,7 +105,7 @@ export default function InvestorPitches() {
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {stats.map((stat, i) => (
-            <div key={i} className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+            <div key={i} className="glass-card rounded-xl p-4 text-center">
               <p className={`text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</p>
               <p className="text-xs text-gray-500">{stat.label}</p>
             </div>
@@ -122,7 +122,7 @@ export default function InvestorPitches() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {pitches.slice(0, 6).map((pitch) => (
-                <Card key={pitch.id} className="border-gray-200 shadow-sm hover:shadow-md transition-all">
+                <Card key={pitch.id} className="glass-card hover:shadow-md transition-all">
                   <CardContent className="p-5">
                     <h4 className="font-bold text-gray-900 mb-2">{pitch.title}</h4>
                     {pitch.category && (
@@ -171,7 +171,7 @@ export default function InvestorPitches() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
               >
-                <Card className="border-gray-200 shadow-sm hover:shadow-md transition-all h-full">
+                <Card className="glass-card hover:shadow-md transition-all h-full">
                   <CardContent className="p-0">
                     {/* Image */}
                     <div className="relative">
@@ -247,7 +247,7 @@ export default function InvestorPitches() {
                       <div className="space-y-2">
                         <div className="flex gap-2">
                           <Button
-                            className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 rounded-lg"
+                            className="flex-1 bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 rounded-lg"
                             onClick={() => {
                               if (member.phone) {
                                 window.open(getWhatsAppLink(member.phone), "_blank");
