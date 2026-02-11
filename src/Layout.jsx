@@ -63,12 +63,12 @@ function LayoutInner({ children, currentPageName, user }) {
     : getEntrepreneurNavItems(t);
 
   return (
-    <div className="min-h-screen flex" style={{background: 'linear-gradient(135deg, #000000 0%, #0a0a14 50%, #1a0b2e 100%)'}}>
+    <div className="min-h-screen flex bg-[#0B0F14]">
       <style>{`
         :root {
-          --color-primary: #7c3aed;
-          --color-secondary: #ec4899;
-          --color-accent: #3b82f6;
+          --color-primary: #E31B23;
+          --color-secondary: #C9A227;
+          --color-accent: #4F46E5;
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -79,32 +79,32 @@ function LayoutInner({ children, currentPageName, user }) {
           height: 8px;
         }
         ::-webkit-scrollbar-track {
-          background: rgba(10, 10, 20, 0.5);
+          background: #121826;
         }
         ::-webkit-scrollbar-thumb {
-          background: rgba(124, 58, 237, 0.5);
+          background: #273244;
           border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-          background: rgba(124, 58, 237, 0.7);
+          background: #E31B23;
         }
       `}</style>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-black border-b border-purple-500/20 flex items-center justify-between px-4 z-50">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#0B0F14] border-b border-[#273244] flex items-center justify-between px-4 z-50">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl overflow-hidden border border-purple-500/30 shadow-sm">
+          <div className="w-9 h-9 rounded-xl overflow-hidden border border-[#273244] shadow-sm">
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
               alt="Shakti Logo" 
               className="w-full h-full object-cover"
             />
           </div>
-          <span className="font-bold text-white">Shakti</span>
+          <span className="font-bold text-[#E5E7EB]">Shakti</span>
         </div>
         <button 
           onClick={() => setMobileOpen(!mobileOpen)} 
-          className="p-2 text-gray-300 hover:text-white transition-colors"
+          className="p-2 text-[#9CA3AF] hover:text-[#E31B23] transition-colors"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -120,13 +120,13 @@ function LayoutInner({ children, currentPageName, user }) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed md:static top-0 left-0 h-full w-64 bg-black border-r border-purple-500/20 z-50 transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 h-full w-64 bg-[#0B0F14] border-r border-[#273244] z-50 transform transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         <div className="p-5">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl overflow-hidden border border-purple-500/30 glow-purple">
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#273244] glow-red">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
                 alt="Shakti Logo" 
@@ -134,8 +134,8 @@ function LayoutInner({ children, currentPageName, user }) {
               />
             </div>
             <div>
-              <span className="font-bold text-white text-lg">Shakti</span>
-              <p className="text-xs text-purple-300">Empowering Women</p>
+              <span className="font-bold text-[#E5E7EB] text-lg">Shakti</span>
+              <p className="text-xs text-[#9CA3AF]">Empowering Women</p>
             </div>
           </div>
 
@@ -149,11 +149,11 @@ function LayoutInner({ children, currentPageName, user }) {
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white glow-purple"
-                      : "text-gray-300 hover:bg-purple-900/30 hover:text-white"
+                      ? "bg-[#E31B23] text-white glow-red"
+                      : "text-[#9CA3AF] hover:bg-[#121826] hover:text-[#E5E7EB]"
                   }`}
                 >
-                  <item.icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-400"}`} />
+                  <item.icon className={`w-5 h-5 ${isActive ? "text-white" : "text-[#6B7280]"}`} />
                   {item.name}
                 </Link>
               );

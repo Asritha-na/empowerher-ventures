@@ -4,31 +4,38 @@
 
 @layer base {
   :root {
-    --crypto-black: #000000;
-    --crypto-dark: #0a0a14;
-    --crypto-purple: #7c3aed;
-    --crypto-pink: #ec4899;
-    --crypto-blue: #3b82f6;
+    --brand-red: #E31B23;
+    --brand-red-hover: #C9161D;
+    --brand-red-pressed: #A31217;
+    --royal-black: #0B0F14;
+    --royal-secondary: #121826;
+    --royal-elevated: #1A2233;
+    --royal-gold: #C9A227;
+    --deep-indigo: #4F46E5;
+    --text-primary: #E5E7EB;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
+    --border-color: #273244;
     
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 240 10% 5%;
-    --card-foreground: 0 0% 100%;
-    --popover: 240 10% 5%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 271 91% 65%;
+    --background: 222 24% 6%;
+    --foreground: 220 13% 91%;
+    --card: 218 23% 11%;
+    --card-foreground: 220 13% 91%;
+    --popover: 216 28% 15%;
+    --popover-foreground: 220 13% 91%;
+    --primary: 357 80% 51%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 10% 10%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 240 10% 10%;
-    --muted-foreground: 240 5% 50%;
-    --accent: 326 78% 60%;
+    --secondary: 218 23% 11%;
+    --secondary-foreground: 220 13% 91%;
+    --muted: 218 23% 11%;
+    --muted-foreground: 220 9% 62%;
+    --accent: 357 80% 51%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 10% 15%;
-    --input: 240 10% 15%;
-    --ring: 271 91% 65%;
+    --border: 217 20% 20%;
+    --input: 217 20% 20%;
+    --ring: 357 80% 51%;
     --radius: 1rem;
   }
 }
@@ -38,52 +45,52 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#000000];
+    @apply bg-[#0B0F14];
     font-feature-settings: "rlig" 1, "calt" 1;
     min-height: 100vh;
-    color: white;
-    background: linear-gradient(135deg, #000000 0%, #0a0a14 50%, #1a0b2e 100%);
+    color: #E5E7EB;
+    background: #0B0F14;
   }
 }
 
 @layer utilities {
   .glass {
-    background: rgba(10, 10, 20, 0.6);
+    background: rgba(18, 24, 38, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.15);
+    border: 1px solid #273244;
+    box-shadow: 0 8px 32px 0 rgba(227, 27, 35, 0.1);
   }
   
   .glass-dark {
-    background: rgba(10, 10, 20, 0.9);
+    background: rgba(11, 15, 20, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(124, 58, 237, 0.15);
+    border: 1px solid #273244;
   }
   
   .glass-card {
-    background: rgba(20, 15, 35, 0.6);
+    background: #121826;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.1);
+    border: 1px solid #273244;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.3);
   }
   
-  .glow-purple {
-    box-shadow: 0 0 40px rgba(124, 58, 237, 0.6);
+  .glow-red {
+    box-shadow: 0 0 30px rgba(227, 27, 35, 0.4);
   }
   
-  .glow-pink {
-    box-shadow: 0 0 30px rgba(236, 72, 153, 0.5);
+  .glow-gold {
+    box-shadow: 0 0 25px rgba(201, 162, 39, 0.3);
   }
   
-  .text-gradient-purple {
-    @apply bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 bg-clip-text text-transparent;
+  .text-gradient-red {
+    @apply bg-gradient-to-r from-red-500 via-red-600 to-red-500 bg-clip-text text-transparent;
   }
   
   .dark-sidebar {
-    background: #000000;
-    border-right: 1px solid rgba(124, 58, 237, 0.2);
+    background: #0B0F14;
+    border-right: 1px solid #273244;
   }
 }

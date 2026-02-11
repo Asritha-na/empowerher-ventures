@@ -17,9 +17,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#0B0F14]">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 text-white">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#E31B23] via-[#C9161D] to-[#A31217] text-white">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-white" />
           <div className="absolute bottom-10 right-20 w-60 h-60 rounded-full bg-white" />
@@ -43,7 +43,7 @@ export default function Home() {
             <div className="flex flex-wrap gap-4">
               <Link
                 to={createPageUrl("MyIdea")}
-                className="inline-flex items-center gap-2 bg-white text-purple-600 font-semibold px-8 py-4 rounded-2xl text-lg hover:bg-gray-50 transition-colors shadow-lg"
+                className="inline-flex items-center gap-2 bg-white text-[#E31B23] font-semibold px-8 py-4 rounded-2xl text-lg hover:bg-gray-50 transition-colors shadow-lg"
               >
                 Get Started
                 <ArrowRight className="w-5 h-5" />
@@ -70,15 +70,15 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 glass-card text-purple-400 font-medium px-4 py-2 rounded-full text-sm mb-4"
+            className="inline-flex items-center gap-2 glass-card text-[#E31B23] font-medium px-4 py-2 rounded-full text-sm mb-4"
           >
             <Sparkles className="w-4 h-4" />
             Real Stories, Real Impact
           </motion.div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-3">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#E5E7EB] mb-3">
             Women Who Made It Happen
           </h2>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+          <p className="text-[#9CA3AF] text-lg max-w-2xl mx-auto">
             Get inspired by real rural women entrepreneurs who turned their skills into thriving businesses
           </p>
         </div>
@@ -89,10 +89,10 @@ export default function Home() {
       {/* Features Section */}
       <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-3">
-            Everything You Need to <span className="text-gradient-purple">Succeed</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-[#E5E7EB] mb-3">
+            Everything You Need to <span className="text-gradient-red">Succeed</span>
           </h2>
-          <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+          <p className="text-[#9CA3AF] text-lg max-w-3xl mx-auto">
             From idea to execution, we provide the tools, connections, and support to help you build a thriving business
           </p>
         </div>
@@ -158,15 +158,15 @@ export default function Home() {
               <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-2xl mb-4`}>
                 {feature.icon}
               </div>
-              <h3 className="font-bold text-white mb-2 text-lg">{feature.title}</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">{feature.description}</p>
+              <h3 className="font-bold text-[#E5E7EB] mb-2 text-lg">{feature.title}</h3>
+              <p className="text-[#9CA3AF] text-sm leading-relaxed">{feature.description}</p>
             </motion.div>
           ))}
         </div>
       </div>
 
       {/* Stats */}
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16">
+      <div className="bg-gradient-to-r from-[#E31B23] to-[#C9161D] text-white py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -190,7 +190,7 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-purple-700 via-purple-800 to-pink-700 py-16 md:py-20">
+      <div className="bg-gradient-to-r from-[#121826] via-[#1A2233] to-[#121826] py-16 md:py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -204,7 +204,7 @@ export default function Home() {
             </p>
             <Link
             to={createPageUrl("MyIdea")}
-            className="inline-flex items-center gap-3 bg-white text-purple-600 font-semibold px-8 py-4 rounded-full text-lg hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl"
+            className="inline-flex items-center gap-3 bg-[#E31B23] hover:bg-[#C9161D] text-white font-semibold px-8 py-4 rounded-full text-lg transition-all shadow-lg hover:shadow-xl glow-red"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
