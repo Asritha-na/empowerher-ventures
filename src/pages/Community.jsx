@@ -56,17 +56,17 @@ export default function CoFounderConnect() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
             <Users2 className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Co-Founder Connector</h1>
+            <h1 className="text-3xl font-bold text-gradient-indigo">Co-Founder Connector</h1>
             <p className="text-gray-500 text-sm">Find the perfect business partner to grow together</p>
           </div>
         </div>
 
         {/* AI-Powered Matching Banner */}
-        <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 rounded-2xl p-6 mb-8 text-white">
+        <div className="bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-700 rounded-2xl p-6 mb-8 text-white">
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 shrink-0 mt-0.5" />
             <div>
@@ -95,7 +95,7 @@ export default function CoFounderConnect() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-white rounded-2xl p-5 text-center shadow-sm border border-gray-100"
+              className="glass-card rounded-2xl p-5 text-center"
             >
               <div className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-1`}>
                 {stat.value}
@@ -264,7 +264,7 @@ export default function CoFounderConnect() {
                           rel="noopener noreferrer"
                           className="flex-1"
                         >
-                          <Button className="w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-semibold shadow-md">
+                          <Button className="w-full bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 text-white font-semibold shadow-md">
                             <MessageCircle className="w-4 h-4 mr-1" />
                             Connect
                           </Button>

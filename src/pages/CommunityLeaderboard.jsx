@@ -80,11 +80,11 @@ export default function CommunityLeaderboard() {
   const badges = getBadges(t);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-50/30 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent mb-3">
+          <h1 className="text-4xl md:text-5xl font-bold text-gradient-indigo mb-3">
             {t("community")}
           </h1>
           <p className="text-gray-500 text-lg">{t("celebratingAmazingWomen")}</p>
@@ -110,7 +110,7 @@ export default function CommunityLeaderboard() {
         </div>
 
         {/* Leaderboard Section */}
-        <div className="bg-gradient-to-r from-rose-500 to-pink-600 rounded-3xl p-8 shadow-xl">
+        <div className="bg-gradient-to-r from-indigo-900 to-blue-800 rounded-3xl p-8 shadow-xl">
           <div className="flex items-center gap-3 mb-6 text-white">
             <Trophy className="w-8 h-8" />
             <h2 className="text-2xl font-bold">{t("topEntrepreneursThisMonth")}</h2>
