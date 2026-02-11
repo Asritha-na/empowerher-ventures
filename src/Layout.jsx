@@ -213,7 +213,7 @@ export default function Layout({ children, currentPageName }) {
   }
 
   // Enforce profile completion before accessing the app (except Profile)
-  const isProfileComplete = Boolean(user?.full_name && user?.phone);
+  const isProfileComplete = Boolean(user?.phone);
   if (!isProfileComplete && currentPageName !== "Profile") {
     window.location.href = createPageUrl("Profile");
     return null;
