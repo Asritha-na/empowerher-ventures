@@ -189,8 +189,18 @@ export default function Layout({ children, currentPageName }) {
       .finally(() => setLoading(false));
   }, []);
 
-  // Show public Home/Landing page (no layout)
-  if (currentPageName === "Landing" || currentPageName === "Home") {
+  // Public landing at Home when unauthenticated only
+  if (currentPageName === "Home") {
+    if (loading) return null;
+    if (user) {
+      const next = user.user_role === "investor" ? "InvestorHome" : "MyIdea";
+      window.location.href = createPageUrl(next);
+      return null;
+    }
+    return children;
+  }
+  // Keep legacy Landing page public (if used elsewhere)
+  if (currentPageName === "Landing") {
     return children;
   }
 
