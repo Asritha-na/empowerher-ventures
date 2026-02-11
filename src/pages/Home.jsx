@@ -5,6 +5,7 @@ import { Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import EntrepreneurCarousel from "@/components/home/EntrepreneurCarousel";
+import SuccessStoriesCarousel from "@/components/home/SuccessStoriesCarousel";
 import { useLanguage } from "@/components/LanguageProvider";
 
 
@@ -68,6 +69,29 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
+      </div>
+
+      {/* Success Stories Section */}
+      <div className="max-w-7xl mx-auto px-8 py-24">
+        <div className="text-center mb-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+          >
+            Success Stories
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-gray-600 text-lg max-w-2xl mx-auto"
+          >
+            Women entrepreneurs building impactful businesses through Shakti
+          </motion.p>
+        </div>
+
+        <SuccessStoriesCarousel />
       </div>
     </div>);
 
