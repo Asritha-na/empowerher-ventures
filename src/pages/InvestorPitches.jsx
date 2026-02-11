@@ -152,8 +152,7 @@ export default function InvestorPitches() {
         </div>
 
         {/* Co-Founders Grid */}
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Co-Founder Opportunities</h2>
-        {isLoading ? (
+
           <div className="text-center py-12">
             <p className="text-gray-500">Loading co-founders...</p>
           </div>
@@ -281,8 +280,6 @@ export default function InvestorPitches() {
                 </Card>
               </motion.div>
             ))}
-          </div>
-        )}
       </div>
     </div>
   );
