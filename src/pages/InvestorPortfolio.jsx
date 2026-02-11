@@ -125,7 +125,7 @@ export default function InvestorPortfolio() {
     <div className="min-h-screen bg-gradient-to-b from-purple-50/30 to-white p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Performance Analysis</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{t("myPortfolio")}</h1>
           <p className="text-gray-600">{t("trackYourInvestments")}</p>
         </div>
 

@@ -110,7 +110,7 @@ export default function InvestorHome() {
               <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 shadow-md" style={{background: '#A8515B'}}>
                 <Briefcase className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-2 text-gray-900">{t("myPortfolio")}</h3>
+              <h3 className="text-2xl font-bold mb-2 text-gray-900">Performance Analysis</h3>
               <p className="mb-6 text-gray-700">{t("trackInvestments")}</p>
               <Link to={createPageUrl("InvestorPortfolio")}>
                 <Button className="hover:opacity-90 text-white" style={{background: '#A8515B'}}>
