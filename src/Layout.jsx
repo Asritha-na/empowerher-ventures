@@ -122,25 +122,37 @@ function LayoutInner({ children, currentPageName, user }) {
       <nav
         className={`fixed md:static top-0 left-0 h-full w-64 z-50 transform transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        }`}
-        style={{ background: '#0F172A' }}
+        } backdrop-blur-xl`}
+        style={{ 
+          background: 'linear-gradient(180deg, #0B1220 0%, #111827 100%)',
+          boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.05), 4px 0 20px rgba(0,0,0,0.15)',
+          borderRight: '1px solid rgba(255,255,255,0.03)'
+        }}
       >
-        <div className="p-6">
+        {/* Subtle light reflection overlay */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0) 100%)'
+        }} />
+        
+        <div className="relative p-6">
           <div className="flex items-center gap-3 mb-10">
-            <div className="w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
-                alt="Shakti Logo" 
-                className="w-8 h-8 object-cover rounded-full"
-              />
+            <div className="relative">
+              <div className="absolute inset-0 bg-emerald-600 rounded-full blur-md opacity-40" />
+              <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center">
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
+                  alt="Shakti Logo" 
+                  className="w-8 h-8 object-cover rounded-full"
+                />
+              </div>
             </div>
             <div>
               <span className="font-bold text-white text-lg">Shakti</span>
-              <p className="text-xs text-gray-400">Empowering Women</p>
+              <p className="text-xs text-slate-400">Empowering Women</p>
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {navItems.map((item, index) => {
               const isActive = currentPageName === item.page;
               return (
@@ -153,11 +165,15 @@ function LayoutInner({ children, currentPageName, user }) {
                   <Link
                     to={createPageUrl(item.page)}
                     onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-[10px] text-sm font-medium transition-all duration-200 ${
+                    className={`relative flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                       isActive 
-                        ? 'bg-emerald-600 text-white' 
-                        : 'text-gray-300 hover:bg-[#1E293B] hover:text-white'
+                        ? 'bg-white/5 text-white backdrop-blur-sm font-semibold' 
+                        : 'text-slate-300 hover:bg-white/[0.03] hover:text-white hover:backdrop-blur-sm'
                     }`}
+                    style={isActive ? {
+                      borderLeft: '3px solid #059669',
+                      paddingLeft: 'calc(1rem - 3px)'
+                    } : {}}
                   >
                     <item.icon className="w-5 h-5" />
                     {item.name}
