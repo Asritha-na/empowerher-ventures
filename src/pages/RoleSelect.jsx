@@ -18,163 +18,173 @@ export default function RoleSelect() {
     window.location.href = createPageUrl("Home");
   };
 
-  const successImages = [
-    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/a13fb5ccb_image.png",
-    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/97d9d515b_image.png",
-    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/e4a3188b1_image.png"
+  const successStories = [
+    {
+      image: "https://images.unsplash.com/photo-1601933973783-43cf8a7d4c5f?w=800",
+      name: "Rajeshwari",
+      business: "Handicrafts"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=800",
+      name: "Priya",
+      business: "Textiles"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=800",
+      name: "Meera",
+      business: "Agriculture"
+    }
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4" style={{
-      background: 'linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #3e2463 100%)'
-    }}>
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .glass-card {
-          background: rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.18);
-          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        .glass-card:hover {
-          background: rgba(255, 255, 255, 0.12);
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          box-shadow: 0 12px 48px 0 rgba(185, 75, 90, 0.3);
-          transform: translateY(-4px);
-        }
-        .noise {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-        }
-      `}</style>
-
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 overflow-hidden noise">
-        <div className="absolute top-20 left-10 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/20 to-pink-600/20 blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-pink-500/15 to-purple-500/15 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4" style={{ background: 'linear-gradient(135deg, #4A1C40 0%, #8B1E5F 50%, #B94B5A 100%)' }}>
+      {/* Animated Background Circles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-[600px] h-[600px] rounded-full bg-pink-500/20 blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] rounded-full bg-purple-500/20 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-rose-500/10 blur-3xl" />
       </div>
 
-      <div className="absolute top-6 right-6 flex items-center gap-3 z-50">
-        <LanguageSelector />
+      {/* Language Selector */}
+      <div className="absolute top-6 right-6 z-50">
+        <div className="glass-card px-4 py-2 rounded-full border border-white/20">
+          <LanguageSelector />
+        </div>
       </div>
-
-      <div className="max-w-7xl w-full relative z-10">
-        {/* Header Section */}
+      
+      <div className="max-w-6xl w-full z-10">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 mb-6 shadow-2xl" style={{ animation: 'float 3s ease-in-out infinite' }}>
-            <Sprout className="w-12 h-12 text-white" />
+          className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6" style={{ background: 'linear-gradient(135deg, #E79A9A 0%, #B94B5A 100%)', boxShadow: '0 0 40px rgba(185, 75, 90, 0.6)' }}>
+            <Sprout className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-4 tracking-tight">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
             {t('shakti')}
           </h1>
-          <p className="text-xl md:text-2xl text-purple-200/90 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-pink-100 max-w-2xl mx-auto leading-relaxed">
             {t('empoweringRuralWomen')}
           </p>
         </motion.div>
 
-        {/* Success Stories Carousel */}
+        {/* Success Stories Strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mb-16">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Sparkles className="w-5 h-5 text-yellow-400" />
-            <h2 className="text-2xl font-bold text-white">Real Stories, Real Impact</h2>
-          </div>
-          <div className="flex gap-4 justify-center overflow-hidden px-4">
-            {successImages.map((img, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 + idx * 0.1 }}
-                className="w-48 h-48 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl hover:scale-105 transition-transform duration-300">
-                <img src={img} alt={`Success story ${idx + 1}`} className="w-full h-full object-cover" />
-              </motion.div>
-            ))}
+          transition={{ delay: 0.1 }}
+          className="mb-12">
+          <div className="glass-card rounded-3xl p-6 border border-white/20">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Sparkles className="w-5 h-5 text-yellow-300" />
+              <h3 className="text-white font-semibold text-lg">Women Building Dreams</h3>
+            </div>
+            <div className="flex justify-center gap-4 overflow-hidden">
+              {successStories.map((story, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 + idx * 0.1 }}
+                  className="relative group">
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden border-2 border-white/30 shadow-xl transition-transform duration-300 group-hover:scale-105">
+                    <img src={story.image} alt={story.name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
+                      <div className="text-white text-xs">
+                        <div className="font-semibold">{story.name}</div>
+                        <div className="text-pink-200">{story.business}</div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
         {/* Role Selection Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           <motion.button
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.3 }}
             onClick={() => selectRole("entrepreneur")}
             disabled={loading}
-            className="glass-card p-10 text-left rounded-3xl group transition-all duration-300 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            
-            <div className="relative z-10">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/30 to-purple-600/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-purple-400/30">
-                <Sprout className="w-10 h-10 text-purple-300" />
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-3">
-                {t('imAnEntrepreneur')}
-              </h2>
-              <p className="text-purple-100/80 text-lg leading-relaxed mb-4">
-                {t('entrepreneurDescription')}
-              </p>
-              {loading && (
-                <Loader2 className="w-6 h-6 animate-spin text-purple-400 mt-4" />
-              )}
+            className="glass-card p-8 text-left rounded-3xl group transition-all duration-300 border border-white/20 hover:border-pink-300/50 hover:shadow-2xl hover:shadow-pink-500/30 hover:-translate-y-1 disabled:opacity-50">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300" style={{ background: 'rgba(185, 75, 90, 0.3)', boxShadow: '0 4px 20px rgba(185, 75, 90, 0.2)' }}>
+              <Sprout className="w-8 h-8 text-pink-200" />
             </div>
+            <h2 className="text-2xl font-bold text-white mb-3">
+              {t('imAnEntrepreneur')}
+            </h2>
+            <p className="text-pink-100 text-base leading-relaxed mb-4">
+              {t('entrepreneurDescription')}
+            </p>
+            {loading ? (
+              <Loader2 className="w-5 h-5 animate-spin text-pink-300" />
+            ) : (
+              <div className="inline-flex items-center gap-2 text-pink-200 text-sm font-medium group-hover:gap-3 transition-all">
+                Continue as Entrepreneur
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            )}
           </motion.button>
 
           <motion.button
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.4 }}
             onClick={() => selectRole("investor")}
             disabled={loading}
-            className="glass-card p-10 text-left rounded-3xl group transition-all duration-300 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-pink-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            
-            <div className="relative z-10">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-pink-500/30 to-rose-600/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-pink-400/30">
-                <TrendingUp className="w-10 h-10 text-pink-300" />
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-3">
-                {t('imAnInvestor')}
-              </h2>
-              <p className="text-pink-100/80 text-lg leading-relaxed mb-4">
-                {t('investorDescription')}
-              </p>
-              {loading && (
-                <Loader2 className="w-6 h-6 animate-spin text-pink-400 mt-4" />
-              )}
+            className="glass-card p-8 text-left rounded-3xl group transition-all duration-300 border border-white/20 hover:border-purple-300/50 hover:shadow-2xl hover:shadow-purple-500/30 hover:-translate-y-1 disabled:opacity-50">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300" style={{ background: 'rgba(139, 30, 95, 0.3)', boxShadow: '0 4px 20px rgba(139, 30, 95, 0.2)' }}>
+              <TrendingUp className="w-8 h-8 text-purple-200" />
             </div>
+            <h2 className="text-2xl font-bold text-white mb-3">
+              {t('imAnInvestor')}
+            </h2>
+            <p className="text-purple-100 text-base leading-relaxed mb-4">
+              {t('investorDescription')}
+            </p>
+            {loading ? (
+              <Loader2 className="w-5 h-5 animate-spin text-purple-300" />
+            ) : (
+              <div className="inline-flex items-center gap-2 text-purple-200 text-sm font-medium group-hover:gap-3 transition-all">
+                Continue as Investor
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            )}
           </motion.button>
         </div>
 
-        {/* Watch Demo Section */}
+        {/* Watch Demo Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="text-center">
+          transition={{ delay: 0.5 }}
+          className="mt-10 text-center">
           <button
             onClick={() => window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")}
-            className="glass-card px-10 py-4 rounded-full inline-flex items-center gap-3 text-white font-semibold text-lg hover:scale-105 transition-all">
-            <PlayCircle className="w-6 h-6" />
+            className="glass-card px-8 py-4 rounded-full border border-white/20 hover:border-white/40 text-white font-medium inline-flex items-center gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-white/20">
+            <PlayCircle className="w-5 h-5" />
             {t("watchDemo")}
           </button>
-          <p className="text-purple-200/70 mt-4 text-sm">
-            See how Shakti transforms dreams into reality
+          <p className="text-sm text-pink-200/80 mt-4">
+            Learn how Shakti empowers women entrepreneurs
           </p>
         </motion.div>
       </div>
 
+      {/* AI Language Bot */}
       <RoleSelectBot />
+
+      {/* Voice Accessibility Assistant */}
       <VoiceAccessibilityAssistant />
-    </div>
-  );
+    </div>);
+
 }
