@@ -20,14 +20,14 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative overflow-hidden text-white min-h-[calc(100vh-4rem)]" style={{ background: 'linear-gradient(135deg, #B94B5A 0%, #D8707C 100%)' }}>
+      <div className="relative overflow-hidden text-white" style={{ background: 'linear-gradient(135deg, #B94B5A 0%, #D8707C 100%)' }}>
         {/* Decorative Circles */}
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-[400px] h-[400px] rounded-full bg-white/15 blur-3xl" />
           <div className="absolute bottom-20 right-20 w-[500px] h-[500px] rounded-full bg-white/15 blur-3xl" />
         </div>
         
-        <div className="relative max-w-6xl mx-auto px-8 py-24 md:py-32">
+        <div className="relative max-w-[1200px] mx-auto px-8 py-24 md:py-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -72,8 +72,8 @@ export default function Home() {
       </div>
 
       {/* Success Stories Section */}
-      <div className="py-24 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="py-20">
+        <div className="max-w-[1200px] mx-auto px-8">
           <div className="text-center mb-12">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
