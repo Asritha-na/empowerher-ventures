@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import SuccessStoriesCarousel from "@/components/landing/SuccessStoriesCarousel.jsx";
 
+// PUBLIC LANDING PAGE (marketing) - separate from dashboard
 export default function Home() {
   const handleLogin = () => base44.auth.redirectToLogin(createPageUrl("Profile"));
   const scrollTo = (id) => {
