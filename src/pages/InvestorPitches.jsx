@@ -70,7 +70,7 @@ export default function InvestorPitches() {
               <Users className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{t("coFounderConnector")}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Find Pitches</h1>
               <p className="text-sm text-gray-700">{t("findPerfectPartner")}</p>
             </div>
           </div>
