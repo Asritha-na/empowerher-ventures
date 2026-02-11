@@ -187,16 +187,16 @@ Funding Needed: ₹${formData.funding_needed}
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8 bg-[#0B0F14]">
+    <div className="min-h-screen p-4 md:p-8 bg-[#FAFAFA]">
 
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-3">
-            <span className="text-[#E5E7EB]">Share Your </span>
-            <span className="text-gradient-red">Brilliant Idea</span>
+            <span className="text-gray-900">Share Your </span>
+            <span className="text-[#E31B23]">Brilliant Idea</span>
           </h1>
-          <p className="text-[#9CA3AF] text-lg mb-8">
+          <p className="text-gray-600 text-lg mb-8">
             Record your pitch, upload video, and get expert AI feedback
           </p>
 
@@ -206,16 +206,16 @@ Funding Needed: ₹${formData.funding_needed}
               onClick={() => setCurrentStep(1)}
               className="flex items-center gap-3 transition-all"
             >
-              <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg shadow-lg transition-all ${
+              <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg shadow-sm transition-all ${
                 currentStep === 1 
-                  ? 'bg-[#E31B23] text-white glow-red' 
+                  ? 'bg-[#E31B23] text-white' 
                   : currentStep > 1
-                  ? 'bg-[#C9A227] text-white'
-                  : 'bg-[#121826] text-[#6B7280]'
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-200 text-gray-400'
               }`}>
                 1
               </div>
-              <span className={`text-base font-semibold ${currentStep >= 1 ? 'text-[#E5E7EB]' : 'text-[#6B7280]'}`}>
+              <span className={`text-base font-semibold ${currentStep >= 1 ? 'text-gray-900' : 'text-gray-400'}`}>
                 Share Your Idea
               </span>
             </button>
@@ -227,14 +227,14 @@ Funding Needed: ₹${formData.funding_needed}
             >
               <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg transition-all ${
                 currentStep === 2 
-                  ? 'bg-[#E31B23] text-white shadow-lg glow-red' 
+                  ? 'bg-[#E31B23] text-white shadow-sm' 
                   : currentStep > 2
-                  ? 'bg-[#C9A227] text-white'
-                  : 'bg-[#121826] text-[#6B7280]'
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-200 text-gray-400'
               }`}>
                 2
               </div>
-              <span className={`text-base font-medium ${currentStep >= 2 ? 'text-[#E5E7EB]' : 'text-[#6B7280]'}`}>
+              <span className={`text-base font-medium ${currentStep >= 2 ? 'text-gray-900' : 'text-gray-400'}`}>
                 AI Review
               </span>
             </button>
@@ -246,12 +246,12 @@ Funding Needed: ₹${formData.funding_needed}
             >
               <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg transition-all ${
                 currentStep === 3 
-                  ? 'bg-[#E31B23] text-white shadow-lg glow-red' 
-                  : 'bg-[#121826] text-[#6B7280]'
+                  ? 'bg-[#E31B23] text-white shadow-sm' 
+                  : 'bg-gray-200 text-gray-400'
               }`}>
                 3
               </div>
-              <span className={`text-base font-medium ${currentStep >= 3 ? 'text-[#E5E7EB]' : 'text-[#6B7280]'}`}>
+              <span className={`text-base font-medium ${currentStep >= 3 ? 'text-gray-900' : 'text-gray-400'}`}>
                 Find Investors
               </span>
             </button>
@@ -260,10 +260,10 @@ Funding Needed: ₹${formData.funding_needed}
 
         {/* Step 1: Share Your Idea */}
         {currentStep === 1 && (
-        <Card className="mb-8 glass-card border-0 rounded-3xl overflow-hidden">
-          <CardHeader className="glass border-b border-[#273244]">
-            <CardTitle className="text-xl text-[#E5E7EB]">Step 1: Share Your Idea</CardTitle>
-            <p className="text-sm text-[#9CA3AF] mt-1">Choose voice recording OR video upload (or skip to form)</p>
+        <Card className="mb-8 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+          <CardHeader className="bg-gray-50 border-b border-gray-200">
+            <CardTitle className="text-xl text-gray-900">Step 1: Share Your Idea</CardTitle>
+            <p className="text-sm text-gray-600 mt-1">Choose voice recording OR video upload (or skip to form)</p>
           </CardHeader>
           <CardContent className="p-6">
             {/* Common Fields */}
@@ -595,7 +595,7 @@ Funding Needed: ₹${formData.funding_needed}
         )}
 
         {/* My Pitches */}
-        <h2 className="text-2xl font-bold text-[#E5E7EB] mb-4">My Submitted Pitches</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">My Submitted Pitches</h2>
         <div className="space-y-4">
           <AnimatePresence>
             {isLoading ? (

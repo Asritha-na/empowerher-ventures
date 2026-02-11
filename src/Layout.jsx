@@ -63,12 +63,10 @@ function LayoutInner({ children, currentPageName, user }) {
     : getEntrepreneurNavItems(t);
 
   return (
-    <div className="min-h-screen flex bg-[#0B0F14]">
+    <div className="min-h-screen flex bg-[#FAFAFA]">
       <style>{`
         :root {
           --color-primary: #E31B23;
-          --color-secondary: #C9A227;
-          --color-accent: #4F46E5;
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -79,10 +77,10 @@ function LayoutInner({ children, currentPageName, user }) {
           height: 8px;
         }
         ::-webkit-scrollbar-track {
-          background: #121826;
+          background: #F3F4F6;
         }
         ::-webkit-scrollbar-thumb {
-          background: #273244;
+          background: #D1D5DB;
           border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
@@ -91,20 +89,20 @@ function LayoutInner({ children, currentPageName, user }) {
       `}</style>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#0B0F14] border-b border-[#273244] flex items-center justify-between px-4 z-50">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-50 shadow-sm">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl overflow-hidden border border-[#273244] shadow-sm">
+          <div className="w-9 h-9 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
               alt="Shakti Logo" 
               className="w-full h-full object-cover"
             />
           </div>
-          <span className="font-bold text-[#E5E7EB]">Shakti</span>
+          <span className="font-bold text-gray-900">Shakti</span>
         </div>
         <button 
           onClick={() => setMobileOpen(!mobileOpen)} 
-          className="p-2 text-[#9CA3AF] hover:text-[#E31B23] transition-colors"
+          className="p-2 text-gray-500 hover:text-[#E31B23] transition-colors"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -120,13 +118,13 @@ function LayoutInner({ children, currentPageName, user }) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed md:static top-0 left-0 h-full w-64 bg-[#0B0F14] border-r border-[#273244] z-50 transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 h-full w-64 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300 shadow-sm ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         <div className="p-5">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#273244] glow-red">
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/f64248ae0_WhatsAppImage2026-02-10at1233471.jpeg" 
                 alt="Shakti Logo" 
@@ -134,8 +132,8 @@ function LayoutInner({ children, currentPageName, user }) {
               />
             </div>
             <div>
-              <span className="font-bold text-[#E5E7EB] text-lg">Shakti</span>
-              <p className="text-xs text-[#9CA3AF]">Empowering Women</p>
+              <span className="font-bold text-gray-900 text-lg">Shakti</span>
+              <p className="text-xs text-gray-500">Empowering Women</p>
             </div>
           </div>
 
@@ -149,11 +147,11 @@ function LayoutInner({ children, currentPageName, user }) {
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-[#E31B23] text-white glow-red"
-                      : "text-[#9CA3AF] hover:bg-[#121826] hover:text-[#E5E7EB]"
+                      ? "bg-[#E31B23] text-white shadow-sm"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   }`}
                 >
-                  <item.icon className={`w-5 h-5 ${isActive ? "text-white" : "text-[#6B7280]"}`} />
+                  <item.icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-400"}`} />
                   {item.name}
                 </Link>
               );

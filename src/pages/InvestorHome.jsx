@@ -40,7 +40,7 @@ export default function InvestorHome() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8 bg-[#0B0F14]">
+    <div className="min-h-screen p-4 md:p-8 bg-[#FAFAFA]">
 
       {/* Language Selector - Fixed Top Right */}
       <div className="fixed top-6 right-6 z-50">
@@ -50,10 +50,10 @@ export default function InvestorHome() {
 <div className="max-w-7xl mx-auto">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#E5E7EB] mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             {t("welcomeBack")}, {user?.full_name?.split(" ")[0] || "Investor"}
           </h1>
-          <p className="text-[#9CA3AF] text-lg">{t("discoverInvest")}</p>
+          <p className="text-gray-600 text-lg">{t("discoverInvest")}</p>
         </div>
 
         {/* Stats Grid */}
@@ -65,13 +65,13 @@ export default function InvestorHome() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
             >
-              <Card className="glass-card border-none hover:shadow-xl transition-all">
+              <Card className="bg-white border border-gray-200 hover:shadow-md transition-all card-hover">
                 <CardContent className="p-6">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4`}>
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4 shadow-sm`}>
                     <stat.icon className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-3xl font-bold text-[#E5E7EB] mb-1">{stat.value}</p>
-                  <p className="text-sm text-[#9CA3AF]">{stat.label}</p>
+                  <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
+                  <p className="text-sm text-gray-600">{stat.label}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -90,26 +90,30 @@ export default function InvestorHome() {
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card className="border-none shadow-md bg-gradient-to-br from-[#E31B23] to-[#C9161D] text-white glow-red">
+          <Card className="border border-gray-200 shadow-sm bg-gradient-to-br from-gray-50 to-white hover:shadow-md transition-all">
             <CardContent className="p-8">
-              <Search className="w-12 h-12 mb-4" />
-              <h3 className="text-2xl font-bold mb-2">{t("explorePitches")}</h3>
-              <p className="mb-6 text-white/90">{t("browseInnovative")}</p>
+              <div className="w-14 h-14 rounded-xl bg-[#E31B23] flex items-center justify-center mb-4 shadow-sm">
+                <Search className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-gray-900">{t("explorePitches")}</h3>
+              <p className="mb-6 text-gray-600">{t("browseInnovative")}</p>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button variant="secondary" className="bg-white text-[#E31B23] hover:bg-gray-50">
+                <Button className="bg-[#E31B23] hover:bg-[#C9161D] text-white">
                   {t("viewAllPitches")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-md bg-gradient-to-br from-[#4F46E5] to-[#4338CA] text-white">
+          <Card className="border border-gray-200 shadow-sm bg-gradient-to-br from-gray-50 to-white hover:shadow-md transition-all">
             <CardContent className="p-8">
-              <Briefcase className="w-12 h-12 mb-4" />
-              <h3 className="text-2xl font-bold mb-2">{t("myPortfolio")}</h3>
-              <p className="mb-6 text-white/90">{t("trackInvestments")}</p>
+              <div className="w-14 h-14 rounded-xl bg-gray-900 flex items-center justify-center mb-4 shadow-sm">
+                <Briefcase className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-gray-900">{t("myPortfolio")}</h3>
+              <p className="mb-6 text-gray-600">{t("trackInvestments")}</p>
               <Link to={createPageUrl("InvestorPortfolio")}>
-                <Button variant="secondary" className="bg-white text-[#4F46E5] hover:bg-gray-50">
+                <Button className="bg-gray-900 hover:bg-gray-800 text-white">
                   {t("viewPortfolio")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -118,52 +122,54 @@ export default function InvestorHome() {
         </div>
 
         {/* My Watchlist Section */}
-        <Card className="border-none shadow-md bg-gradient-to-br from-[#C9A227] to-[#A68A1E] text-white glow-gold mb-8">
+        <Card className="border border-gray-200 shadow-sm bg-white mb-8">
           <CardContent className="p-8">
             <div className="flex items-center gap-3 mb-6">
-              <Star className="w-12 h-12" />
+              <div className="w-14 h-14 rounded-xl bg-amber-50 flex items-center justify-center">
+                <Star className="w-7 h-7 text-amber-500" />
+              </div>
               <div>
-                <h2 className="text-2xl font-bold">My Watchlist</h2>
-                <p className="text-white/90">Track opportunities and manage follow-ups</p>
+                <h2 className="text-2xl font-bold text-gray-900">My Watchlist</h2>
+                <p className="text-gray-600">Track opportunities and manage follow-ups</p>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
               <WatchlistManager investorEmail={user?.email} />
             </div>
           </CardContent>
         </Card>
 
         {/* Recent Pitches */}
-        <Card className="glass-card border-none">
+        <Card className="bg-white border border-gray-200 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-[#E5E7EB]">{t("recentPitches")}</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t("recentPitches")}</h2>
               <Link to={createPageUrl("InvestorPitches")}>
-                <Button variant="ghost" className="text-[#E31B23]">
+                <Button variant="ghost" className="text-[#E31B23] hover:bg-red-50">
                   {t("viewAll")} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
             <div className="space-y-4">
               {pitches.slice(0, 3).map((pitch) => (
-                <div key={pitch.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-[#1A2233] transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E31B23] to-[#C9161D] flex items-center justify-center text-white font-bold">
+                <div key={pitch.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E31B23] to-[#C9161D] flex items-center justify-center text-white font-bold shadow-sm">
                     {pitch.created_by?.charAt(0)?.toUpperCase() || "?"}
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-[#E5E7EB]">{pitch.title}</h4>
-                    <p className="text-sm text-[#9CA3AF]">{pitch.category}</p>
+                    <h4 className="font-semibold text-gray-900">{pitch.title}</h4>
+                    <p className="text-sm text-gray-500">{pitch.category}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-[#E5E7EB]">
+                    <p className="text-sm font-medium text-gray-900">
                       {pitch.funding_needed ? `₹${pitch.funding_needed.toLocaleString()}` : "N/A"}
                     </p>
-                    <p className="text-xs text-[#9CA3AF]">Funding needed</p>
+                    <p className="text-xs text-gray-500">Funding needed</p>
                   </div>
                 </div>
               ))}
               {pitches.length === 0 && (
-                <p className="text-center text-[#6B7280] py-8">{t("noPitchesAvailable")}</p>
+                <p className="text-center text-gray-500 py-8">{t("noPitchesAvailable")}</p>
               )}
             </div>
           </CardContent>
