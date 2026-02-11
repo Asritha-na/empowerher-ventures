@@ -190,7 +190,7 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   // Public pages (no sidebar/layout)
-  if (currentPageName === "Home" || currentPageName === "Landing") {
+  if (currentPageName === "Landing") {
     return children;
   }
 
