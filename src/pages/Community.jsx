@@ -125,7 +125,7 @@ export default function CoFounderConnect() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-gray-100"
+                  className="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all"
                 >
                   <div className="p-5">
                     <div className="flex items-start justify-between mb-3">
@@ -183,7 +183,7 @@ export default function CoFounderConnect() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-gray-100"
+                  className="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all"
                 >
                   {/* Profile Image with Badge */}
                   <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100">

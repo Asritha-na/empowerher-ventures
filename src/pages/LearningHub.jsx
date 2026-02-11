@@ -249,21 +249,21 @@ export default function LearningHub() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header Section - Exact Match */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
             <GraduationCap className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-rose-500">Learning Hub</h1>
+            <h1 className="text-3xl font-bold text-indigo-900">Learning Hub</h1>
             <p className="text-gray-500 text-sm">Master the skills you need to build and grow your business</p>
           </div>
         </div>
 
         {/* Multilingual Learning Banner */}
-        <div className="bg-gradient-to-r from-pink-500 via-rose-500 to-orange-400 rounded-2xl p-6 mb-8">
+        <div className="bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-700 rounded-2xl p-6 mb-8">
           <div className="flex items-start gap-3">
             <Languages className="w-6 h-6 text-white shrink-0 mt-0.5" />
             <div>
@@ -281,8 +281,8 @@ export default function LearningHub() {
               onClick={() => setSelectedTopic(topic.id)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                 selectedTopic === topic.id
-                  ? "bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-md"
-                  : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
+                  ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
+                  : "glass-card text-gray-600 hover:bg-gray-50"
               }`}
             >
               {topic.label}
@@ -296,8 +296,8 @@ export default function LearningHub() {
             onClick={() => setViewMode("videos")}
             className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${
               viewMode === "videos"
-                ? "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-md"
-                : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
+                ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
+                : "glass-card text-gray-600 hover:bg-gray-50"
             }`}
           >
             Individual Videos
@@ -306,8 +306,8 @@ export default function LearningHub() {
             onClick={() => setViewMode("playlists")}
             className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${
               viewMode === "playlists"
-                ? "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-md"
-                : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
+                ? "bg-gradient-to-r from-indigo-900 to-blue-800 text-white shadow-md"
+                : "glass-card text-gray-600 hover:bg-gray-50"
             }`}
           >
             Course Playlists
@@ -375,7 +375,7 @@ export default function LearningHub() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
+                  className="group glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300"
                 >
                   <a href={video.url} target="_blank" rel="noopener noreferrer">
                     <div className="relative aspect-video overflow-hidden bg-gray-100">
