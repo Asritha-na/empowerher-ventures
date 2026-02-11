@@ -84,10 +84,10 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-md">
+          <div className="w-12 h-12 rounded-2xl bg-[#8B1E1E] flex items-center justify-center shadow-md">
             <User className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -112,7 +112,7 @@ export default function Profile() {
                   className="w-28 h-28 rounded-3xl object-cover shadow-lg"
                 />
               ) : (
-                <div className="w-28 h-28 rounded-3xl gradient-primary flex items-center justify-center shadow-lg">
+                <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center shadow-lg">
                   <span className="text-4xl font-bold text-white">
                     {user?.full_name?.charAt(0)?.toUpperCase() || "?"}
                   </span>
@@ -233,7 +233,7 @@ export default function Profile() {
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full gradient-primary hover:opacity-90 rounded-xl h-12 text-base"
+                className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 text-base shadow-md"
               >
                 {saving ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -255,13 +255,13 @@ export default function Profile() {
           </Card>
 
           {/* Toll-Free Support */}
-          <Card className="glass-card rounded-2xl mt-6">
+          <Card className="glass-card mt-6">
             <CardContent className="p-6 text-center">
-              <div className="w-16 h-16 rounded-full gradient-primary flex items-center justify-center mx-auto mb-4 shadow-md">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center mx-auto mb-4 shadow-md">
                 <PhoneCall className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">{t("tollFreeSupport")}</h3>
-              <p className="text-4xl font-bold text-[#DC586D] mb-2">1800-123-123</p>
+              <p className="text-4xl font-bold text-[#8B1E1E] mb-2">1800-123-123</p>
               <p className="text-sm text-gray-600">{t("available24x7")}</p>
             </CardContent>
           </Card>

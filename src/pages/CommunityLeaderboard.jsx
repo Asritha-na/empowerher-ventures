@@ -80,7 +80,7 @@ export default function CommunityLeaderboard() {
   const badges = getBadges(t);
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -110,7 +110,7 @@ export default function CommunityLeaderboard() {
         </div>
 
         {/* Leaderboard Section */}
-        <div className="gradient-depth rounded-3xl p-8 shadow-xl">
+        <div className="bg-gradient-to-br from-[#B94B5A] to-[#D8707C] rounded-3xl p-8 shadow-xl">
           <div className="flex items-center gap-3 mb-6 text-white">
             <Trophy className="w-8 h-8" />
             <h2 className="text-2xl font-bold">{t("topEntrepreneursThisMonth")}</h2>

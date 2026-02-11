@@ -40,7 +40,7 @@ export default function InvestorHome() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
 
       {/* Language Selector - Fixed Top Right */}
       <div className="fixed top-6 right-6 z-50">

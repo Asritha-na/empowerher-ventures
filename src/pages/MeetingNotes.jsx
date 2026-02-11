@@ -76,10 +76,10 @@ Be warm, supportive, and use simple language. Remember this person may not have 
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-md">
+          <div className="w-12 h-12 rounded-2xl bg-[#8B1E1E] flex items-center justify-center shadow-md">
             <Brain className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -140,7 +140,7 @@ Be warm, supportive, and use simple language. Remember this person may not have 
                     <Button
                       onClick={() => analyzePitch(pitch)}
                       disabled={isAnalyzing && selectedPitch === pitch.id}
-                      className="gradient-primary hover:opacity-90 rounded-xl"
+                      className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl shadow-md"
                     >
                       {isAnalyzing && selectedPitch === pitch.id ? (
                         <>
@@ -176,11 +176,11 @@ Be warm, supportive, and use simple language. Remember this person may not have 
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="mt-5 glass rounded-2xl p-6 space-y-4 border border-[#DC586D]/20"
+                      className="mt-5 glass-card p-6 space-y-4"
                     >
                       {/* Score */}
                       <div className="flex items-center gap-3">
-                        <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center shadow-md">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center shadow-md">
                           <span className="text-2xl font-bold text-white">{feedback.overall_score}</span>
                         </div>
                         <div>

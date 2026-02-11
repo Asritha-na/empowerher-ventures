@@ -55,12 +55,12 @@ import Home from './pages/Home';
 import InvestorHome from './pages/InvestorHome';
 import InvestorPitches from './pages/InvestorPitches';
 import InvestorPortfolio from './pages/InvestorPortfolio';
+import Landing from './pages/Landing';
 import LearningHub from './pages/LearningHub';
 import MeetingNotes from './pages/MeetingNotes';
 import MyIdea from './pages/MyIdea';
 import Profile from './pages/Profile';
 import RoleSelect from './pages/RoleSelect';
-import Landing from './pages/Landing';
 import __Layout from './Layout.jsx';
 
 
@@ -73,12 +73,12 @@ export const PAGES = {
     "InvestorHome": InvestorHome,
     "InvestorPitches": InvestorPitches,
     "InvestorPortfolio": InvestorPortfolio,
+    "Landing": Landing,
     "LearningHub": LearningHub,
     "MeetingNotes": MeetingNotes,
     "MyIdea": MyIdea,
     "Profile": Profile,
     "RoleSelect": RoleSelect,
-    "Landing": Landing,
 }
 
 export const pagesConfig = {

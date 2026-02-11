@@ -63,11 +63,11 @@ export default function Appointments() {
   });
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-[#8B1E1E] flex items-center justify-center shadow-md">
               <Calendar className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -77,7 +77,7 @@ export default function Appointments() {
           </div>
           <Button
             onClick={() => setShowForm(true)}
-            className="gradient-primary hover:opacity-90 rounded-xl h-12 px-6"
+            className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-6 shadow-md"
           >
             <Plus className="w-4 h-4 mr-2" />
             New Meeting
@@ -138,7 +138,7 @@ export default function Appointments() {
               <Button
                 onClick={() => createMutation.mutate(form)}
                 disabled={!form.title || !form.date || !form.time || createMutation.isPending}
-                className="w-full gradient-primary hover:opacity-90 rounded-xl h-12"
+                className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
               >
                 {createMutation.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />

@@ -187,7 +187,7 @@ Funding Needed: ₹${formData.funding_needed}
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #F5E6EA 0%, #FCF8F9 100%)'}}>
+    <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
 
       <div className="max-w-5xl mx-auto">
         {/* Header */}
@@ -306,9 +306,9 @@ Funding Needed: ₹${formData.funding_needed}
 
               {/* Option 1: Voice Recording */}
               <TabsContent value="voice" className="space-y-6">
-                <div className="glass rounded-2xl p-6 border-2 border-dashed border-[#DC586D]/30">
+                <div className="glass-card p-6 border-2 border-dashed border-[#E79A9A]/50">
                   <div className="flex items-center gap-2 mb-3">
-                    <Mic className="w-5 h-5 text-[#DC586D]" />
+                    <Mic className="w-5 h-5 text-[#8B1E1E]" />
                     <h3 className="font-semibold text-gray-900">Option 1: Record Your Pitch (Voice)</h3>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">Perfect for quick ideas - just speak naturally!</p>
@@ -327,7 +327,7 @@ Funding Needed: ₹${formData.funding_needed}
                     <Button
                       onClick={refinePitch}
                       disabled={isRefining}
-                      className="gradient-primary hover:opacity-90 rounded-xl h-12 px-6"
+                      className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-6 shadow-md"
                     >
                       {isRefining ? (
                         <>
@@ -348,9 +348,9 @@ Funding Needed: ₹${formData.funding_needed}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="glass rounded-2xl p-6 border border-[#DC586D]/20"
+                    className="glass-card p-6"
                   >
-                    <h3 className="font-semibold text-[#A33757] mb-3 flex items-center gap-2">
+                    <h3 className="font-semibold text-[#8B1E1E] mb-3 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" /> AI-Refined Pitch
                     </h3>
                     <div className="text-gray-700 whitespace-pre-wrap text-sm leading-relaxed">
@@ -359,7 +359,7 @@ Funding Needed: ₹${formData.funding_needed}
                     <Button
                       onClick={submitVoicePitch}
                       disabled={createMutation.isPending}
-                      className="mt-4 gradient-primary hover:opacity-90 rounded-xl h-12 px-8"
+                      className="mt-4 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-8 shadow-md"
                     >
                       {createMutation.isPending ? (
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -374,16 +374,16 @@ Funding Needed: ₹${formData.funding_needed}
 
               {/* Option 2: Video Upload */}
               <TabsContent value="video" className="space-y-6">
-                <div className="glass rounded-2xl p-8 border-2 border-dashed border-[#DC586D]/30 text-center">
+                <div className="glass-card p-8 border-2 border-dashed border-[#E79A9A]/50 text-center">
                   <div className="flex items-center justify-center gap-2 mb-3">
-                    <Video className="w-5 h-5 text-[#DC586D]" />
+                    <Video className="w-5 h-5 text-[#8B1E1E]" />
                     <h3 className="font-semibold text-gray-900">Option 2: Upload a Pitch Video</h3>
                   </div>
                   <p className="text-sm text-gray-600 mb-6">Show your product, demonstrate your idea, or present yourself!</p>
                   
                   <div className="mb-6">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-xl glass flex items-center justify-center border border-[#DC586D]/30">
-                      <Video className="w-10 h-10 text-[#DC586D]" />
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl glass-card flex items-center justify-center">
+                      <Video className="w-10 h-10 text-[#8B1E1E]" />
                     </div>
                     <p className="text-gray-700 font-medium mb-2">Click to upload your pitch video</p>
                     <p className="text-sm text-gray-400">MP4, MOV, AVI up to 100MB</p>
@@ -396,7 +396,7 @@ Funding Needed: ₹${formData.funding_needed}
                       onChange={handleVideoUpload}
                       className="hidden"
                     />
-                    <span className="inline-flex items-center gap-2 gradient-primary text-white font-medium px-6 py-3 rounded-xl cursor-pointer hover:opacity-90">
+                    <span className="inline-flex items-center gap-2 bg-[#8B1E1E] text-white font-medium px-6 py-3 cursor-pointer hover:opacity-90 shadow-md" style={{ borderRadius: '16px' }}>
                       <Upload className="w-4 h-4" />
                       Choose Video File
                     </span>
@@ -413,7 +413,7 @@ Funding Needed: ₹${formData.funding_needed}
                   <Button
                     onClick={submitVideoPitch}
                     disabled={isUploading || createMutation.isPending}
-                    className="w-full gradient-primary hover:opacity-90 rounded-xl h-12"
+                    className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
                   >
                     {isUploading || createMutation.isPending ? (
                       <>
@@ -432,9 +432,9 @@ Funding Needed: ₹${formData.funding_needed}
 
               {/* Option 3: Form */}
               <TabsContent value="form" className="space-y-4">
-                <div className="glass rounded-2xl p-6 border-2 border-dashed border-[#DC586D]/30">
+                <div className="glass-card p-6 border-2 border-dashed border-[#E79A9A]/50">
                   <div className="flex items-center gap-2 mb-3">
-                    <FileEdit className="w-5 h-5 text-[#DC586D]" />
+                    <FileEdit className="w-5 h-5 text-[#8B1E1E]" />
                     <h3 className="font-semibold text-gray-900">Skip Recording - Fill Form Directly</h3>
                   </div>
                   <p className="text-sm text-gray-600 mb-6">You can submit your idea without recording</p>
@@ -496,7 +496,7 @@ Funding Needed: ₹${formData.funding_needed}
                     <Button
                       onClick={submitFormPitch}
                       disabled={createMutation.isPending || !formData.problem || !formData.solution}
-                      className="w-full gradient-primary hover:opacity-90 rounded-xl h-12"
+                      className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
                     >
                       {createMutation.isPending ? (
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -515,15 +515,15 @@ Funding Needed: ₹${formData.funding_needed}
 
         {/* Step 2: AI Review */}
         {currentStep === 2 && submittedPitch && (
-        <Card className="mb-8 glass-card rounded-2xl overflow-hidden shadow-md">
-          <CardHeader className="glass border-b border-[#DC586D]/20">
+        <Card className="mb-8 glass-card overflow-hidden shadow-md">
+          <CardHeader className="glass-card border-b border-gray-200">
             <CardTitle className="text-xl text-gray-900">Step 2: AI Review & Feedback</CardTitle>
             <p className="text-sm text-gray-600 mt-1">Get expert AI analysis of your pitch</p>
           </CardHeader>
           <CardContent className="p-6">
             <div className="space-y-6">
-              <div className="glass rounded-2xl p-6 border border-[#DC586D]/20">
-                <h3 className="font-semibold text-[#A33757] mb-3 flex items-center gap-2">
+              <div className="glass-card p-6">
+                <h3 className="font-semibold text-[#8B1E1E] mb-3 flex items-center gap-2">
                   <Sparkles className="w-5 h-5" /> Your Pitch: {submittedPitch.title}
                 </h3>
                 {submittedPitch.structured_pitch && (
@@ -550,7 +550,7 @@ Funding Needed: ₹${formData.funding_needed}
                 </Button>
                 <Button
                   onClick={() => setCurrentStep(3)}
-                  className="flex-1 gradient-primary hover:opacity-90 rounded-xl h-12"
+                  className="flex-1 bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 shadow-md"
                 >
                   Continue to Find Investors →
                 </Button>
@@ -562,14 +562,14 @@ Funding Needed: ₹${formData.funding_needed}
 
         {/* Step 3: Find Investors */}
         {currentStep === 3 && (
-        <Card className="mb-8 glass-card rounded-2xl overflow-hidden shadow-md">
-          <CardHeader className="glass border-b border-[#DC586D]/20">
+        <Card className="mb-8 glass-card overflow-hidden shadow-md">
+          <CardHeader className="glass-card border-b border-gray-200">
             <CardTitle className="text-xl text-gray-900">Step 3: Find Investors</CardTitle>
             <p className="text-sm text-gray-600 mt-1">Connect with investors who can fund your idea</p>
           </CardHeader>
           <CardContent className="p-6">
             <div className="text-center py-8">
-              <div className="w-20 h-20 mx-auto mb-4 rounded-full gradient-primary flex items-center justify-center shadow-md">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#B94B5A] to-[#D8707C] flex items-center justify-center shadow-md">
                 <Users className="w-10 h-10 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Find Investors?</h3>
@@ -584,7 +584,7 @@ Funding Needed: ₹${formData.funding_needed}
                 </Button>
                 <Button
                   onClick={() => window.location.href = createPageUrl("FindInvestors")}
-                  className="gradient-primary hover:opacity-90 rounded-xl h-12 px-8"
+                  className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl h-12 px-8 shadow-md"
                 >
                   Browse Investors →
                 </Button>
