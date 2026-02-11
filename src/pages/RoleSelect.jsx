@@ -99,8 +99,8 @@ export default function RoleSelect() {
           <Button
             onClick={() => window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")}
             variant="outline"
-            size="lg"
-            className="rounded-full border-2 border-purple-500 text-white hover:bg-purple-900/30 px-8 py-6 text-base">
+            size="lg" className="bg-amber-900 text-white px-8 py-6 text-base font-medium rounded-full inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 shadow-sm hover:text-accent-foreground h-12 border-2 border-purple-500 hover:bg-purple-900/30">
+
 
             <PlayCircle className="w-5 h-5 mr-2" />
             {t("watchDemo")}
