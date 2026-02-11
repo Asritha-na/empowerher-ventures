@@ -8,10 +8,14 @@ import LanguageSelector from "@/components/LanguageSelector";
 import RoleSelectBot from "@/components/RoleSelectBot";
 import VoiceAccessibilityAssistant from "@/components/VoiceAccessibilityAssistant";
 import { Button } from "@/components/ui/button";
+import StickySearchBar from "../components/role-select/StickySearchBar";
+import ServiceTiles from "../components/role-select/ServiceTiles";
 
 export default function RoleSelect() {
   const [loading, setLoading] = useState(false);
   const { t } = useLanguage();
+  const handleLogin = () => base44.auth.redirectToLogin(createPageUrl("Dashboard"));
+  const scrollTo = (id) => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); };
 
   const selectRole = async (role) => {
     setLoading(true);
@@ -47,10 +51,22 @@ export default function RoleSelect() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-rose-500/10 blur-3xl" />
       </div>
 
-      {/* Language Selector */}
-      <div className="absolute top-6 right-6 z-50">
-        <div className="glass-card px-4 py-2 rounded-full border border-white/20">
-          <LanguageSelector />
+      {/* Top Navigation */}
+      <div className="absolute top-0 left-0 right-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-full bg-[#E31B23] flex items-center justify-center text-white font-bold">S</div>
+            <span className="font-semibold text-white">Shakti</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button onClick={handleLogin} className="text-white/90 hover:text-white text-sm">Log In</button>
+            <Button onClick={handleLogin} className="bg-white text-[#8B1E1E] hover:bg-gray-100 rounded-full h-9 px-4">Get Started</Button>
+            <div className="hidden md:block">
+              <div className="glass-card px-3 py-1.5 rounded-full border border-white/20">
+                <LanguageSelector />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -71,7 +87,12 @@ export default function RoleSelect() {
           </p>
         </motion.div>
 
-        {/* Success Stories Strip */}
+        {/* Central Search / Location */}
+        <div className="max-w-3xl mx-auto mb-8 sticky top-24 z-40">
+          <StickySearchBar />
+        </div>
+
+         {/* Success Stories Strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -180,9 +201,14 @@ export default function RoleSelect() {
             Learn how Shakti empowers women entrepreneurs
           </p>
         </motion.div>
-      </div>
 
-      {/* AI Language Bot */}
+        {/* Features Grid */}
+        <section id="features" className="mt-12">
+          <ServiceTiles />
+        </section>
+        </div>
+
+        {/* AI Language Bot */}
       <RoleSelectBot />
 
       {/* Voice Accessibility Assistant */}
