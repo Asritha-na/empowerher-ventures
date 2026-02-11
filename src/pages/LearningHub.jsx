@@ -456,7 +456,7 @@ export default function LearningHub() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                    className="glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300"
                   >
                     <div className="relative aspect-video overflow-hidden bg-gray-100">
                       <img
@@ -491,7 +491,7 @@ export default function LearningHub() {
                         href={playlist.playlistUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-semibold py-3 rounded-xl transition-all mb-3"
+                        className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all mb-3"
                       >
                         <Play className="w-5 h-5" />
                         Watch Course

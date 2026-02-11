@@ -76,10 +76,10 @@ Be warm, supportive, and use simple language. Remember this person may not have 
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
             <Brain className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -117,7 +117,7 @@ Be warm, supportive, and use simple language. Remember this person may not have 
         ) : (
           <div className="space-y-4">
             {pitches.map((pitch) => (
-              <Card key={pitch.id} className="rounded-2xl shadow-sm border border-gray-100">
+              <Card key={pitch.id} className="glass-card rounded-2xl">
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
@@ -140,7 +140,7 @@ Be warm, supportive, and use simple language. Remember this person may not have 
                     <Button
                       onClick={() => analyzePitch(pitch)}
                       disabled={isAnalyzing && selectedPitch === pitch.id}
-                      className="bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 rounded-xl"
+                      className="bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 rounded-xl"
                     >
                       {isAnalyzing && selectedPitch === pitch.id ? (
                         <>

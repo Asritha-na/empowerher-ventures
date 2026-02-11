@@ -63,11 +63,11 @@ export default function Appointments() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-900 to-blue-800 flex items-center justify-center">
               <Calendar className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -77,7 +77,7 @@ export default function Appointments() {
           </div>
           <Button
             onClick={() => setShowForm(true)}
-            className="bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 rounded-xl h-12 px-6"
+            className="bg-gradient-to-r from-indigo-900 to-blue-800 hover:from-indigo-800 hover:to-blue-700 rounded-xl h-12 px-6"
           >
             <Plus className="w-4 h-4 mr-2" />
             New Meeting
@@ -169,7 +169,7 @@ export default function Appointments() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
                 >
-                  <Card className="rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <Card className="glass-card rounded-2xl hover:shadow-md transition-shadow">
                     <CardContent className="p-5">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
