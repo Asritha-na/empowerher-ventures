@@ -203,10 +203,8 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
-  // Wait for auth check
-  if (loading) {
-    return null;
-  }
+  // Wait for auth check (avoid loops)
+  if (loading) return null;
 
   // Redirect to public Home if not authenticated
   if (!user) {

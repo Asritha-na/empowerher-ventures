@@ -5,19 +5,17 @@ import { Loader2 } from "lucide-react";
 
 export default function Dashboard() {
   useEffect(() => {
-    let mounted = true;
     base44.auth.me().then((user) => {
-      if (!mounted) return;
       if (!user) {
-        window.location.href = createPageUrl("Home");
+        base44.auth.redirectToLogin(createPageUrl("Profile"));
         return;
       }
+      // After login and profile completion, route to appropriate dashboard
       const target = user.user_role === "investor" ? "InvestorHome" : "MyIdea";
       window.location.href = createPageUrl(target);
     }).catch(() => {
-      window.location.href = createPageUrl("Home");
+      base44.auth.redirectToLogin(createPageUrl("Profile"));
     });
-    return () => { mounted = false; };
   }, []);
 
   return (
