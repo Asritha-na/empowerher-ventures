@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, MapPin, Users, Briefcase } from "lucide-react";
+import { ShieldCheck, MapPin, Users, Briefcase, Mail, Phone } from "lucide-react";
 
 export default function InvestorConnect() {
   const [user, setUser] = useState(null);
@@ -27,19 +27,125 @@ export default function InvestorConnect() {
     },
   });
 
+  const queryClient = useQueryClient();
+
+  const { data: allInvestorEntities = [] } = useQuery({
+    queryKey: ["all-investor-entities"],
+    queryFn: () => base44.entities.Investor.list("-created_date", 500),
+  });
+
+  const selfUserId = user?.id;
+  const selfInvestorId = myInvestor?.id;
+
+  const { data: connsAUser = [] } = useQuery({
+    queryKey: ["invconns-a-user", selfUserId],
+    enabled: !!selfUserId,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: selfUserId, status: 'connected' }, "-created_date", 500),
+  });
+  const { data: connsBUser = [] } = useQuery({
+    queryKey: ["invconns-b-user", selfUserId],
+    enabled: !!selfUserId,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: selfUserId, status: 'connected' }, "-created_date", 500),
+  });
+  const { data: connsAInv = [] } = useQuery({
+    queryKey: ["invconns-a-inv", selfInvestorId],
+    enabled: !!selfInvestorId,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: selfInvestorId, status: 'connected' }, "-created_date", 500),
+  });
+  const { data: connsBInv = [] } = useQuery({
+    queryKey: ["invconns-b-inv", selfInvestorId],
+    enabled: !!selfInvestorId,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: selfInvestorId, status: 'connected' }, "-created_date", 500),
+  });
+
+  const allConns = [...connsAUser, ...connsBUser, ...connsAInv, ...connsBInv];
+
+  React.useEffect(() => {
+    const unsub = base44.entities.InvestorConnection.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["invconns-a-user", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-b-user", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-a-inv", selfInvestorId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-b-inv", selfInvestorId] });
+    });
+    return unsub;
+  }, [selfUserId, selfInvestorId, queryClient]);
+
   const connectMutation = useMutation({
-    mutationFn: async (targetInvestor) => {
-      const selfId = myInvestor?.id || (investors.find(i => i.email === user?.email)?.id) || user?.id;
+    mutationFn: async (targetUser) => {
+      const selfIds = [selfInvestorId, selfUserId].filter(Boolean);
+      const targetInvestor = allInvestorEntities.find(e => e.email === targetUser.email) || null;
+      const targetIds = [targetInvestor?.id, targetUser.id].filter(Boolean);
+
+      if (targetIds.some(id => selfIds.includes(id))) return null; // prevent self-connection
+
+      // Prevent duplicates across all id combinations
+      for (const a of selfIds) {
+        for (const b of targetIds) {
+          const existingAB = await base44.entities.InvestorConnection.filter({ investor_a_id: a, investor_b_id: b, status: 'connected' }, "-created_date", 1);
+          const existingBA = await base44.entities.InvestorConnection.filter({ investor_a_id: b, investor_b_id: a, status: 'connected' }, "-created_date", 1);
+          if ((existingAB?.length || 0) > 0 || (existingBA?.length || 0) > 0) {
+            return null;
+          }
+        }
+      }
+
+      const idA = selfInvestorId && targetInvestor?.id ? selfInvestorId : selfUserId;
+      const idB = selfInvestorId && targetInvestor?.id ? targetInvestor.id : targetUser.id;
+
       return base44.entities.InvestorConnection.create({
-        investor_a_id: selfId,
-        investor_b_id: targetInvestor.id,
+        investor_a_id: idA,
+        investor_b_id: idB,
         timestamp: new Date().toISOString(),
         status: 'connected',
       });
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["invconns-a-user", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-b-user", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-a-inv", selfInvestorId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-b-inv", selfInvestorId] });
+    },
   });
 
-  const visibleInvestors = investors.filter((inv) => inv.id !== user?.id);
+  const disconnectMutation = useMutation({
+    mutationFn: async (targetUser) => {
+      const targetInvestor = allInvestorEntities.find(e => e.email === targetUser.email) || null;
+      const selfIds = [selfInvestorId, selfUserId].filter(Boolean);
+      const targetIds = [targetInvestor?.id, targetUser.id].filter(Boolean);
+
+      for (const a of selfIds) {
+        for (const b of targetIds) {
+          const [existingAB] = await base44.entities.InvestorConnection.filter({ investor_a_id: a, investor_b_id: b, status: 'connected' }, "-created_date", 1);
+          if (existingAB) {
+            await base44.entities.InvestorConnection.delete(existingAB.id);
+            return;
+          }
+          const [existingBA] = await base44.entities.InvestorConnection.filter({ investor_a_id: b, investor_b_id: a, status: 'connected' }, "-created_date", 1);
+          if (existingBA) {
+            await base44.entities.InvestorConnection.delete(existingBA.id);
+            return;
+          }
+        }
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["invconns-a-user", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-b-user", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-a-inv", selfInvestorId] });
+      queryClient.invalidateQueries({ queryKey: ["invconns-b-inv", selfInvestorId] });
+    },
+  });
+
+  const isConnectedTo = (targetUser) => {
+    const targetInvestor = allInvestorEntities.find(e => e.email === targetUser.email) || null;
+    const selfIds = [selfInvestorId, selfUserId].filter(Boolean);
+    const targetIds = [targetInvestor?.id, targetUser.id].filter(Boolean);
+    return allConns.some(c => (selfIds.includes(c.investor_a_id) && targetIds.includes(c.investor_b_id)) || (selfIds.includes(c.investor_b_id) && targetIds.includes(c.investor_a_id)));
+  };
+
+  const visibleInvestors = investors
+    .filter((inv) => inv.id !== user?.id)
+    .filter((inv) => (inv.investor_name || inv.full_name) && (inv.investor_company || inv.investor_bio || inv.investor_location));
 
   // Debug safety: if none found, log all users and their roles (admin only)
   React.useEffect(() => {
@@ -86,69 +192,89 @@ export default function InvestorConnect() {
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visibleInvestors.map((inv) => (
-              <Card key={inv.id} className="glass-card hover:shadow-md transition-all h-full">
-                <CardContent className="p-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="font-bold text-gray-900">{inv.name || inv.email?.split('@')[0]}</h3>
-                      {inv.location && (
-                        <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
-                          <MapPin className="w-3.5 h-3.5" />
-                          <span>{inv.location}</span>
+            {visibleInvestors.map((inv) => {
+              const connected = isConnectedTo(inv);
+              const displayName = inv.investor_name || inv.full_name || (inv.email?.split('@')[0] || 'Investor');
+              const phone = inv.investor_phone;
+              const waMsg = encodeURIComponent(`Hi ${displayName}, I found your profile on Shakti Investor Network and would like to connect with you.`);
+              const waUrl = phone ? `https://wa.me/${phone}?text=${waMsg}` : null;
+              return (
+                <Card key={inv.id} className="glass-card hover:shadow-md transition-all h-full">
+                  <CardContent className="p-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3">
+                        <img src={inv.profile_image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={displayName} className="w-10 h-10 rounded-full object-cover" />
+                        <div>
+                          <h3 className="font-bold text-gray-900">{displayName}</h3>
+                          <p className="text-sm text-gray-600">{inv.investor_company || 'Not provided'}</p>
+                          {(inv.investor_location || inv.location) && (
+                            <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                              <MapPin className="w-3.5 h-3.5" />
+                              <span>{inv.investor_location || inv.location}</span>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1 text-emerald-700">
-                      <ShieldCheck className="w-5 h-5" />
-                      <span className="text-xs font-medium">Verified</span>
-                    </div>
-                  </div>
-
-                  {/* Skills Area */}
-                  {Array.isArray(inv.focus_areas) && inv.focus_areas.length > 0 && (
-                    <div className="mt-4">
-                      <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills Area</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {inv.focus_areas.slice(0, 6).map((fa, idx) => (
-                          <Badge key={idx} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">
-                            {fa}
-                          </Badge>
-                        ))}
+                      </div>
+                      <div className="flex items-center gap-1 text-emerald-700">
+                        <ShieldCheck className="w-5 h-5" />
+                        <span className="text-xs font-medium">Verified</span>
                       </div>
                     </div>
-                  )}
 
-                  {/* Budget Range */}
-                  {(typeof inv.min_investment === 'number' || typeof inv.max_investment === 'number') && (
-                    <div className="mt-4 flex items-center gap-2 text-sm text-gray-700">
-                      <Briefcase className="w-4 h-4" />
-                      <span>
-                        Budget Range: ₹{inv.min_investment?.toLocaleString?.() || 0} - ₹{inv.max_investment?.toLocaleString?.() || 0}
-                      </span>
+                    {Array.isArray(inv.investor_focus_areas) && inv.investor_focus_areas.length > 0 && (
+                      <div className="mt-3">
+                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Investment Focus</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {inv.investor_focus_areas.slice(0, 6).map((fa, idx) => (
+                            <Badge key={idx} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{fa}</Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {inv.investor_bio && (
+                      <p className="mt-3 text-sm text-gray-700 line-clamp-3">{inv.investor_bio}</p>
+                    )}
+
+                    <div className="mt-5 grid grid-cols-2 gap-2">
+                      {connected ? (
+                        <Button
+                          className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
+                          onClick={() => disconnectMutation.mutate(inv)}
+                          disabled={disconnectMutation.isPending}
+                        >
+                          Disconnect
+                        </Button>
+                      ) : (
+                        <Button
+                          className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl"
+                          onClick={() => connectMutation.mutate(inv)}
+                          disabled={connectMutation.isPending}
+                        >
+                          {connectMutation.isPending ? 'Connecting...' : 'Connect'}
+                        </Button>
+                      )}
+
+                      <Button
+                        className="bg-green-600 hover:bg-green-700 text-white rounded-2xl"
+                        onClick={() => waUrl && window.open(waUrl, '_blank')}
+                        disabled={!waUrl}
+                      >
+                        <Phone className="w-4 h-4" /> WhatsApp
+                      </Button>
+
+                      <Button
+                        className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
+                        onClick={() => inv.email && window.open(`mailto:${inv.email}?subject=${encodeURIComponent('Investor Connection Request')}&body=${encodeURIComponent(`Hello ${displayName}, I found your profile on Shakti and would like to connect.`)}`)}
+                        disabled={!inv.email}
+                      >
+                        <Mail className="w-4 h-4" /> Email
+                      </Button>
                     </div>
-                  )}
-
-                  {/* Sections of Interest */}
-                  {(inv.category_label || inv.investor_type) && (
-                    <div className="mt-3 text-sm text-gray-700">
-                      <span className="font-medium">Sections of Interest: </span>
-                      <span className="capitalize">{inv.category_label || inv.investor_type}</span>
-                    </div>
-                  )}
-
-                  <div className="mt-5">
-                    <Button
-                      className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl"
-                      disabled={connectMutation.isPending}
-                      onClick={() => connectMutation.mutate(inv)}
-                    >
-                      {connectMutation.isPending ? 'Connecting...' : 'Connect'}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         )}
       </div>
