@@ -53,7 +53,6 @@ import CommunityLeaderboard from './pages/CommunityLeaderboard';
 import Dashboard from './pages/Dashboard';
 import FindInvestors from './pages/FindInvestors';
 import Home from './pages/Home';
-import InvestorConnect from './pages/InvestorConnect';
 import InvestorHome from './pages/InvestorHome';
 import InvestorPitches from './pages/InvestorPitches';
 import InvestorPortfolio from './pages/InvestorPortfolio';
@@ -63,6 +62,7 @@ import MeetingNotes from './pages/MeetingNotes';
 import MyIdea from './pages/MyIdea';
 import Profile from './pages/Profile';
 import RoleSelect from './pages/RoleSelect';
+import InvestorConnect from './pages/InvestorConnect';
 import __Layout from './Layout.jsx';
 
 
@@ -73,7 +73,6 @@ export const PAGES = {
     "Dashboard": Dashboard,
     "FindInvestors": FindInvestors,
     "Home": Home,
-    "InvestorConnect": InvestorConnect,
     "InvestorHome": InvestorHome,
     "InvestorPitches": InvestorPitches,
     "InvestorPortfolio": InvestorPortfolio,
@@ -83,6 +82,7 @@ export const PAGES = {
     "MyIdea": MyIdea,
     "Profile": Profile,
     "RoleSelect": RoleSelect,
+    "InvestorConnect": InvestorConnect,
 }
 
 export const pagesConfig = {

@@ -54,40 +54,9 @@ export default function InvestorPortfolio() {
     queryFn: () => base44.entities.CrowdFundingCampaign.list(),
   });
 
-  // Data to enrich Connections tab
-  const { data: allPitches = [] } = useQuery({
-    queryKey: ["all-pitches-for-connections"],
-    queryFn: () => base44.entities.Pitch.list("-created_date", 200),
-  });
-  const { data: allMembers = [] } = useQuery({
-    queryKey: ["all-members-for-connections"],
-    queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
-  });
-
-
-
-
-
-
-
-
-
   // Find current investor's data
   const currentInvestor = investors.find((inv) => inv.email === user?.email);
   const connectedEntrepreneurs = currentInvestor?.is_connected || [];
-
-  // Build cards with entrepreneur details from CommunityMember and Pitch
-  const connectionCards = connectedEntrepreneurs.map((email) => {
-    const latestPitch = allPitches.find((p) => p.created_by === email);
-    const member = allMembers.find((m) => m.created_by === email);
-    const name = member?.name || (email || "").split("@")[0].replace(/[._-]/g, " ");
-    const ideaTitle = member?.business_name || latestPitch?.title || "—";
-    const section = latestPitch?.category || member?.business_type || null;
-    const skills = Array.isArray(member?.skills) ? member.skills : [];
-    return { email, name, ideaTitle, section, skills };
-  });
-
-
 
   // Connections count for Active Campaigns (investor-to-investor connections)
   const { data: invConnsA = [] } = useQuery({
@@ -178,16 +147,13 @@ export default function InvestorPortfolio() {
             <TabsTrigger value="overview" className="rounded-lg">{t("overview")}</TabsTrigger>
             <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
             <TabsTrigger value="crowdfunding" className="rounded-lg">Crowd Funding</TabsTrigger>
-            {user?.user_role === "investor" && (
-              <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
-            )}
+            <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
             <TabsTrigger value="activity" className="rounded-lg">{t("activity")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
             {/* Portfolio Performance Chart */}
             <PortfolioPerformance investments={currentInvestor?.investments_made || 0} />
-            <p className="text-xs italic text-gray-500 mt-2">This is a simulated projection to demonstrate potential growth after investor connections.</p>
 
             {/* Stats Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -475,55 +441,39 @@ export default function InvestorPortfolio() {
             )}
           </TabsContent>
 
-          {user?.user_role === "investor" && (
-            <TabsContent value="connections">
-              <Card className="border-none shadow-md">
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">Connections</h2>
-                  {connectionCards.length === 0 ? (
-                    <div className="text-center py-12">
-                      <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-500">You have not connected with any entrepreneurs yet.</p>
-                    </div>
-                  ) : (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {connectionCards.map((c) => (
-                        <Card key={c.email} className="glass-card hover:shadow-md transition-all h-full">
-                          <CardContent className="p-5">
-                            <div className="flex items-start justify-between">
-                              <div>
-                                <h3 className="font-bold text-gray-900">{c.name}</h3>
-                                <p className="text-sm text-gray-600 mt-1">{c.ideaTitle}</p>
-                              </div>
-                              <Badge className="bg-emerald-100 text-emerald-700 text-xs">Connected</Badge>
-                            </div>
-                            {c.skills && c.skills.length > 0 && (
-                              <div className="mt-4">
-                                <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills</p>
-                                <div className="flex flex-wrap gap-1.5">
-                                  {c.skills.slice(0, 6).map((s, i) => (
-                                    <Badge key={i} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{s}</Badge>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                            {c.section && (
-                              <div className="mt-3 text-sm text-gray-700">
-                                <span className="font-medium">Section of Interest: </span>
-                                <span className="capitalize">{c.section}</span>
-                              </div>
-                            )}
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-            )}
+          <TabsContent value="connections">
+            <Card className="border-none shadow-md">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">{t("connectedEntrepreneurs")}</h2>
+                {connectedEntrepreneurs.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">{t("noConnectionsYet")}</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {connectedEntrepreneurs.map((email, i) => (
+                      <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-gray-50">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white font-bold">
+                          {email.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-900">{email}</p>
+                          <p className="text-sm text-gray-500">{t("entrepreneur")}</p>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          <Mail className="w-4 h-4 mr-2" />
+                          {t("contact")}
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-            <TabsContent value="activity">
+          <TabsContent value="activity">
             <Card className="border-none shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">{t("recentActivity")}</h2>
