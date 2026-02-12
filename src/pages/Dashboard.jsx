@@ -32,7 +32,7 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 md:p-8">
-      <div className="gradient-hero rounded-3xl text-white p-8 md:p-12 shadow-lg relative overflow-hidden">
+      <div className="bg-red-400 text-white p-8 rounded-3xl gradient-hero md:p-12 shadow-lg relative overflow-hidden">
         <div className="mb-4">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-300"></span>
@@ -69,6 +69,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
