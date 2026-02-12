@@ -27,6 +27,13 @@ export default function InvestorConnect() {
     },
   });
 
+  // Admin-only: fetch users by app role for consistency check / data source
+  const { data: investorUsers = [], isLoading: isLoadingUsers } = useQuery({
+    queryKey: ["investor-users"],
+    enabled: !!user && (user.role === "admin"),
+    queryFn: () => base44.entities.User.filter({ user_role: "investor" }, "-created_date", 200),
+  });
+
   const connectMutation = useMutation({
     mutationFn: async (targetInvestor) => {
       const selfId = myInvestor?.id || (investors.find(i => i.email === user?.email)?.id) || user?.id;
@@ -91,7 +98,7 @@ export default function InvestorConnect() {
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h3 className="font-bold text-gray-900">{inv.name || inv.email?.split('@')[0]}</h3>
+                      <h3 className="font-bold text-gray-900">{inv.name || inv.full_name || inv.email?.split('@')[0]}</h3>
                       {inv.location && (
                         <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
                           <MapPin className="w-3.5 h-3.5" />
