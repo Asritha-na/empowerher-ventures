@@ -54,9 +54,27 @@ export default function InvestorPortfolio() {
     queryFn: () => base44.entities.CrowdFundingCampaign.list(),
   });
 
+  const { data: allPitches = [] } = useQuery({
+    queryKey: ["all-pitches"],
+    queryFn: () => base44.entities.Pitch.list("-created_date", 200),
+  });
+
   // Find current investor's data
   const currentInvestor = investors.find((inv) => inv.email === user?.email);
   const connectedEntrepreneurs = currentInvestor?.is_connected || [];
+
+  const connectionCards = connectedEntrepreneurs.map((email) => {
+    const pitchesByUser = allPitches.filter((p) => p.created_by === email);
+    const latest = pitchesByUser[0];
+    const displayName = (email || "").split("@")[0].replace(/[._-]/g, " ");
+    return {
+      email,
+      name: displayName,
+      ideaTitle: latest?.title || "—",
+      section: latest?.category || null,
+      skills: [],
+    };
+  });
 
   // Connections count for Active Campaigns (investor-to-investor connections)
   const { data: invConnsA = [] } = useQuery({
@@ -154,6 +172,7 @@ export default function InvestorPortfolio() {
           <TabsContent value="overview" className="space-y-6">
             {/* Portfolio Performance Chart */}
             <PortfolioPerformance investments={currentInvestor?.investments_made || 0} />
+            <p className="text-xs italic text-gray-500 mt-2">This is a simulated projection to demonstrate potential growth after investor connections.</p>
 
             {/* Stats Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -444,28 +463,42 @@ export default function InvestorPortfolio() {
           <TabsContent value="connections">
             <Card className="border-none shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">{t("connectedEntrepreneurs")}</h2>
-                {connectedEntrepreneurs.length === 0 ? (
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Connections</h2>
+                {connectionCards.length === 0 ? (
                   <div className="text-center py-12">
                     <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500">{t("noConnectionsYet")}</p>
+                    <p className="text-gray-500">You have not connected with any entrepreneurs yet.</p>
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {connectedEntrepreneurs.map((email, i) => (
-                      <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-gray-50">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white font-bold">
-                          {email.charAt(0).toUpperCase()}
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">{email}</p>
-                          <p className="text-sm text-gray-500">{t("entrepreneur")}</p>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          <Mail className="w-4 h-4 mr-2" />
-                          {t("contact")}
-                        </Button>
-                      </div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {connectionCards.map((c) => (
+                      <Card key={c.email} className="glass-card hover:shadow-md transition-all">
+                        <CardContent className="p-5">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h3 className="font-bold text-gray-900">{c.name}</h3>
+                              <p className="text-sm text-gray-600 mt-1">{c.ideaTitle}</p>
+                            </div>
+                            <Badge className="bg-emerald-100 text-emerald-700 text-xs">Connected</Badge>
+                          </div>
+                          {c.skills && c.skills.length > 0 && (
+                            <div className="mt-4">
+                              <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills</p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {c.skills.slice(0, 6).map((s, i) => (
+                                  <Badge key={i} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{s}</Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {c.section && (
+                            <div className="mt-3 text-sm text-gray-700">
+                              <span className="font-medium">Section of Interest: </span>
+                              <span className="capitalize">{c.section}</span>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
                 )}
