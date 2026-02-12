@@ -59,6 +59,11 @@ export default function InvestorPortfolio() {
     queryFn: () => base44.entities.Pitch.list("-created_date", 200),
   });
 
+  const { data: allMembers = [] } = useQuery({
+    queryKey: ["all-members"],
+    queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
+  });
+
   // Find current investor's data
   const currentInvestor = investors.find((inv) => inv.email === user?.email);
   const connectedEntrepreneurs = currentInvestor?.is_connected || [];
@@ -66,13 +71,17 @@ export default function InvestorPortfolio() {
   const connectionCards = connectedEntrepreneurs.map((email) => {
     const pitchesByUser = allPitches.filter((p) => p.created_by === email);
     const latest = pitchesByUser[0];
-    const displayName = (email || "").split("@")[0].replace(/[._-]/g, " ");
+    const member = allMembers.find((m) => m.created_by === email);
+    const displayName = member?.name || (email || "").split("@")[0].replace(/[._-]/g, " ");
+    const displayTitle = member?.business_name || latest?.title || "—";
+    const section = latest?.category || member?.business_type || null;
+    const skills = Array.isArray(member?.skills) ? member.skills : [];
     return {
       email,
       name: displayName,
-      ideaTitle: latest?.title || "—",
-      section: latest?.category || null,
-      skills: [],
+      ideaTitle: displayTitle,
+      section,
+      skills,
     };
   });
 
