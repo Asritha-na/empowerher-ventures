@@ -13,9 +13,9 @@ export default function InvestorConnect() {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const { data: investorUsers = [], isLoading } = useQuery({
-    queryKey: ["investor-users"],
-    queryFn: () => base44.entities.User.filter({ user_role: "investor" }, "-created_date", 200),
+  const { data: investors = [], isLoading } = useQuery({
+    queryKey: ["investors"],
+    queryFn: () => base44.entities.Investor.list("-created_date", 200),
   });
 
   const { data: myInvestor = null } = useQuery({
@@ -27,46 +27,21 @@ export default function InvestorConnect() {
     },
   });
 
-  // Fetch all Investor profiles for display details (mapped by email)
-  const { data: investorsAll = [] } = useQuery({
-    queryKey: ["investors-all"],
-    queryFn: () => base44.entities.Investor.list("-created_date", 200),
-  });
-
-  // Admin-only checks will be handled in debug effect below
-
   const connectMutation = useMutation({
     mutationFn: async (targetInvestor) => {
-      const selfList = myInvestor ? [myInvestor] : await base44.entities.Investor.filter({ email: user.email }, "-created_date", 1);
-      const selfId = selfList?.[0]?.id;
-
-      const targetList = await base44.entities.Investor.filter({ email: targetInvestor.email }, "-created_date", 1);
-      const targetId = targetList?.[0]?.id;
-
+      const selfId = myInvestor?.id || (investors.find(i => i.email === user?.email)?.id) || user?.id;
       return base44.entities.InvestorConnection.create({
         investor_a_id: selfId,
-        investor_b_id: targetId,
+        investor_b_id: targetInvestor.id,
         timestamp: new Date().toISOString(),
         status: 'connected',
       });
     },
   });
 
-  const visibleInvestors = investorUsers.filter((u) => u.id !== user?.id);
-  const displayInvestors = visibleInvestors.map((u) => investorsAll.find((inv) => inv.email === u.email) || u);
-
-  // Debug: if none visible, log users/roles to verify role field naming (admin only)
-  useEffect(() => {
-    if (!isLoading && user && displayInvestors.length === 0) {
-      if (user.role === 'admin') {
-        base44.entities.User.list().then((users) => {
-          console.log('DEBUG users roles', users.map(u => ({ id: u.id, email: u.email, role: u.user_role || u.role })));
-        });
-      } else {
-        console.log('DEBUG: cannot list users as non-admin; investor-users count =', investorUsers.length);
-      }
-    }
-  }, [isLoading, user, displayInvestors.length, investorUsers.length]);
+  const visibleInvestors = investors.filter((inv) =>
+    inv.email !== user?.email && (inv.is_online === true || inv.isOnline === true || inv.active_session === true)
+  );
 
   if (user && user.user_role !== "investor") {
     return (
@@ -93,18 +68,18 @@ export default function InvestorConnect() {
           <div className="text-center py-12">
             <p className="text-gray-500">Loading investors...</p>
           </div>
-        ) : displayInvestors.length === 0 ? (
+        ) : visibleInvestors.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
             <p className="text-gray-500">No investors found</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {displayInvestors.map((inv) => (
+            {visibleInvestors.map((inv) => (
               <Card key={inv.id} className="glass-card hover:shadow-md transition-all h-full">
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h3 className="font-bold text-gray-900">{inv.name || inv.full_name || inv.email?.split('@')[0]}</h3>
+                      <h3 className="font-bold text-gray-900">{inv.name || inv.email?.split('@')[0]}</h3>
                       {inv.location && (
                         <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
                           <MapPin className="w-3.5 h-3.5" />
