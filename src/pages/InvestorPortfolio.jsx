@@ -54,6 +54,16 @@ export default function InvestorPortfolio() {
     queryFn: () => base44.entities.CrowdFundingCampaign.list(),
   });
 
+  // Data for Connections tab enrichment
+  const { data: allPitches = [] } = useQuery({
+    queryKey: ["all-pitches-for-connections"],
+    queryFn: () => base44.entities.Pitch.list("-created_date", 200),
+  });
+  const { data: allMembers = [] } = useQuery({
+    queryKey: ["all-members-for-connections"],
+    queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
+  });
+
   // Find current investor's data
   const currentInvestor = investors.find((inv) => inv.email === user?.email);
   const connectedEntrepreneurs = currentInvestor?.is_connected || [];
@@ -147,13 +157,16 @@ export default function InvestorPortfolio() {
             <TabsTrigger value="overview" className="rounded-lg">{t("overview")}</TabsTrigger>
             <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
             <TabsTrigger value="crowdfunding" className="rounded-lg">Crowd Funding</TabsTrigger>
-            <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
+            {user?.user_role === "investor" && (
+              <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
+            )}
             <TabsTrigger value="activity" className="rounded-lg">{t("activity")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
             {/* Portfolio Performance Chart */}
             <PortfolioPerformance investments={currentInvestor?.investments_made || 0} />
+            <p className="text-xs italic text-gray-500 mt-2">This is a simulated projection to demonstrate potential growth after investor connections.</p>
 
             {/* Stats Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -448,25 +461,45 @@ export default function InvestorPortfolio() {
                 {connectedEntrepreneurs.length === 0 ? (
                   <div className="text-center py-12">
                     <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500">{t("noConnectionsYet")}</p>
+                    <p className="text-gray-500">You have not connected with any entrepreneurs yet.</p>
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {connectedEntrepreneurs.map((email, i) => (
-                      <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-gray-50">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white font-bold">
-                          {email.charAt(0).toUpperCase()}
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {connectedEntrepreneurs.map((email, i) => {
+                      const member = allMembers.find(m => m.created_by === email);
+                      const pitch = allPitches.find(p => p.created_by === email);
+                      const displayName = member?.name || (email?.split('@')[0]?.replace(/[._-]/g, ' ') || 'Entrepreneur');
+                      const businessTitle = member?.business_name || pitch?.title || 'Business Idea';
+                      const skills = Array.isArray(member?.skills) ? member.skills.slice(0,6) : [];
+                      const section = member?.business_type || pitch?.category || null;
+                      return (
+                        <div key={i} className="p-4 rounded-xl bg-white border border-gray-200">
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <h3 className="font-semibold text-gray-900">{displayName}</h3>
+                              <p className="text-sm text-gray-600">{businessTitle}</p>
+                            </div>
+                            <Badge className="bg-green-100 text-green-700">Connected</Badge>
+                          </div>
+                          {skills.length > 0 && (
+                            <div className="mt-3">
+                              <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Skills</p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {skills.map((s, idx) => (
+                                  <Badge key={idx} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{s}</Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {section && (
+                            <div className="mt-3 text-sm text-gray-700">
+                              <span className="font-medium">Section of Interest: </span>
+                              <span className="capitalize">{section}</span>
+                            </div>
+                          )}
                         </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">{email}</p>
-                          <p className="text-sm text-gray-500">{t("entrepreneur")}</p>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          <Mail className="w-4 h-4 mr-2" />
-                          {t("contact")}
-                        </Button>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </CardContent>
