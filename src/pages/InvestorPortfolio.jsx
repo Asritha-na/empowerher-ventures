@@ -78,8 +78,8 @@ export default function InvestorPortfolio() {
 
   // Build cards with entrepreneur details from CommunityMember and Pitch
   const connectionCards = connectedEntrepreneurs.map((email) => {
-    const latestPitch = allPitches.find((p) => p.created_by === email);
-    const member = allMembers.find((m) => m.created_by === email);
+    const latestPitch = (_allPitches || []).find((p) => p.created_by === email);
+    const member = (_allMembers || []).find((m) => m.created_by === email);
     const name = member?.name || (email || "").split("@")[0].replace(/[._-]/g, " ");
     const ideaTitle = member?.business_name || latestPitch?.title || "—";
     const section = latestPitch?.category || member?.business_type || null;
