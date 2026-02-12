@@ -70,6 +70,8 @@ export default function InvestorPortfolio() {
 
 
 
+
+
   // Find current investor's data
   const currentInvestor = investors.find((inv) => inv.email === user?.email);
   const connectedEntrepreneurs = currentInvestor?.is_connected || [];
