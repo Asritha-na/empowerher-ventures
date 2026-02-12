@@ -167,6 +167,7 @@ export default function InvestorPortfolio() {
             {/* Portfolio Performance Chart */}
             <PortfolioPerformance investments={currentInvestor?.investments_made || 0} />
             <p className="text-xs italic text-gray-500 mt-2">This is a simulated projection to demonstrate potential growth after investor connections.</p>
+            <p className="text-xs italic text-gray-500 mt-2">This is a simulated projection to demonstrate potential growth after investor connections.</p>
 
             {/* Stats Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

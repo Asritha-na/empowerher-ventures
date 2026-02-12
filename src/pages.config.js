@@ -63,6 +63,7 @@ import MyIdea from './pages/MyIdea';
 import Profile from './pages/Profile';
 import RoleSelect from './pages/RoleSelect';
 import InvestorPortfolio from './pages/InvestorPortfolio';
+import InvestorConnections from './pages/InvestorConnections';
 import __Layout from './Layout.jsx';
 
 
@@ -83,6 +84,7 @@ export const PAGES = {
     "Profile": Profile,
     "RoleSelect": RoleSelect,
     "InvestorPortfolio": InvestorPortfolio,
+    "InvestorConnections": InvestorConnections,
 }
 
 export const pagesConfig = {
