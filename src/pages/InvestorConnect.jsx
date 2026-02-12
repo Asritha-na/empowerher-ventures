@@ -13,9 +13,9 @@ export default function InvestorConnect() {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const { data: investors = [], isLoading } = useQuery({
-    queryKey: ["investors"],
-    queryFn: () => base44.entities.Investor.list("-created_date", 200),
+  const { data: investorUsers = [], isLoading } = useQuery({
+    queryKey: ["investor-users"],
+    queryFn: () => base44.entities.User.filter({ user_role: "investor" }, "-created_date", 200),
   });
 
   const { data: myInvestor = null } = useQuery({
@@ -36,10 +36,15 @@ export default function InvestorConnect() {
 
   const connectMutation = useMutation({
     mutationFn: async (targetInvestor) => {
-      const selfId = myInvestor?.id || (investors.find(i => i.email === user?.email)?.id) || user?.id;
+      const selfList = myInvestor ? [myInvestor] : await base44.entities.Investor.filter({ email: user.email }, "-created_date", 1);
+      const selfId = selfList?.[0]?.id;
+
+      const targetList = await base44.entities.Investor.filter({ email: targetInvestor.email }, "-created_date", 1);
+      const targetId = targetList?.[0]?.id;
+
       return base44.entities.InvestorConnection.create({
         investor_a_id: selfId,
-        investor_b_id: targetInvestor.id,
+        investor_b_id: targetId,
         timestamp: new Date().toISOString(),
         status: 'connected',
       });
