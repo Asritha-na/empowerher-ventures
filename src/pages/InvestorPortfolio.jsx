@@ -174,7 +174,9 @@ export default function InvestorPortfolio() {
             <TabsTrigger value="overview" className="rounded-lg">{t("overview")}</TabsTrigger>
             <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
             <TabsTrigger value="crowdfunding" className="rounded-lg">Crowd Funding</TabsTrigger>
-            <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
+            {user?.user_role === "investor" && (
+              <TabsTrigger value="connections" className="rounded-lg">Connections</TabsTrigger>
+            )}
             <TabsTrigger value="activity" className="rounded-lg">{t("activity")}</TabsTrigger>
           </TabsList>
 
@@ -469,51 +471,53 @@ export default function InvestorPortfolio() {
             )}
           </TabsContent>
 
-          <TabsContent value="connections">
-            <Card className="border-none shadow-md">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Connections</h2>
-                {connectionCards.length === 0 ? (
-                  <div className="text-center py-12">
-                    <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500">You have not connected with any entrepreneurs yet.</p>
-                  </div>
-                ) : (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {connectionCards.map((c) => (
-                      <Card key={c.email} className="glass-card hover:shadow-md transition-all">
-                        <CardContent className="p-5">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h3 className="font-bold text-gray-900">{c.name}</h3>
-                              <p className="text-sm text-gray-600 mt-1">{c.ideaTitle}</p>
-                            </div>
-                            <Badge className="bg-emerald-100 text-emerald-700 text-xs">Connected</Badge>
-                          </div>
-                          {c.skills && c.skills.length > 0 && (
-                            <div className="mt-4">
-                              <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills</p>
-                              <div className="flex flex-wrap gap-1.5">
-                                {c.skills.slice(0, 6).map((s, i) => (
-                                  <Badge key={i} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{s}</Badge>
-                                ))}
+          {user?.user_role === "investor" && (
+            <TabsContent value="connections">
+              <Card className="border-none shadow-md">
+                <CardContent className="p-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">Connections</h2>
+                  {connectionCards.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-500">You have not connected with any entrepreneurs yet.</p>
+                    </div>
+                  ) : (
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {connectionCards.map((c) => (
+                        <Card key={c.email} className="glass-card hover:shadow-md transition-all">
+                          <CardContent className="p-5">
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <h3 className="font-bold text-gray-900">{c.name}</h3>
+                                <p className="text-sm text-gray-600 mt-1">{c.ideaTitle}</p>
                               </div>
+                              <Badge className="bg-emerald-100 text-emerald-700 text-xs">Connected</Badge>
                             </div>
-                          )}
-                          {c.section && (
-                            <div className="mt-3 text-sm text-gray-700">
-                              <span className="font-medium">Section of Interest: </span>
-                              <span className="capitalize">{c.section}</span>
-                            </div>
-                          )}
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
+                            {c.skills && c.skills.length > 0 && (
+                              <div className="mt-4">
+                                <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills</p>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {c.skills.slice(0, 6).map((s, i) => (
+                                    <Badge key={i} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{s}</Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            {c.section && (
+                              <div className="mt-3 text-sm text-gray-700">
+                                <span className="font-medium">Section of Interest: </span>
+                                <span className="capitalize">{c.section}</span>
+                              </div>
+                            )}
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
 
           <TabsContent value="activity">
             <Card className="border-none shadow-md">
