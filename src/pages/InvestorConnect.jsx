@@ -27,12 +27,13 @@ export default function InvestorConnect() {
     },
   });
 
-  // Admin-only: fetch users by app role for consistency check / data source
-  const { data: investorUsers = [], isLoading: isLoadingUsers } = useQuery({
-    queryKey: ["investor-users"],
-    enabled: !!user && (user.role === "admin"),
-    queryFn: () => base44.entities.User.filter({ user_role: "investor" }, "-created_date", 200),
+  // Fetch all Investor profiles for display details (mapped by email)
+  const { data: investorsAll = [] } = useQuery({
+    queryKey: ["investors-all"],
+    queryFn: () => base44.entities.Investor.list("-created_date", 200),
   });
+
+  // Admin-only checks will be handled in debug effect below
 
   const connectMutation = useMutation({
     mutationFn: async (targetInvestor) => {
@@ -51,21 +52,21 @@ export default function InvestorConnect() {
     },
   });
 
-  const visibleInvestors = investors.filter((inv) => inv.email !== user?.email);
+  const visibleInvestors = investorUsers.filter((u) => u.id !== user?.id);
+  const displayInvestors = visibleInvestors.map((u) => investorsAll.find((inv) => inv.email === u.email) || u);
 
   // Debug: if none visible, log users/roles to verify role field naming (admin only)
-  React.useEffect(() => {
-    if (!isLoading && user && visibleInvestors.length === 0) {
+  useEffect(() => {
+    if (!isLoading && user && displayInvestors.length === 0) {
       if (user.role === 'admin') {
         base44.entities.User.list().then((users) => {
-          // Logs id, email, and both possible role fields
           console.log('DEBUG users roles', users.map(u => ({ id: u.id, email: u.email, role: u.user_role || u.role })));
         });
       } else {
-        console.log('DEBUG: cannot list users as non-admin; investors entity count =', investors.length);
+        console.log('DEBUG: cannot list users as non-admin; investor-users count =', investorUsers.length);
       }
     }
-  }, [isLoading, user, visibleInvestors.length, investors.length]);
+  }, [isLoading, user, displayInvestors.length, investorUsers.length]);
 
   if (user && user.user_role !== "investor") {
     return (
@@ -92,13 +93,13 @@ export default function InvestorConnect() {
           <div className="text-center py-12">
             <p className="text-gray-500">Loading investors...</p>
           </div>
-        ) : visibleInvestors.length === 0 ? (
+        ) : displayInvestors.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
             <p className="text-gray-500">No investors found</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visibleInvestors.map((inv) => (
+            {displayInvestors.map((inv) => (
               <Card key={inv.id} className="glass-card hover:shadow-md transition-all h-full">
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between gap-3">
