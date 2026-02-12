@@ -65,6 +65,8 @@ export default function InvestorPortfolio() {
   });
 
 
+
+
   // Data to enrich Connections tab (deduplicated)
   const { data: _allPitches = [] } = useQuery({
     queryKey: ["all-pitches-for-connections"],
