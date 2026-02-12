@@ -39,9 +39,21 @@ export default function InvestorConnect() {
     },
   });
 
-  const visibleInvestors = investors.filter((inv) =>
-    inv.email !== user?.email && (inv.is_online === true || inv.isOnline === true || inv.active_session === true)
-  );
+  const visibleInvestors = investors.filter((inv) => inv.email !== user?.email);
+
+  // Debug: if none visible, log users/roles to verify role field naming (admin only)
+  React.useEffect(() => {
+    if (!isLoading && user && visibleInvestors.length === 0) {
+      if (user.role === 'admin') {
+        base44.entities.User.list().then((users) => {
+          // Logs id, email, and both possible role fields
+          console.log('DEBUG users roles', users.map(u => ({ id: u.id, email: u.email, role: u.user_role || u.role })));
+        });
+      } else {
+        console.log('DEBUG: cannot list users as non-admin; investors entity count =', investors.length);
+      }
+    }
+  }, [isLoading, user, visibleInvestors.length, investors.length]);
 
   if (user && user.user_role !== "investor") {
     return (
