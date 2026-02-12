@@ -173,7 +173,9 @@ export default function InvestorPortfolio() {
             <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
             <TabsTrigger value="crowdfunding" className="rounded-lg">Crowd Funding</TabsTrigger>
             {user?.user_role === "investor" && (
+              {user?.user_role === "investor" && (
               <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
+            )}
             )}
             <TabsTrigger value="activity" className="rounded-lg">{t("activity")}</TabsTrigger>
           </TabsList>
