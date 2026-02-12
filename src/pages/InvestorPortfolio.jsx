@@ -54,36 +54,13 @@ export default function InvestorPortfolio() {
     queryFn: () => base44.entities.CrowdFundingCampaign.list(),
   });
 
-  const { data: allPitches = [] } = useQuery({
-    queryKey: ["all-pitches"],
-    queryFn: () => base44.entities.Pitch.list("-created_date", 200),
-  });
 
-  const { data: allMembers = [] } = useQuery({
-    queryKey: ["all-members"],
-    queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
-  });
 
   // Find current investor's data
   const currentInvestor = investors.find((inv) => inv.email === user?.email);
   const connectedEntrepreneurs = currentInvestor?.is_connected || [];
 
-  const connectionCards = connectedEntrepreneurs.map((email) => {
-    const pitchesByUser = allPitches.filter((p) => p.created_by === email);
-    const latest = pitchesByUser[0];
-    const member = allMembers.find((m) => m.created_by === email);
-    const displayName = member?.name || (email || "").split("@")[0].replace(/[._-]/g, " ");
-    const displayTitle = member?.business_name || latest?.title || "—";
-    const section = latest?.category || member?.business_type || null;
-    const skills = Array.isArray(member?.skills) ? member.skills : [];
-    return {
-      email,
-      name: displayName,
-      ideaTitle: displayTitle,
-      section,
-      skills,
-    };
-  });
+
 
   // Connections count for Active Campaigns (investor-to-investor connections)
   const { data: invConnsA = [] } = useQuery({
@@ -174,9 +151,7 @@ export default function InvestorPortfolio() {
             <TabsTrigger value="overview" className="rounded-lg">{t("overview")}</TabsTrigger>
             <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
             <TabsTrigger value="crowdfunding" className="rounded-lg">Crowd Funding</TabsTrigger>
-            {user?.user_role === "investor" && (
-              <TabsTrigger value="connections" className="rounded-lg">Connections</TabsTrigger>
-            )}
+            <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
             <TabsTrigger value="activity" className="rounded-lg">{t("activity")}</TabsTrigger>
           </TabsList>
 

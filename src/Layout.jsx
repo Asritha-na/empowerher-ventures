@@ -37,6 +37,7 @@ const getInvestorNavItems = (t) => [
   { name: t("dashboard"), icon: Home, page: "InvestorHome" },
   { name: "Find Pitches", icon: Lightbulb, page: "InvestorPitches" },
   { name: "Investor Connect", icon: Users, page: "InvestorConnect" },
+  { name: "Connections", icon: Users2, page: "InvestorConnections" },
   { name: t("myPortfolio"), icon: Briefcase, page: "InvestorPortfolio" },
   { name: t("appointments"), icon: Calendar, page: "Appointments" },
   { name: t("profile"), icon: User, page: "Profile" },
