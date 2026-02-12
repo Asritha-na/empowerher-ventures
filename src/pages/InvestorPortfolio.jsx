@@ -64,6 +64,16 @@ export default function InvestorPortfolio() {
     queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
   });
 
+  // Data to enrich Connections tab
+  const { data: allPitches = [] } = useQuery({
+    queryKey: ["all-pitches-for-connections"],
+    queryFn: () => base44.entities.Pitch.list("-created_date", 200),
+  });
+  const { data: allMembers = [] } = useQuery({
+    queryKey: ["all-members-for-connections"],
+    queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
+  });
+
 
 
   // Find current investor's data
