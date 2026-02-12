@@ -64,15 +64,9 @@ export default function InvestorPortfolio() {
     queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
   });
 
-  // Data to enrich Connections tab
-  const { data: allPitches = [] } = useQuery({
-    queryKey: ["all-pitches-for-connections"],
-    queryFn: () => base44.entities.Pitch.list("-created_date", 200),
-  });
-  const { data: allMembers = [] } = useQuery({
-    queryKey: ["all-members-for-connections"],
-    queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
-  });
+
+
+
 
 
 
@@ -183,9 +177,7 @@ export default function InvestorPortfolio() {
             <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
             <TabsTrigger value="crowdfunding" className="rounded-lg">Crowd Funding</TabsTrigger>
             {user?.user_role === "investor" && (
-              {user?.user_role === "investor" && (
               <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
-            )}
             )}
             <TabsTrigger value="activity" className="rounded-lg">{t("activity")}</TabsTrigger>
           </TabsList>
@@ -527,9 +519,9 @@ export default function InvestorPortfolio() {
                 </CardContent>
               </Card>
             </TabsContent>
-          )
+            )}
 
-          <TabsContent value="activity">
+            <TabsContent value="activity">
             <Card className="border-none shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">{t("recentActivity")}</h2>
