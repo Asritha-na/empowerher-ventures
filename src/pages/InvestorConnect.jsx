@@ -14,8 +14,8 @@ export default function InvestorConnect() {
   }, []);
 
   const { data: investors = [], isLoading } = useQuery({
-    queryKey: ["investors"],
-    queryFn: () => base44.entities.Investor.list("-created_date", 200),
+    queryKey: ["investor-users"],
+    queryFn: () => base44.entities.User.filter({ user_role: "investor" }, "-created_date", 200),
   });
 
   const { data: myInvestor = null } = useQuery({
@@ -39,9 +39,21 @@ export default function InvestorConnect() {
     },
   });
 
-  const visibleInvestors = investors.filter((inv) =>
-    inv.email !== user?.email && (inv.is_online === true || inv.isOnline === true || inv.active_session === true)
-  );
+  const visibleInvestors = investors.filter((inv) => inv.id !== user?.id);
+
+  // Debug safety: if none found, log all users and their roles (admin only)
+  React.useEffect(() => {
+    if (!isLoading && investors.length === 0 && user) {
+      (async () => {
+        if (user.role === 'admin') {
+          const all = await base44.entities.User.list();
+          console.log('DEBUG users roles:', all.map(u => ({ id: u.id, email: u.email, full_name: u.full_name, role: u.role, user_role: u.user_role })));
+        } else {
+          console.log('DEBUG: No investors found; cannot list all users as non-admin.');
+        }
+      })();
+    }
+  }, [isLoading, investors, user]);
 
   if (user && user.user_role !== "investor") {
     return (
