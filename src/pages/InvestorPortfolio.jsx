@@ -54,6 +54,16 @@ export default function InvestorPortfolio() {
     queryFn: () => base44.entities.CrowdFundingCampaign.list(),
   });
 
+  // Data to enrich Connections tab
+  const { data: allPitches = [] } = useQuery({
+    queryKey: ["all-pitches-for-connections"],
+    queryFn: () => base44.entities.Pitch.list("-created_date", 200),
+  });
+  const { data: allMembers = [] } = useQuery({
+    queryKey: ["all-members-for-connections"],
+    queryFn: () => base44.entities.CommunityMember.list("-created_date", 200),
+  });
+
   // Data to enrich Connections tab (deduplicated)
   const { data: _allPitches = [] } = useQuery({
     queryKey: ["all-pitches-for-connections"],
@@ -78,8 +88,8 @@ export default function InvestorPortfolio() {
 
   // Build cards with entrepreneur details from CommunityMember and Pitch
   const connectionCards = connectedEntrepreneurs.map((email) => {
-    const latestPitch = (_allPitches || []).find((p) => p.created_by === email);
-    const member = (_allMembers || []).find((m) => m.created_by === email);
+    const latestPitch = (allPitches || []).find((p) => p.created_by === email);
+    const member = (allMembers || []).find((m) => m.created_by === email);
     const name = member?.name || (email || "").split("@")[0].replace(/[._-]/g, " ");
     const ideaTitle = member?.business_name || latestPitch?.title || "—";
     const section = latestPitch?.category || member?.business_type || null;
@@ -173,7 +183,9 @@ export default function InvestorPortfolio() {
           <p className="text-gray-600">{t("trackYourInvestments")}</p>
         </div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
+        {(() => { const p = new URLSearchParams(window.location.search).get('tab') || 'overview'; return (
+          <Tabs defaultValue={p} className="space-y-6">
+        )})()}
           <TabsList className="bg-white rounded-xl p-1 shadow-sm">
             <TabsTrigger value="overview" className="rounded-lg">{t("overview")}</TabsTrigger>
             <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
@@ -277,8 +289,13 @@ export default function InvestorPortfolio() {
               <AIRecommendations currentInvestor={currentInvestor} />
             </div>
           </TabsContent>
+          {/* Close wrapper IIFE */}
+          </Tabs>
 
-          <TabsContent value="profile" className="space-y-6">
+          {/* Re-open Tabs with same default to continue other contents */}
+          <Tabs defaultValue={(new URLSearchParams(window.location.search).get('tab') || 'overview')} className="space-y-6">
+
+           <TabsContent value="profile" className="space-y-6">
             {/* Profile Picture */}
             <Card className="border-none shadow-md">
               <CardContent className="p-6">
