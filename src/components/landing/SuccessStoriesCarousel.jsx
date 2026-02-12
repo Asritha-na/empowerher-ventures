@@ -29,6 +29,33 @@ const defaultStories = [
   funding: "₹25L raised",
   quote: "Verified investors and transparent process gave me real confidence.",
   description: "Clean-label millet-based snacks selling across marketplaces."
+},
+{
+  image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/7f6fbba2a_image.png",
+  name: "Rural Entrepreneur",
+  business: "Self-Help Group Enterprise",
+  location: "Rajasthan, IN",
+  funding: "Community-backed",
+  quote: "Building sustainable income for my family and village.",
+  description: "Local craft and micro-enterprise led by rural women."
+},
+{
+  image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/5ee836ab0_image.png",
+  name: "Rural Entrepreneur",
+  business: "Cottage Industry",
+  location: "Maharashtra, IN",
+  funding: "Microfinance supported",
+  quote: "Every order helps us train and employ more women.",
+  description: "Grassroots venture growing with digital tools."
+},
+{
+  image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/ef2755ded_image.png",
+  name: "Rural Entrepreneur",
+  business: "Agri & Handmade Goods",
+  location: "West Bengal, IN",
+  funding: "Seed capital raised",
+  quote: "Shakti connected me with mentors and buyers.",
+  description: "Small business scaling through local networks."
 }];
 
 
