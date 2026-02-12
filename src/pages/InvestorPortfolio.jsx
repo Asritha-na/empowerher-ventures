@@ -58,6 +58,19 @@ export default function InvestorPortfolio() {
   const currentInvestor = investors.find((inv) => inv.email === user?.email);
   const connectedEntrepreneurs = currentInvestor?.is_connected || [];
 
+  // Connections count for Active Campaigns (investor-to-investor connections)
+  const { data: invConnsA = [] } = useQuery({
+    queryKey: ["investor-connections-a", currentInvestor?.id],
+    enabled: !!currentInvestor?.id,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: currentInvestor.id, status: 'connected' }, "-created_date", 200),
+  });
+  const { data: invConnsB = [] } = useQuery({
+    queryKey: ["investor-connections-b", currentInvestor?.id],
+    enabled: !!currentInvestor?.id,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: currentInvestor.id, status: 'connected' }, "-created_date", 200),
+  });
+  const activeConnectionsCount = (invConnsA.length + invConnsB.length);
+
   const handleSaveProfile = async () => {
     setSaving(true);
     
@@ -369,7 +382,7 @@ export default function InvestorPortfolio() {
                     <TrendingUp className="w-7 h-7 text-red-500" />
                   </div>
                   <p className="text-4xl font-bold text-red-500 mb-1">
-                    {campaigns.filter(c => c.status === "active").length}
+                    {activeConnectionsCount}
                   </p>
                   <p className="text-sm text-gray-600">Active Campaigns</p>
                 </CardContent>

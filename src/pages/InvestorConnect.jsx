@@ -30,14 +30,17 @@ export default function InvestorConnect() {
   const connectMutation = useMutation({
     mutationFn: async (targetInvestor) => {
       return base44.entities.InvestorConnection.create({
-        investor_a_id: myInvestor?.id || user?.id,
+        investor_a_id: myInvestor?.id,
         investor_b_id: targetInvestor.id,
         timestamp: new Date().toISOString(),
+        status: 'connected',
       });
     },
   });
 
-  const visibleInvestors = investors.filter((inv) => inv.email !== user?.email);
+  const visibleInvestors = investors.filter((inv) =>
+    inv.email !== user?.email && (inv.is_online === true || inv.isOnline === true || inv.active_session === true)
+  );
 
   if (user && user.user_role !== "investor") {
     return (
