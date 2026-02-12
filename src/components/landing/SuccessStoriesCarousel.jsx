@@ -3,60 +3,34 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Quote } from "lucide-react";
 
 const defaultStories = [
-{
-  image: "https://images.unsplash.com/photo-1590402494682-cd3fb53b39b1?q=80&w=1200&auto=format&fit=crop",
-  name: "Asha Verma",
-  business: "Handloom Textiles",
-  location: "Varanasi, UP",
-  funding: "₹12L raised",
-  quote: "Shakti helped me refine my pitch and meet the right investor—our growth took off.",
-  description: "Reviving traditional Banarasi weaving with a digital-first D2C model."
-},
-{
-  image: "https://images.unsplash.com/photo-1585386959984-a41552231664?q=80&w=1200&auto=format&fit=crop",
-  name: "Nandini Rao",
-  business: "Agri Inputs Retail",
-  location: "Belagavi, KA",
-  funding: "₹18L raised",
-  quote: "From idea to investment-ready in weeks—AI feedback was a game changer.",
-  description: "Affordable soil testing and input kits for smallholder farmers."
-},
-{
-  image: "https://images.unsplash.com/photo-1568064243543-4d4d2d6e3722?q=80&w=1200&auto=format&fit=crop",
-  name: "Fatima Khan",
-  business: "Healthy Snacks D2C",
-  location: "Indore, MP",
-  funding: "₹25L raised",
-  quote: "Verified investors and transparent process gave me real confidence.",
-  description: "Clean-label millet-based snacks selling across marketplaces."
-},
-{
-  image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/7f6fbba2a_image.png",
-  name: "Rural Entrepreneur",
-  business: "Self-Help Group Enterprise",
-  location: "Rajasthan, IN",
-  funding: "Community-backed",
-  quote: "Building sustainable income for my family and village.",
-  description: "Local craft and micro-enterprise led by rural women."
-},
-{
-  image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/5ee836ab0_image.png",
-  name: "Rural Entrepreneur",
-  business: "Cottage Industry",
-  location: "Maharashtra, IN",
-  funding: "Microfinance supported",
-  quote: "Every order helps us train and employ more women.",
-  description: "Grassroots venture growing with digital tools."
-},
-{
-  image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/ef2755ded_image.png",
-  name: "Rural Entrepreneur",
-  business: "Agri & Handmade Goods",
-  location: "West Bengal, IN",
-  funding: "Seed capital raised",
-  quote: "Shakti connected me with mentors and buyers.",
-  description: "Small business scaling through local networks."
-}];
+  {
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/7f6fbba2a_image.png",
+    name: "Rural Entrepreneur",
+    business: "Self-Help Group Enterprise",
+    location: "Rajasthan, IN",
+    funding: "Community-backed",
+    quote: "Building sustainable income for my family and village.",
+    description: "Local craft and micro-enterprise led by rural women."
+  },
+  {
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/5ee836ab0_image.png",
+    name: "Rural Entrepreneur",
+    business: "Cottage Industry",
+    location: "Maharashtra, IN",
+    funding: "Microfinance supported",
+    quote: "Every order helps us train and employ more women.",
+    description: "Grassroots venture growing with digital tools."
+  },
+  {
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6988ce510df9dcc25137f48f/ef2755ded_image.png",
+    name: "Rural Entrepreneur",
+    business: "Agri & Handmade Goods",
+    location: "West Bengal, IN",
+    funding: "Seed capital raised",
+    quote: "Shakti connected me with mentors and buyers.",
+    description: "Small business scaling through local networks."
+  }
+];
 
 
 export default function SuccessStoriesCarousel({ stories = defaultStories }) {
