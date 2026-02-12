@@ -29,8 +29,9 @@ export default function InvestorConnect() {
 
   const connectMutation = useMutation({
     mutationFn: async (targetInvestor) => {
+      const selfId = myInvestor?.id || (investors.find(i => i.email === user?.email)?.id) || user?.id;
       return base44.entities.InvestorConnection.create({
-        investor_a_id: myInvestor?.id,
+        investor_a_id: selfId,
         investor_b_id: targetInvestor.id,
         timestamp: new Date().toISOString(),
         status: 'connected',
