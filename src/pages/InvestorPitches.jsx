@@ -121,21 +121,41 @@ export default function InvestorPitches() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {pitches.slice(0, 6).map((pitch) => (
+              {pitches.map((pitch) => (
                 <Card key={pitch.id} className="glass-card hover:shadow-md transition-all">
                   <CardContent className="p-5">
-                    <h4 className="font-bold text-gray-900 mb-2">{pitch.title}</h4>
+                    <h4 className="font-bold text-gray-900 mb-1">{pitch.title}</h4>
+                    {pitch.created_by && (
+                      <p className="text-xs text-gray-500 mb-2">
+                        Entrepreneur: <span className="font-medium">{pitch.created_by.split('@')[0].replace(/[._-]/g, ' ')}</span>
+                      </p>
+                    )}
                     {pitch.category && (
                       <Badge variant="secondary" className="mb-3 capitalize">
                         {pitch.category}
                       </Badge>
                     )}
-                    {pitch.funding_needed && (
-                      <p className="text-sm text-gray-600 mb-4">
+                    {typeof pitch.funding_needed === 'number' && (
+                      <p className="text-sm text-gray-600 mb-2">
                         Seeking: <span className="font-semibold text-green-600">₹{pitch.funding_needed.toLocaleString()}</span>
                       </p>
                     )}
+                    {(pitch.structured_pitch || pitch.problem || pitch.solution || pitch.raw_speech) && (
+                      <p className="text-sm text-gray-700 line-clamp-3 mb-4">
+                        {pitch.structured_pitch || pitch.problem || pitch.solution || pitch.raw_speech}
+                      </p>
+                    )}
                     <div className="space-y-2">
+                      <Button
+                        className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl"
+                        onClick={() => {
+                          if (pitch.created_by) {
+                            window.location.href = `mailto:${pitch.created_by}?subject=${encodeURIComponent('Interest in ' + (pitch.title || 'your pitch'))}`;
+                          }
+                        }}
+                      >
+                        Connect
+                      </Button>
                       <AddToWatchlistButton pitch={pitch} investorEmail={user?.email} variant="outline" />
                       <NotesManager
                         investorEmail={user?.email}
