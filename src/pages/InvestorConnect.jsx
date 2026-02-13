@@ -104,7 +104,8 @@ export default function InvestorConnect() {
   };
 
   const visibleInvestors = investors
-    .filter((e) => (user?.email ? e.email !== user.email : true));
+    .filter((e) => (user?.email ? e.email !== user.email : true))
+    .filter((e) => !!e.name && !!e.email);
 
 
 
