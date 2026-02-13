@@ -131,6 +131,7 @@ export default function InvestorPitches() {
     const unsubConn = base44.entities.InvestorConnection.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["ip-conns-a", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["ip-conns-b", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["ip-conns-investor", user?.id] });
     });
     const unsubPitch = base44.entities.Pitch.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["investor-pitches"] });
@@ -210,7 +211,7 @@ export default function InvestorPitches() {
                 const businessName = eUser?.business_name || pitch.title || '';
                 const location = eUser?.location || eUser?.location_formatted || '';
                 const skills = Array.isArray(eUser?.entrepreneur_skills_needed) ? eUser.entrepreneur_skills_needed : [];
-                const funding = typeof pitch.funding_needed === 'number' ? pitch.funding_needed : null;
+                const funding = typeof pitch.funding_needed === 'number' ? pitch.funding_needed : (typeof eUser?.entrepreneur_investment_needed === 'number' ? eUser.entrepreneur_investment_needed : null);
                 const description = pitch.structured_pitch || pitch.problem || pitch.solution || eUser?.bio || pitch.raw_speech || '';
                 const email = eUser?.email || pitch.created_by;
                 const phone = eUser?.phone;
