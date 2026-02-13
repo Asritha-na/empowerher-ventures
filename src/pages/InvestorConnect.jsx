@@ -150,7 +150,7 @@ export default function InvestorConnect() {
                   <CardContent className="p-5">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
-                        <img src={inv.profile_image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={displayName} className="w-10 h-10 rounded-full object-cover" />
+                        <img src={e.profile_image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={displayName} className="w-10 h-10 rounded-full object-cover" />
                         <div>
                           <h3 className="font-bold text-gray-900">{displayName}</h3>
                           <p className="text-sm text-gray-600">{inv.investor_company || 'Not provided'}</p>
