@@ -50,25 +50,32 @@ export default function InvestorConnections() {
     enabled: !!user?.id,
     queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: user.id, status: 'connected' }, "-created_date", 500),
   });
+  const { data: connsByInvestor = [] } = useQuery({
+    queryKey: ["conns-investor", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_id: user.id, status: 'connected' }, "-created_date", 500),
+  });
 
   const { data: entrepreneurUsers = [] } = useQuery({
     queryKey: ["entrepreneur-users-all"],
-    queryFn: () => base44.entities.User.filter({ user_role: 'entrepreneur' }, "-created_date", 1000),
+    queryFn: () => base44.entities.PublicProfile.filter({ user_role: 'entrepreneur', profile_completed: true, is_public: true }, "-created_date", 1000),
   });
 
-  const currentInvestor = investors.find((inv) => inv.email === user?.email);
-  const connectedEntrepreneurEmails = currentInvestor?.is_connected || [];
+  const connectedEntrepreneurEmails = [];
 
-  const entreById = new Map(entrepreneurUsers.map(u => [u.id, u]));
+  const entreById = new Map(entrepreneurUsers.map(u => [u.user_id, u]));
   const entreByEmail = new Map(entrepreneurUsers.map(u => [u.email, u]));
 
-  const fromConnections = [...connsA, ...connsB]
-    .map(c => (c.investor_a_id === user?.id ? c.investor_b_id : c.investor_a_id))
-    .map(otherId => entreById.get(otherId))
-    .filter(Boolean);
+  const fromConnections = [
+    ...connsByInvestor.map(c => c.entrepreneur_id && entreById.get(c.entrepreneur_id)).filter(Boolean),
+    ...[...connsA, ...connsB]
+      .map(c => (c.investor_a_id === user?.id ? c.investor_b_id : c.investor_a_id))
+      .map(otherId => entreById.get(otherId))
+      .filter(Boolean)
+  ];
 
-  const fromEmails = connectedEntrepreneurEmails
-    .map(email => entreByEmail.get(email))
+  const fromEmails = connsByInvestor
+    .map(c => c.entrepreneur_email && entreByEmail.get(c.entrepreneur_email))
     .filter(Boolean);
 
   const mergedEntrepreneurs = [];

@@ -177,6 +177,38 @@ export default function Profile() {
     }
 
     await base44.auth.updateMe(payload);
+
+    // Mirror to PublicProfile for entrepreneurs (publicly visible in production)
+    try {
+      if (form.user_role === 'entrepreneur') {
+        const me = await base44.auth.me();
+        const existing = await base44.entities.PublicProfile.filter({ user_id: me.id }, "-created_date", 1);
+        const record = {
+          user_id: me.id,
+          email: me.email,
+          full_name: form.full_name || me.full_name || "",
+          user_role: 'entrepreneur',
+          business_name: form.business_name || "",
+          business_type: form.business_type || "",
+          bio: form.bio || "",
+          location: form.location || "",
+          location_formatted: me.location_formatted || null,
+          profile_image: me.profile_image || null,
+          entrepreneur_skills_needed: form.entrepreneur_skills_needed || [],
+          profile_completed: true,
+          is_public: true,
+          phone: form.phone || me.phone || "",
+        };
+        if (existing && existing.length > 0) {
+          await base44.entities.PublicProfile.update(existing[0].id, record);
+        } else {
+          await base44.entities.PublicProfile.create(record);
+        }
+      }
+    } catch (e) {
+      // Do not block profile save on mirror failure
+    }
+
     setSaving(false);
     window.location.href = createPageUrl("Dashboard");
   };

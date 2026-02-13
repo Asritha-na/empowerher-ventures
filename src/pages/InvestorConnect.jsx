@@ -14,8 +14,8 @@ export default function InvestorConnect() {
   }, []);
 
   const { data: entrepreneurs = [], isLoading } = useQuery({
-    queryKey: ["entrepreneur-users-ic"],
-    queryFn: () => base44.entities.User.filter({ user_role: "entrepreneur", profile_completed: true }, "-created_date", 1000),
+    queryKey: ["public-entrepreneurs-ic"],
+    queryFn: () => base44.entities.PublicProfile.filter({ user_role: "entrepreneur", profile_completed: true, is_public: true }, "-created_date", 1000),
   });
 
   const { data: allPitches = [] } = useQuery({
@@ -30,25 +30,31 @@ export default function InvestorConnect() {
   const selfUserId = user?.id;
 
   const { data: connsA = [] } = useQuery({
-    queryKey: ["ic-conns-a", selfUserId],
-    enabled: !!selfUserId,
-    queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: selfUserId, status: 'connected' }, "-created_date", 500),
+  queryKey: ["ic-conns-a", selfUserId],
+  enabled: !!selfUserId,
+  queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: selfUserId, status: 'connected' }, "-created_date", 500),
   });
   const { data: connsB = [] } = useQuery({
-    queryKey: ["ic-conns-b", selfUserId],
-    enabled: !!selfUserId,
-    queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: selfUserId, status: 'connected' }, "-created_date", 500),
+  queryKey: ["ic-conns-b", selfUserId],
+  enabled: !!selfUserId,
+  queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: selfUserId, status: 'connected' }, "-created_date", 500),
   });
 
-  const allConns = [...connsA, ...connsB];
+  const { data: connsByInvestor = [] } = useQuery({
+    queryKey: ["ic-conns-investor", selfUserId],
+    enabled: !!selfUserId,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_id: selfUserId, status: 'connected' }, "-created_date", 500),
+  });
+
+  const allConns = [...connsA, ...connsB, ...connsByInvestor];
 
   React.useEffect(() => {
     const u1 = base44.entities.InvestorConnection.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["ic-conns-a", selfUserId] });
       queryClient.invalidateQueries({ queryKey: ["ic-conns-b", selfUserId] });
     });
-    const u2 = base44.entities.User.subscribe(() => {
-      queryClient.invalidateQueries({ queryKey: ["entrepreneur-users-ic"] });
+    const u2 = base44.entities.PublicProfile.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["public-entrepreneurs-ic"] });
     });
     const u3 = base44.entities.Pitch.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["ic-all-pitches"] });
@@ -72,18 +78,25 @@ export default function InvestorConnect() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ic-conns-a", selfUserId] });
       queryClient.invalidateQueries({ queryKey: ["ic-conns-b", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["ic-conns-investor", selfUserId] });
     },
   });
 
 
 
   const isConnectedTo = (targetUser) => {
-    if (!selfUserId || !targetUser?.id) return false;
-    return allConns.some(c => (c.investor_a_id === selfUserId && c.investor_b_id === targetUser.id) || (c.investor_b_id === selfUserId && c.investor_a_id === targetUser.id));
+    if (!selfUserId) return false;
+    const targetId = targetUser?.user_id || targetUser?.id;
+    if (!targetId) return false;
+    return allConns.some(c =>
+      c.entrepreneur_id === targetId ||
+      (c.investor_a_id === selfUserId && c.investor_b_id === targetId) ||
+      (c.investor_b_id === selfUserId && c.investor_a_id === targetId)
+    );
   };
 
   const visibleEntrepreneurs = entrepreneurs
-    .filter((e) => e.id !== user?.id)
+    .filter((e) => e.user_id !== user?.id)
     .filter((e) => e.profile_completed === true);
 
 
@@ -125,7 +138,7 @@ export default function InvestorConnect() {
               const phone = e.phone;
               const waMsg = encodeURIComponent(`Hi ${displayName}, I saw your business on the SHAKTI platform and would like to connect.`);
               const waUrl = phone ? `https://wa.me/${phone.replace(/\D/g, '')}?text=${waMsg}` : null;
-              const canConnect = !!selfUserId && !!e?.id;
+              const canConnect = !!selfUserId && !!e?.user_id;
 
               // enrich with pitch
               const pitch = allPitches.find(p => p.created_by === e.email);
