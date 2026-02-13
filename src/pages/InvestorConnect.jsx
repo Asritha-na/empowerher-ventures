@@ -86,19 +86,7 @@ export default function InvestorConnect() {
     .filter((e) => e.id !== user?.id)
     .filter((e) => e.profile_completed === true);
 
-  // Debug safety: if none found, log all users and their roles (admin only)
-  React.useEffect(() => {
-    if (!isLoading && investors.length === 0 && user) {
-      (async () => {
-        if (user.role === 'admin') {
-          const all = await base44.entities.User.list();
-          console.log('DEBUG users roles:', all.map(u => ({ id: u.id, email: u.email, full_name: u.full_name, role: u.role, user_role: u.user_role })));
-        } else {
-          console.log('DEBUG: No investors found; cannot list all users as non-admin.');
-        }
-      })();
-    }
-  }, [isLoading, investors, user]);
+
 
   if (user && user.user_role !== "investor") {
     return (
@@ -117,13 +105,13 @@ export default function InvestorConnect() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Investor Connect</h1>
-            <p className="text-sm text-gray-700">Discover and connect with fellow investors</p>
+            <p className="text-sm text-gray-700">Discover and connect with entrepreneurs</p>
           </div>
         </div>
 
         {isLoading ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">Loading investors...</p>
+            <p className="text-gray-500">Loading entrepreneurs...</p>
           </div>
         ) : visibleEntrepreneurs.length === 0 ? (
          <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
@@ -146,7 +134,7 @@ export default function InvestorConnect() {
               const skills = Array.isArray(e.entrepreneur_skills_needed) ? e.entrepreneur_skills_needed.slice(0,6) : [];
 
               return (
-                <Card key={inv.id} className="glass-card hover:shadow-md transition-all h-full">
+                <Card key={e.id} className="glass-card hover:shadow-md transition-all h-full">
                   <CardContent className="p-5">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
@@ -168,43 +156,45 @@ export default function InvestorConnect() {
                       </div>
                     </div>
 
-                    {Array.isArray(inv.investor_focus_areas) && inv.investor_focus_areas.length > 0 && (
+                    {typeof investmentNeeded === 'number' && (
+                      <div className="mt-3 text-sm text-gray-700">
+                        Investment Needed: <span className="font-semibold text-green-600">₹{investmentNeeded.toLocaleString()}</span>
+                      </div>
+                    )}
+
+                    {skills.length > 0 && (
                       <div className="mt-3">
-                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Investment Focus</p>
+                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills</p>
                         <div className="flex flex-wrap gap-1.5">
-                          {inv.investor_focus_areas.slice(0, 6).map((fa, idx) => (
-                            <Badge key={idx} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{fa}</Badge>
+                          {skills.map((s, idx) => (
+                            <Badge key={idx} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{s}</Badge>
                           ))}
                         </div>
                       </div>
                     )}
 
-                    {inv.investor_bio && (
-                      <p className="mt-3 text-sm text-gray-700 line-clamp-3">{inv.investor_bio}</p>
+                    {description && (
+                      <p className="mt-3 text-sm text-gray-700 line-clamp-3">{description}</p>
                     )}
 
                     <div className="mt-5 grid grid-cols-2 gap-2">
-                      {connected ? (
-                        <Button
-                          className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
-                          onClick={() => disconnectMutation.mutate(inv)}
-                          disabled={disconnectMutation.isPending || !canConnect}
-                        >
-                          Disconnect
-                        </Button>
-                      ) : (
+                      {!connected ? (
                         <Button
                           className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl"
-                          onClick={() => connectMutation.mutate(inv)}
+                          onClick={() => connectMutation.mutate(e)}
                           disabled={connectMutation.isPending || !canConnect}
                         >
                           {connectMutation.isPending ? 'Connecting...' : 'Connect'}
+                        </Button>
+                      ) : (
+                        <Button className="bg-gray-200 text-gray-700 rounded-2xl" disabled>
+                          Connected
                         </Button>
                       )}
 
                       <Button
                         className="bg-green-600 hover:bg-green-700 text-white rounded-2xl"
-                        onClick={() => waUrl && window.open(waUrl, '_blank')}
+                        onClick={async () => { if (waUrl) { await connectMutation.mutateAsync(e); window.open(waUrl, '_blank'); } }}
                         disabled={!waUrl}
                       >
                         <Phone className="w-4 h-4" /> WhatsApp
@@ -212,8 +202,8 @@ export default function InvestorConnect() {
 
                       <Button
                         className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
-                        onClick={() => inv.email && window.open(`mailto:${inv.email}?subject=${encodeURIComponent('Investor Connection Request')}&body=${encodeURIComponent(`Hello ${displayName}, I found your profile on Shakti and would like to connect.`)}`)}
-                        disabled={!inv.email}
+                        onClick={async () => { if (e.email) { await connectMutation.mutateAsync(e); const subject = 'Investment Inquiry from SHAKTI Platform'; const body = `Hello ${displayName}, I saw your business on SHAKTI and would like to discuss investment.`; window.open(`mailto:${e.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`); } }}
+                        disabled={!e.email}
                       >
                         <Mail className="w-4 h-4" /> Email
                       </Button>
