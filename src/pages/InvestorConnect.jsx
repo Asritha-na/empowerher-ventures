@@ -64,13 +64,21 @@ export default function InvestorConnect() {
 
   const connectMutation = useMutation({
     mutationFn: async (targetUser) => {
-      if (!selfUserId || !targetUser?.id || selfUserId === targetUser.id) return null;
-      const existingAB = await base44.entities.InvestorConnection.filter({ investor_a_id: selfUserId, investor_b_id: targetUser.id, status: 'connected' }, "-created_date", 1);
-      const existingBA = await base44.entities.InvestorConnection.filter({ investor_a_id: targetUser.id, investor_b_id: selfUserId, status: 'connected' }, "-created_date", 1);
-      if ((existingAB?.length || 0) > 0 || (existingBA?.length || 0) > 0) return null;
+      const targetId = targetUser?.user_id || targetUser?.id;
+      if (!selfUserId || !targetId || selfUserId === targetId) return null;
+      const existingNew = await base44.entities.InvestorConnection.filter({ investor_id: selfUserId, entrepreneur_id: targetId, status: 'connected' }, "-created_date", 1);
+      const existingAB = await base44.entities.InvestorConnection.filter({ investor_a_id: selfUserId, investor_b_id: targetId, status: 'connected' }, "-created_date", 1);
+      const existingBA = await base44.entities.InvestorConnection.filter({ investor_a_id: targetId, investor_b_id: selfUserId, status: 'connected' }, "-created_date", 1);
+      if ((existingNew?.length || 0) > 0 || (existingAB?.length || 0) > 0 || (existingBA?.length || 0) > 0) return null;
+      const name = targetUser.full_name || (targetUser.email?.split('@')[0] || 'Entrepreneur');
+      const email = targetUser.email || null;
       return base44.entities.InvestorConnection.create({
         investor_a_id: selfUserId,
-        investor_b_id: targetUser.id,
+        investor_b_id: targetId,
+        investor_id: selfUserId,
+        entrepreneur_id: targetId,
+        entrepreneur_name: name,
+        entrepreneur_email: email,
         timestamp: new Date().toISOString(),
         status: 'connected',
       });

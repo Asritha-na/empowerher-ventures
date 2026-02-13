@@ -20,7 +20,7 @@ export default function InvestorConnections() {
       queryClient.invalidateQueries({ queryKey: ["conns-a", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["conns-b", user?.id] });
     });
-    const u2 = base44.entities.User.subscribe(() => {
+    const u2 = base44.entities.PublicProfile.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["entrepreneur-users-all"] });
     });
     const u3 = base44.entities.Pitch.subscribe(() => {
