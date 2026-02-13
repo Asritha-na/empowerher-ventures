@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { base44 } from "@/api/base44Client";
 
 // IMPORTANT: Replace this with your actual Google Maps API key (restricted to your domain)
-const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY"; // TODO: replace
+const GOOGLE_MAPS_API_KEY = typeof window !== "undefined" && window.GOOGLE_MAPS_API_KEY ? window.GOOGLE_MAPS_API_KEY : "YOUR_GOOGLE_MAPS_API_KEY"; // will use window.GOOGLE_MAPS_API_KEY if provided
 
 function loadGoogleMaps(apiKey) {
   return new Promise((resolve, reject) => {
@@ -11,7 +11,8 @@ function loadGoogleMaps(apiKey) {
       resolve();
       return;
     }
-    if (!apiKey || apiKey === "YOUR_GOOGLE_MAPS_API_KEY") {
+    const effectiveKey = (apiKey && apiKey !== "YOUR_GOOGLE_MAPS_API_KEY") ? apiKey : (window.GOOGLE_MAPS_API_KEY || "");
+    if (!effectiveKey) {
       reject(new Error("Missing Google Maps API key"));
       return;
     }
@@ -22,7 +23,7 @@ function loadGoogleMaps(apiKey) {
       return;
     }
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&v=weekly`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${effectiveKey}&libraries=places&v=weekly`;
     script.async = true;
     script.defer = true;
     script.setAttribute("data-google-maps", "true");
@@ -44,10 +45,11 @@ export default function LocationAutocomplete() {
       .then(() => {
         setReady(true);
         if (!inputRef.current) return;
-        // Initialize Places Autocomplete
+        // Initialize Places Autocomplete (cities in India only)
         autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
           fields: ["address_components", "geometry", "formatted_address"],
-          types: ["geocode"],
+          types: ["(cities)"],
+          componentRestrictions: { country: "in" },
         });
         autocomplete.addListener("place_changed", async () => {
           const place = autocomplete.getPlace();
@@ -69,14 +71,20 @@ export default function LocationAutocomplete() {
           const formatted = place.formatted_address || "";
 
           setStatus("Saving...");
-          await base44.auth.updateMe({
+          const data = {
             location_formatted: formatted,
             location_latitude: lat,
             location_longitude: lng,
             location_city: city,
             location_state: state,
             location_pincode: pincode,
-          });
+          };
+          const isAuthed = await base44.auth.isAuthenticated().catch(() => false);
+          if (isAuthed) {
+            await base44.auth.updateMe(data);
+          } else {
+            sessionStorage.setItem("location_data", JSON.stringify(data));
+          }
           setStatus("Location saved");
           setTimeout(() => setStatus(""), 2500);
         });

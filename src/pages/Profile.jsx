@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "@/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,6 +44,7 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const locationInputRef = useRef(null);
   const [budgetError, setBudgetError] = useState("");
   const [form, setForm] = useState({
     full_name: "",
@@ -87,6 +88,66 @@ export default function Profile() {
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    let ac;
+    function ensureScript() {
+      if (window.google && window.google.maps && window.google.maps.places) return Promise.resolve();
+      const key = window.GOOGLE_MAPS_API_KEY || "";
+      if (!key) return Promise.resolve();
+      return new Promise((resolve, reject) => {
+        const existing = document.querySelector("script[data-google-maps]");
+        if (existing) {
+          existing.addEventListener("load", resolve, { once: true });
+          existing.addEventListener("error", reject, { once: true });
+          return;
+        }
+        const s = document.createElement("script");
+        s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&v=weekly`;
+        s.async = true;
+        s.defer = true;
+        s.setAttribute("data-google-maps", "true");
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+    ensureScript().then(() => {
+      if (!locationInputRef.current || !window.google?.maps?.places) return;
+      ac = new window.google.maps.places.Autocomplete(locationInputRef.current, {
+        fields: ["address_components", "geometry", "formatted_address"],
+        types: ["(cities)"],
+        componentRestrictions: { country: "in" },
+      });
+      ac.addListener("place_changed", async () => {
+        const place = ac.getPlace();
+        if (!place || !place.geometry) return;
+        const comps = place.address_components || [];
+        const getComp = (type) => {
+          const c = comps.find((x) => x.types.includes(type));
+          return c ? c.long_name : "";
+        };
+        const city = getComp("locality") || getComp("administrative_area_level_2") || getComp("administrative_area_level_1") || "";
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        const formatted = place.formatted_address || city;
+        setForm((prev) => ({ ...prev, location: city || formatted }));
+        const data = {
+          location_formatted: formatted,
+          location_latitude: lat,
+          location_longitude: lng,
+          location_city: city,
+        };
+        const isAuthed = await base44.auth.isAuthenticated().catch(() => false);
+        if (isAuthed) {
+          await base44.auth.updateMe(data);
+        } else {
+          sessionStorage.setItem("location_data", JSON.stringify(data));
+        }
+      });
+    });
+    return () => { ac = null; };
+  }, [locationInputRef]);
 
   const handleSave = async () => {
     setBudgetError("");
@@ -227,6 +288,7 @@ export default function Profile() {
                   <MapPin className="w-3.5 h-3.5" /> {t("location")}
                 </label>
                 <Input
+                  ref={locationInputRef}
                   value={form.location}
                   onChange={(e) => setForm({ ...form, location: e.target.value })}
                   placeholder={t("villageCityState")}
