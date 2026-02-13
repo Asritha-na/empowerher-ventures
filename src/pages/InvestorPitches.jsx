@@ -33,8 +33,8 @@ export default function InvestorPitches() {
 
   // Fetch entrepreneur profiles (User records) to enrich pitch cards
   const { data: entrepreneurs = [] } = useQuery({
-    queryKey: ["entrepreneur-users"],
-    queryFn: () => base44.entities.User.filter({ user_role: "entrepreneur" }, "-created_date", 500),
+    queryKey: ["public-entrepreneur-profiles"],
+    queryFn: () => base44.entities.PublicProfile.filter({ user_role: "entrepreneur", profile_completed: true, is_public: true }, "-created_date", 1000),
   });
 
   const filteredCoFounders = coFounders.filter((member) => {
@@ -91,19 +91,30 @@ export default function InvestorPitches() {
     enabled: !!user?.id,
     queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: user.id, status: 'connected' }, "-created_date", 500),
   });
+  const { data: connsByInvestor = [] } = useQuery({
+    queryKey: ["ip-conns-investor", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_id: user.id, status: 'connected' }, "-created_date", 500),
+  });
   const allConns = [...connsA, ...connsB];
 
   // Mutation: connect investor -> entrepreneur
   const connectMutation = useMutation({
     mutationFn: async (entrepreneurUser) => {
-      if (!user?.id || !entrepreneurUser?.id || entrepreneurUser.id === user.id) return;
-      // Avoid duplicate connection
-      const [existAB] = await base44.entities.InvestorConnection.filter({ investor_a_id: user.id, investor_b_id: entrepreneurUser.id, status: 'connected' }, "-created_date", 1);
-      const [existBA] = await base44.entities.InvestorConnection.filter({ investor_a_id: entrepreneurUser.id, investor_b_id: user.id, status: 'connected' }, "-created_date", 1);
-      if (existAB || existBA) return;
+      const targetId = entrepreneurUser?.user_id || entrepreneurUser?.id;
+      if (!user?.id || !targetId || targetId === user.id) return;
+      // Avoid duplicate connection (new + legacy)
+      const existingNew = await base44.entities.InvestorConnection.filter({ investor_id: user.id, entrepreneur_id: targetId, status: 'connected' }, "-created_date", 1);
+      const [existAB] = await base44.entities.InvestorConnection.filter({ investor_a_id: user.id, investor_b_id: targetId, status: 'connected' }, "-created_date", 1);
+      const [existBA] = await base44.entities.InvestorConnection.filter({ investor_a_id: targetId, investor_b_id: user.id, status: 'connected' }, "-created_date", 1);
+      if ((existingNew?.length || 0) > 0 || existAB || existBA) return;
       await base44.entities.InvestorConnection.create({
         investor_a_id: user.id,
-        investor_b_id: entrepreneurUser.id,
+        investor_b_id: targetId,
+        investor_id: user.id,
+        entrepreneur_id: targetId,
+        entrepreneur_name: entrepreneurUser.full_name || (entrepreneurUser.email?.split('@')[0] || 'Entrepreneur'),
+        entrepreneur_email: entrepreneurUser.email || null,
         timestamp: new Date().toISOString(),
         status: 'connected',
       });
@@ -111,6 +122,7 @@ export default function InvestorPitches() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ip-conns-a", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["ip-conns-b", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["ip-conns-investor", user?.id] });
     }
   });
 
@@ -123,8 +135,8 @@ export default function InvestorPitches() {
     const unsubPitch = base44.entities.Pitch.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["investor-pitches"] });
     });
-    const unsubUser = base44.entities.User.subscribe(() => {
-      queryClient.invalidateQueries({ queryKey: ["entrepreneur-users"] });
+    const unsubUser = base44.entities.PublicProfile.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["public-entrepreneur-profiles"] });
     });
     return () => { unsubConn(); unsubPitch(); unsubUser(); };
   }, [user?.id, queryClient]);
@@ -192,8 +204,8 @@ export default function InvestorPitches() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {pitches.map((pitch) => {
                 const eUser = pitch.created_by ? entrepreneurByEmail.get(pitch.created_by.toLowerCase()) : null;
-                const otherId = eUser?.id;
-                const isConnected = !!otherId && allConns.some(c => (c.investor_a_id === user?.id && c.investor_b_id === otherId) || (c.investor_b_id === user?.id && c.investor_a_id === otherId));
+                const otherId = eUser?.user_id || eUser?.id;
+                const isConnected = !!otherId && (connsByInvestor.some(c => c.entrepreneur_id === otherId) || allConns.some(c => (c.investor_a_id === user?.id && c.investor_b_id === otherId) || (c.investor_b_id === user?.id && c.investor_a_id === otherId)));
                 const displayName = eUser?.full_name || (pitch.created_by ? pitch.created_by.split('@')[0].replace(/[._-]/g, ' ') : 'Entrepreneur');
                 const businessName = eUser?.business_name || pitch.title || '';
                 const location = eUser?.location || eUser?.location_formatted || '';
