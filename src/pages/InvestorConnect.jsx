@@ -13,9 +13,9 @@ export default function InvestorConnect() {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const { data: entrepreneurs = [], isLoading } = useQuery({
-    queryKey: ["public-entrepreneurs-ic"],
-    queryFn: () => base44.entities.PublicProfile.filter({ user_role: "entrepreneur", profile_completed: true, is_public: true }, "-created_date", 1000),
+  const { data: investors = [], isLoading } = useQuery({
+    queryKey: ["investors-list-ic"],
+    queryFn: () => base44.entities.Investor.list("-created_date", 1000),
   });
 
   const { data: allPitches = [] } = useQuery({
@@ -53,8 +53,8 @@ export default function InvestorConnect() {
       queryClient.invalidateQueries({ queryKey: ["ic-conns-a", selfUserId] });
       queryClient.invalidateQueries({ queryKey: ["ic-conns-b", selfUserId] });
     });
-    const u2 = base44.entities.PublicProfile.subscribe(() => {
-      queryClient.invalidateQueries({ queryKey: ["public-entrepreneurs-ic"] });
+    const u2 = base44.entities.Investor.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["investors-list-ic"] });
     });
     const u3 = base44.entities.Pitch.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["ic-all-pitches"] });
@@ -103,19 +103,12 @@ export default function InvestorConnect() {
     );
   };
 
-  const visibleEntrepreneurs = entrepreneurs
-    .filter((e) => e.user_id !== user?.id)
-    .filter((e) => e.profile_completed === true);
+  const visibleInvestors = investors
+    .filter((e) => (user?.email ? e.email !== user.email : true));
 
 
 
-  if (user && user.user_role !== "investor") {
-    return (
-      <div className="p-6 md:p-8">
-        <p className="text-sm text-gray-600">This section is available for investors only.</p>
-      </div>
-    );
-  }
+
 
   return (
     <div className="min-h-screen p-4 md:p-8" style={{background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)'}}>
@@ -126,21 +119,21 @@ export default function InvestorConnect() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Investor Connect</h1>
-            <p className="text-sm text-gray-700">Discover and connect with entrepreneurs</p>
+            <p className="text-sm text-gray-700">Discover and connect with investors</p>
           </div>
         </div>
 
         {isLoading ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">Loading entrepreneurs...</p>
+            <p className="text-gray-500">Loading investors...</p>
           </div>
-        ) : visibleEntrepreneurs.length === 0 ? (
+        ) : visibleInvestors.length === 0 ? (
          <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-           <p className="text-gray-500">No entrepreneurs available to connect</p>
+           <p className="text-gray-500">No investors available to connect</p>
          </div>
         ) : (
          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-           {visibleEntrepreneurs.map((e) => {
+           {visibleInvestors.map((e) => {
               const connected = isConnectedTo(e);
               const displayName = e.full_name || (e.email?.split('@')[0] || 'Entrepreneur');
               const phone = e.phone;
@@ -159,15 +152,15 @@ export default function InvestorConnect() {
                   <CardContent className="p-5">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
-                        <img src={e.profile_image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={displayName} className="w-10 h-10 rounded-full object-cover" />
+                        <img src={e.image_url || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={displayName} className="w-10 h-10 rounded-full object-cover" />
                         <div>
                           <h3 className="font-bold text-gray-900">{displayName}</h3>
-                          <p className="text-sm text-gray-600">{e.business_name || 'Not provided'}</p>
-                          {(e.location || e.location_formatted) && (
-                            <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
-                              <MapPin className="w-3.5 h-3.5" />
-                              <span>{e.location || e.location_formatted}</span>
-                            </div>
+                          <p className="text-sm text-gray-600">{e.category_label || e.investor_type || 'Investor'}</p>
+                          {e.location && (
+                           <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                             <MapPin className="w-3.5 h-3.5" />
+                             <span>{e.location}</span>
+                           </div>
                           )}
                         </div>
                       </div>
@@ -177,15 +170,15 @@ export default function InvestorConnect() {
                       </div>
                     </div>
 
-                    {typeof investmentNeeded === 'number' && (
+                    {investmentRange && (
                       <div className="mt-3 text-sm text-gray-700">
-                        Investment Needed: <span className="font-semibold text-green-600">₹{investmentNeeded.toLocaleString()}</span>
+                        Investment Range: <span className="font-semibold text-green-600">{investmentRange}</span>
                       </div>
                     )}
 
                     {skills.length > 0 && (
                       <div className="mt-3">
-                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Skills</p>
+                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Focus Areas</p>
                         <div className="flex flex-wrap gap-1.5">
                           {skills.map((s, idx) => (
                             <Badge key={idx} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{s}</Badge>
@@ -199,23 +192,17 @@ export default function InvestorConnect() {
                     )}
 
                     <div className="mt-5 grid grid-cols-2 gap-2">
-                      {!connected ? (
-                        <Button
-                          className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl"
-                          onClick={() => connectMutation.mutate(e)}
-                          disabled={connectMutation.isPending || !canConnect}
-                        >
-                          {connectMutation.isPending ? 'Connecting...' : 'Connect'}
-                        </Button>
-                      ) : (
-                        <Button className="bg-gray-200 text-gray-700 rounded-2xl" disabled>
-                          Connected
-                        </Button>
-                      )}
+                      <Button
+                        className="bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl"
+                        onClick={() => { if (email) { const subject = 'Investment Inquiry from SHAKTI Platform'; const body = `Hello ${displayName}, I found your profile on SHAKTI and would like to connect.`; window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`); } }}
+                        disabled={!email}
+                      >
+                        Connect
+                      </Button>
 
                       <Button
                         className="bg-green-600 hover:bg-green-700 text-white rounded-2xl"
-                        onClick={async () => { if (waUrl) { await connectMutation.mutateAsync(e); window.open(waUrl, '_blank'); } }}
+                        onClick={() => { if (waUrl) window.open(waUrl, '_blank'); }}
                         disabled={!waUrl}
                       >
                         <Phone className="w-4 h-4" /> WhatsApp
@@ -223,8 +210,8 @@ export default function InvestorConnect() {
 
                       <Button
                         className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
-                        onClick={async () => { if (e.email) { await connectMutation.mutateAsync(e); const subject = 'Investment Inquiry from SHAKTI Platform'; const body = `Hello ${displayName}, I saw your business on SHAKTI and would like to discuss investment.`; window.open(`mailto:${e.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`); } }}
-                        disabled={!e.email}
+                        onClick={() => { if (email) window.open(`mailto:${email}?subject=${encodeURIComponent('Investment Inquiry from SHAKTI Platform')}`); }}
+                        disabled={!email}
                       >
                         <Mail className="w-4 h-4" /> Email
                       </Button>
