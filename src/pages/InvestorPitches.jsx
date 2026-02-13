@@ -276,7 +276,7 @@ export default function InvestorPitches() {
                             Connect
                           </Button>
                         ) : (
-                          <div className="grid grid-cols-6 gap-2">
+                          <div className={`grid ${validUpi ? 'grid-cols-6' : 'grid-cols-3'} gap-2`}>
                             <Button className="col-span-1 bg-gray-200 text-gray-700 rounded-2xl" disabled>
                               Connected
                             </Button>
