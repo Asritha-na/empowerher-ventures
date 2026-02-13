@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users } from "lucide-react";
+import { Users, Mail, Phone } from "lucide-react";
 
 export default function InvestorConnections() {
   const [user, setUser] = useState(null);
@@ -12,14 +12,25 @@ export default function InvestorConnections() {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const u1 = base44.entities.InvestorConnection.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["conns-a", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["conns-b", user?.id] });
+    });
+    const u2 = base44.entities.User.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["entrepreneur-users-all"] });
+    });
+    const u3 = base44.entities.Pitch.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["all-pitches"] });
+    });
+    return () => { u1(); u2(); u3(); };
+  }, [queryClient, user?.id]);
+
   const { data: investors = [] } = useQuery({
     queryKey: ["investors"],
     queryFn: () => base44.entities.Investor.list("-created_date", 200),
-  });
-
-  const { data: allMembers = [] } = useQuery({
-    queryKey: ["all-members"],
-    queryFn: () => base44.entities.CommunityMember.list("-created_date", 500),
   });
 
   const { data: allPitches = [] } = useQuery({
@@ -27,17 +38,52 @@ export default function InvestorConnections() {
     queryFn: () => base44.entities.Pitch.list("-created_date", 500),
   });
 
-  const currentInvestor = investors.find((inv) => inv.email === user?.email);
-  const connectedEntrepreneurs = currentInvestor?.is_connected || [];
+  // Connections based on InvestorConnection entity
+  const { data: connsA = [] } = useQuery({
+    queryKey: ["conns-a", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: user.id, status: 'connected' }, "-created_date", 500),
+  });
+  const { data: connsB = [] } = useQuery({
+    queryKey: ["conns-b", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: user.id, status: 'connected' }, "-created_date", 500),
+  });
 
-  const cards = connectedEntrepreneurs.map((email) => {
-    const member = allMembers.find((m) => m.created_by === email);
+  const { data: entrepreneurUsers = [] } = useQuery({
+    queryKey: ["entrepreneur-users-all"],
+    queryFn: () => base44.entities.User.filter({ user_role: 'entrepreneur' }, "-created_date", 1000),
+  });
+
+  const currentInvestor = investors.find((inv) => inv.email === user?.email);
+  const connectedEntrepreneurEmails = currentInvestor?.is_connected || [];
+
+  const entreById = new Map(entrepreneurUsers.map(u => [u.id, u]));
+  const entreByEmail = new Map(entrepreneurUsers.map(u => [u.email, u]));
+
+  const fromConnections = [...connsA, ...connsB]
+    .map(c => (c.investor_a_id === user?.id ? c.investor_b_id : c.investor_a_id))
+    .map(otherId => entreById.get(otherId))
+    .filter(Boolean);
+
+  const fromEmails = connectedEntrepreneurEmails
+    .map(email => entreByEmail.get(email))
+    .filter(Boolean);
+
+  const mergedEntrepreneurs = [];
+  const seen = new Set();
+  [...fromConnections, ...fromEmails].forEach(u => { if (!seen.has(u.id)) { seen.add(u.id); mergedEntrepreneurs.push(u); } });
+
+  const cards = mergedEntrepreneurs.map((u) => {
+    const email = u.email;
     const pitch = allPitches.find((p) => p.created_by === email);
-    const name = member?.name || (email?.split("@")[0]?.replace(/[._-]/g, " ") || "Entrepreneur");
-    const business = member?.business_name || pitch?.title || "Business Idea";
-    const skills = Array.isArray(member?.skills) ? member.skills.slice(0, 6) : [];
-    const section = member?.business_type || pitch?.category || null;
-    return { email, name, business, skills, section };
+    const name = u.full_name || (email?.split('@')[0]?.replace(/[._-]/g, ' ') || 'Entrepreneur');
+    const business = u.business_name || pitch?.title || 'Business Idea';
+    const skills = Array.isArray(u.entrepreneur_skills_needed) ? u.entrepreneur_skills_needed.slice(0,6) : [];
+    const investment = typeof pitch?.funding_needed === 'number' ? pitch.funding_needed : (typeof u.entrepreneur_investment_needed === 'number' ? u.entrepreneur_investment_needed : null);
+    const phone = u.phone;
+    const profile_image = u.profile_image;
+    return { email, name, business, skills, investment, phone, profile_image, location: u.location || u.location_formatted || null };
   });
 
   return (
@@ -53,7 +99,7 @@ export default function InvestorConnections() {
           </div>
         </div>
 
-        {connectedEntrepreneurs.length === 0 ? (
+        {cards.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
             <p className="text-gray-500">You have not connected with any entrepreneurs yet.</p>
           </div>
@@ -62,10 +108,17 @@ export default function InvestorConnections() {
             {cards.map((c, i) => (
               <Card key={c.email + i} className="glass-card hover:shadow-md transition-all h-full">
                 <CardContent className="p-5">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-bold text-gray-900">{c.name}</h3>
-                      <p className="text-sm text-gray-600">{c.business}</p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <img src={c.profile_image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={c.name} className="w-10 h-10 rounded-full object-cover" />
+                      <div>
+                        <h3 className="font-bold text-gray-900">{c.name}</h3>
+                        <p className="text-sm text-gray-600">{c.business}</p>
+                        {c.location && <p className="text-xs text-gray-500 mt-0.5">{c.location}</p>}
+                        {typeof c.investment === 'number' && (
+                          <p className="text-xs text-gray-700 mt-1">Investment Needed: <span className="font-semibold text-green-600">₹{c.investment.toLocaleString()}</span></p>
+                        )}
+                      </div>
                     </div>
                     <Badge className="bg-green-100 text-green-700">Connected</Badge>
                   </div>
@@ -81,12 +134,22 @@ export default function InvestorConnections() {
                     </div>
                   )}
 
-                  {c.section && (
-                    <div className="mt-3 text-sm text-gray-700">
-                      <span className="font-medium">Section of Interest: </span>
-                      <span className="capitalize">{c.section}</span>
-                    </div>
-                  )}
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    <Button
+                      className="bg-green-600 hover:bg-green-700 text-white rounded-2xl"
+                      onClick={() => c.phone && window.open(`https://wa.me/${c.phone.replace(/\D/g, '')}?text=${encodeURIComponent('Hi ' + c.name + ', I saw your business on Shakti and would like to connect.')}`, '_blank')}
+                      disabled={!c.phone}
+                    >
+                      <Phone className="w-4 h-4 mr-1" /> WhatsApp
+                    </Button>
+                    <Button
+                      className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
+                      onClick={() => c.email && window.open(`mailto:${c.email}?subject=${encodeURIComponent('Regarding your business idea on SHAKTI')}`)}
+                      disabled={!c.email}
+                    >
+                      <Mail className="w-4 h-4 mr-1" /> Email
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
