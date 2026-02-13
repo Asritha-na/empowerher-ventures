@@ -8,7 +8,7 @@ import LanguageSelector from "@/components/LanguageSelector";
 import RoleSelectBot from "@/components/RoleSelectBot";
 import VoiceAccessibilityAssistant from "@/components/VoiceAccessibilityAssistant";
 import { Button } from "@/components/ui/button";
-import StickySearchBar from "../components/role-select/StickySearchBar";
+
 import ServiceTiles from "../components/role-select/ServiceTiles";
 import LocationAutocomplete from "../components/role-select/LocationAutocomplete";
 
@@ -89,9 +89,7 @@ export default function RoleSelect() {
         </motion.div>
 
         {/* Central Search / Location */}
-        <div className="max-w-3xl mx-auto mb-8 sticky top-24 z-40">
-          <StickySearchBar />
-        </div>
+
 
         <div className="max-w-3xl mx-auto mb-10">
           <div className="glass-card rounded-3xl border border-white/20 p-4">
