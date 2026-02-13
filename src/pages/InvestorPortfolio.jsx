@@ -252,7 +252,7 @@ export default function InvestorPortfolio() {
           <TabsList className="bg-white rounded-xl p-1 shadow-sm">
             <TabsTrigger value="overview" className="rounded-lg">{t("overview")}</TabsTrigger>
             <TabsTrigger value="profile" className="rounded-lg">{t("profileDetails")}</TabsTrigger>
-            <TabsTrigger value="crowdfunding" className="rounded-lg">Crowd Funding</TabsTrigger>
+            <TabsTrigger value="crowdfunding" className="rounded-lg">{t("crowdfunding")}</TabsTrigger>
             {user?.user_role === "investor" && (
               <TabsTrigger value="connections" className="rounded-lg">{t("connections")}</TabsTrigger>
             )}
@@ -262,7 +262,7 @@ export default function InvestorPortfolio() {
           <TabsContent value="overview" className="space-y-6">
             {/* Portfolio Performance Chart */}
             <PortfolioPerformance investments={currentInvestor?.investments_made || 0} />
-            <p className="text-xs italic text-gray-500 mt-2">This is a simulated projection to demonstrate potential growth after investor connections.</p>
+            <p className="text-xs italic text-gray-500 mt-2">{t("portfolioDisclaimer")}</p>
 
             {/* Stats Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -479,8 +479,8 @@ export default function InvestorPortfolio() {
           <TabsContent value="crowdfunding" className="space-y-6">
             {/* Header */}
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-bold text-red-500 mb-2">Crowdfunding Campaigns</h2>
-              <p className="text-gray-600 text-lg">Explore active campaigns and see who's investing</p>
+              <h2 className="text-4xl font-bold text-red-500 mb-2">{t("crowdfundingCampaigns")}</h2>
+              <p className="text-gray-600 text-lg">{t("exploreActiveCampaigns")}</p>
             </div>
 
             {/* Stats Cards */}
@@ -493,7 +493,7 @@ export default function InvestorPortfolio() {
                   <p className="text-4xl font-bold text-red-500 mb-1">
                     {activeConnectionsCount}
                   </p>
-                  <p className="text-sm text-gray-600">Active Campaigns</p>
+                  <p className="text-sm text-gray-600">{t("activeCampaigns")}</p>
                 </CardContent>
               </Card>
 
@@ -505,7 +505,7 @@ export default function InvestorPortfolio() {
                   <p className="text-4xl font-bold text-green-600 mb-1">
                     ₹{campaigns.reduce((sum, c) => sum + (c.raised_amount || 0), 0).toLocaleString()}
                   </p>
-                  <p className="text-sm text-gray-600">Total Raised</p>
+                  <p className="text-sm text-gray-600">{t("totalRaised")}</p>
                 </CardContent>
               </Card>
 
@@ -517,7 +517,7 @@ export default function InvestorPortfolio() {
                   <p className="text-4xl font-bold text-blue-600 mb-1">
                     {campaigns.reduce((sum, c) => sum + (c.backers?.length || 0), 0)}
                   </p>
-                  <p className="text-sm text-gray-600">Total Backers</p>
+                  <p className="text-sm text-gray-600">{t("totalBackers")}</p>
                 </CardContent>
               </Card>
 
@@ -529,7 +529,7 @@ export default function InvestorPortfolio() {
                   <p className="text-4xl font-bold text-purple-600 mb-1">
                     {campaigns.filter(c => c.status === "funded").length}
                   </p>
-                  <p className="text-sm text-gray-600">Funded</p>
+                  <p className="text-sm text-gray-600">{t("funded")}</p>
                 </CardContent>
               </Card>
             </div>
@@ -538,8 +538,8 @@ export default function InvestorPortfolio() {
             {campaigns.filter(c => c.status === "active").length === 0 ? (
               <div className="text-center py-16">
                 <TrendingUp className="w-20 h-20 text-gray-300 mx-auto mb-4" />
-                <p className="text-2xl text-gray-500 mb-2">No active campaigns yet</p>
-                <p className="text-gray-400">Check back soon for new crowdfunding opportunities!</p>
+                <p className="text-2xl text-gray-500 mb-2">{t("noActiveCampaigns")}</p>
+                <p className="text-gray-400">{t("checkBackSoon")}</p>
               </div>
             ) : (
               <div className="grid lg:grid-cols-2 gap-8">
@@ -573,18 +573,18 @@ export default function InvestorPortfolio() {
                               <img src={u.profile_image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={displayName} className="w-10 h-10 rounded-full object-cover" />
                               <div>
                                 <h3 className="font-semibold text-gray-900">{displayName}</h3>
-                                <p className="text-sm text-gray-600">{u.investor_company || 'Not provided'}</p>
+                                <p className="text-sm text-gray-600">{u.investor_company || t("notProvided")}</p>
                                 {u.investor_location && (
                                   <p className="text-xs text-gray-500 mt-0.5">{u.investor_location}</p>
                                 )}
                               </div>
                             </div>
-                            <Badge className="bg-green-100 text-green-700">Connected</Badge>
+                            <Badge className="bg-green-100 text-green-700">{t("connected")}</Badge>
                           </div>
 
                           {Array.isArray(u.investor_focus_areas) && u.investor_focus_areas.length > 0 && (
                             <div className="mt-3">
-                              <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Investment Focus</p>
+                              <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{t("investmentFocus")}</p>
                               <div className="flex flex-wrap gap-1.5">
                                 {u.investor_focus_areas.slice(0,6).map((s, idx) => (
                                   <Badge key={idx} variant="secondary" className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5">{s}</Badge>
@@ -599,20 +599,20 @@ export default function InvestorPortfolio() {
                               onClick={() => waUrl && window.open(waUrl, '_blank')}
                               disabled={!waUrl}
                             >
-                              <Phone className="w-4 h-4" /> WhatsApp
+                              <Phone className="w-4 h-4" /> {t("whatsapp")}
                             </Button>
                             <Button
                               className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
                               onClick={() => u.email && window.open(`mailto:${u.email}?subject=${encodeURIComponent('Investor Connection Request')}&body=${encodeURIComponent(`Hello ${displayName}, I found your profile on Shakti and would like to connect.`)}`)}
                               disabled={!u.email}
                             >
-                              <Mail className="w-4 h-4" /> Email
+                              <Mail className="w-4 h-4" /> {t("email")}
                             </Button>
                             <Button
                               className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
                               onClick={() => disconnectMutation.mutate(u)}
                             >
-                              Disconnect
+                              {t("disconnect")}
                             </Button>
                           </div>
                         </div>
