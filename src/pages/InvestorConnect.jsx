@@ -208,8 +208,8 @@ export default function InvestorConnect() {
                         <Mail className="w-4 h-4" /> Email
                       </Button>
                     </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                    </Card>
               );
             })}
           </div>
