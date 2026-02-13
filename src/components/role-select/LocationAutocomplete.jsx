@@ -2,93 +2,68 @@ import React, { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { base44 } from "@/api/base44Client";
 
-// IMPORTANT: Replace this with your actual Google Maps API key (restricted to your domain)
-const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY"; // TODO: replace
+// Temporary simulation: predefined Indian cities (no Google Maps dependency)
+const CITIES = [
+  "Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata",
+  "Pune", "Jaipur", "Ahmedabad", "Surat", "Lucknow", "Kanpur",
+  "Nagpur", "Indore", "Bhopal", "Patna", "Vadodara", "Visakhapatnam"
+];
 
-function loadGoogleMaps(apiKey) {
-  return new Promise((resolve, reject) => {
-    if (window.google && window.google.maps && window.google.maps.places) {
-      resolve();
-      return;
-    }
-    if (!apiKey || apiKey === "AIzaSyDr9ePqMukxX6VoRqnRXQTFI-fNnDW1wxc") {
-      reject(new Error("Missing Google Maps API key"));
-      return;
-    }
-    const existing = document.querySelector("script[data-google-maps]");
-    if (existing) {
-      existing.addEventListener("load", () => resolve());
-      existing.addEventListener("error", reject);
-      return;
-    }
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&v=weekly`;
-    script.async = true;
-    script.defer = true;
-    script.setAttribute("data-google-maps", "true");
-    script.onload = () => resolve();
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
+function simulateCoords(city) {
+  // Deterministic pseudo-random coords within India bounds
+  let h = 0;
+  for (let i = 0; i < city.length; i++) h = (h * 31 + city.charCodeAt(i)) >>> 0;
+  const lat = 8 + (h % 2900) / 100;   // 8 .. 37
+  const lng = 68 + (Math.floor(h / 97) % 2900) / 100; // 68 .. 97
+  return { lat: Number(lat.toFixed(5)), lng: Number(lng.toFixed(5)) };
 }
 
 export default function LocationAutocomplete() {
   const inputRef = useRef(null);
-  const [status, setStatus] = useState("");
-  const [ready, setReady] = useState(false);
+  const [status, setStatus] = useState("Location autocomplete is currently simulated for demo purposes. Real Google Maps API integration will be enabled in production.");
+  const [ready, setReady] = useState(true);
+  const [value, setValue] = useState("");
+  const [filtered, setFiltered] = useState(CITIES);
+
+  const onChange = (e) => {
+    const v = e.target.value;
+    setValue(v);
+    const f = CITIES.filter((c) => c.toLowerCase().includes(v.toLowerCase())).slice(0, 10);
+    setFiltered(f.length ? f : CITIES.slice(0, 10));
+  };
+
+  const trySelect = async (text) => {
+    const city = CITIES.find((c) => c.toLowerCase() === text.trim().toLowerCase());
+    if (!city) return; // only act on known cities
+    const { lat, lng } = simulateCoords(city);
+    const data = {
+      location_formatted: city,
+      location_city: city,
+      location_latitude: lat,
+      location_longitude: lng,
+    };
+    const isAuthed = await base44.auth.isAuthenticated().catch(() => false);
+    if (isAuthed) {
+      await base44.auth.updateMe(data);
+    } else {
+      sessionStorage.setItem("location_data", JSON.stringify(data));
+    }
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      trySelect(value);
+    }
+  };
+
+  const onBlur = () => {
+    trySelect(value);
+  };
 
   useEffect(() => {
-    let autocomplete;
-
-    loadGoogleMaps(GOOGLE_MAPS_API_KEY)
-      .then(() => {
-        setReady(true);
-        if (!inputRef.current) return;
-        // Initialize Places Autocomplete
-        autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
-          fields: ["address_components", "geometry", "formatted_address"],
-          types: ["geocode"],
-        });
-        autocomplete.addListener("place_changed", async () => {
-          const place = autocomplete.getPlace();
-          if (!place || !place.geometry) {
-            setStatus("Could not get location details. Try again.");
-            return;
-          }
-
-          const getComp = (type) => {
-            const comp = (place.address_components || []).find((c) => c.types.includes(type));
-            return comp ? comp.long_name : "";
-          };
-
-          const city = getComp("locality") || getComp("sublocality") || getComp("administrative_area_level_2");
-          const state = getComp("administrative_area_level_1");
-          const pincode = getComp("postal_code");
-          const lat = place.geometry.location.lat();
-          const lng = place.geometry.location.lng();
-          const formatted = place.formatted_address || "";
-
-          setStatus("Saving...");
-          await base44.auth.updateMe({
-            location_formatted: formatted,
-            location_latitude: lat,
-            location_longitude: lng,
-            location_city: city,
-            location_state: state,
-            location_pincode: pincode,
-          });
-          setStatus("Location saved");
-          setTimeout(() => setStatus(""), 2500);
-        });
-      })
-      .catch(() => {
-        setStatus("Add your Google Maps API key to enable autocomplete");
-      });
-
-    return () => {
-      // No explicit cleanup API for Autocomplete instance needed
-      autocomplete = null;
-    };
+    // Simulation mode: no external scripts loaded
+    setReady(true);
   }, []);
 
   return (
@@ -96,10 +71,21 @@ export default function LocationAutocomplete() {
       <label className="block text-sm text-pink-100 mb-2">Set your location</label>
       <Input
         ref={inputRef}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        onBlur={onBlur}
         placeholder={ready ? "Start typing your address..." : "Loading Google Autocomplete..."}
         disabled={!ready}
         className="bg-white/90 border-white/30 text-gray-900 placeholder:text-gray-500"
+        list="city-list"
+        autoComplete="off"
       />
+      <datalist id="city-list">
+        {filtered.map((c) => (
+          <option key={c} value={c} />
+        ))}
+      </datalist>
       {status && <p className="mt-2 text-xs text-pink-200">{status}</p>}
     </div>
   );
