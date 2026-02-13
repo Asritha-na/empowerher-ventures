@@ -134,18 +134,16 @@ export default function InvestorConnect() {
         ) : (
          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
            {visibleInvestors.map((e) => {
-              const connected = isConnectedTo(e);
-              const displayName = e.full_name || (e.email?.split('@')[0] || 'Entrepreneur');
+              const displayName = e.name || (e.email?.split('@')[0] || 'Investor');
               const phone = e.phone;
-              const waMsg = encodeURIComponent(`Hi ${displayName}, I saw your business on the SHAKTI platform and would like to connect.`);
+              const email = e.email;
+              const waMsg = encodeURIComponent(`Hello ${displayName}, I found your profile on the SHAKTI platform and would like to connect.`);
               const waUrl = phone ? `https://wa.me/${phone.replace(/\D/g, '')}?text=${waMsg}` : null;
-              const canConnect = !!selfUserId && !!e?.user_id;
-
-              // enrich with pitch
-              const pitch = allPitches.find(p => p.created_by === e.email);
-              const investmentNeeded = typeof pitch?.funding_needed === 'number' ? pitch.funding_needed : null;
-              const description = pitch?.structured_pitch || pitch?.problem || pitch?.solution || e.bio || '';
-              const skills = Array.isArray(e.entrepreneur_skills_needed) ? e.entrepreneur_skills_needed.slice(0,6) : [];
+              const investmentRange = (typeof e.min_investment === 'number' || typeof e.max_investment === 'number')
+                ? `${typeof e.min_investment === 'number' ? '₹' + e.min_investment.toLocaleString() : '₹0'} - ${typeof e.max_investment === 'number' ? '₹' + e.max_investment.toLocaleString() : '₹0'}`
+                : null;
+              const description = e.bio || '';
+              const skills = Array.isArray(e.focus_areas) ? e.focus_areas.slice(0,6) : [];
 
               return (
                 <Card key={e.id} className="glass-card hover:shadow-md transition-all h-full">
