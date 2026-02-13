@@ -10,6 +10,7 @@ import VoiceAccessibilityAssistant from "@/components/VoiceAccessibilityAssistan
 import { Button } from "@/components/ui/button";
 import StickySearchBar from "../components/role-select/StickySearchBar";
 import ServiceTiles from "../components/role-select/ServiceTiles";
+import LocationAutocomplete from "../components/role-select/LocationAutocomplete";
 
 export default function RoleSelect() {
   const [loading, setLoading] = useState(false);
@@ -90,6 +91,16 @@ export default function RoleSelect() {
         {/* Central Search / Location */}
         <div className="max-w-3xl mx-auto mb-8 sticky top-24 z-40">
           <StickySearchBar />
+        </div>
+
+        <div className="max-w-3xl mx-auto mb-10">
+          <div className="glass-card rounded-3xl border border-white/20 p-4">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-white font-semibold">Set your location</h3>
+              <span className="text-xs text-pink-200/80">Autocomplete powered by Google</span>
+            </div>
+            <LocationAutocomplete />
+          </div>
         </div>
 
          {/* Success Stories Strip */}
