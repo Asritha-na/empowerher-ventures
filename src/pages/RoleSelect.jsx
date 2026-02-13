@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import StickySearchBar from "../components/role-select/StickySearchBar";
 import ServiceTiles from "../components/role-select/ServiceTiles";
 import LocationAutocomplete from "../components/role-select/LocationAutocomplete";
+import IntegrationLink from "../components/role-select/IntegrationLink";
 
 export default function RoleSelect() {
   const [loading, setLoading] = useState(false);
@@ -100,6 +101,9 @@ export default function RoleSelect() {
               <span className="text-xs text-pink-200/80">Autocomplete powered by Google</span>
             </div>
             <LocationAutocomplete />
+            <div className="mt-3">
+              <IntegrationLink url="https://app.base44.com/integrations-catalog/item/685dcbf8039af57a7d46d2eb" />
+            </div>
           </div>
         </div>
 
