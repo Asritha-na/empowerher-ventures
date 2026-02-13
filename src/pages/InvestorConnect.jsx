@@ -132,13 +132,19 @@ export default function InvestorConnect() {
         ) : (
          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
            {visibleEntrepreneurs.map((e) => {
-              const connected = isConnectedTo(inv);
-              const displayName = inv.investor_name || inv.full_name || (inv.email?.split('@')[0] || 'Investor');
-              const phone = inv.investor_phone;
-              const waMsg = encodeURIComponent(`Hi ${displayName}, I found your profile on Shakti Investor Network and would like to connect with you.`);
-              const waUrl = phone ? `https://wa.me/${phone}?text=${waMsg}` : null;
-              const targetInvestor = allInvestorEntities.find(e => e.email === inv.email) || null;
-              const canConnect = !!selfInvestorId && !!targetInvestor?.id;
+              const connected = isConnectedTo(e);
+              const displayName = e.full_name || (e.email?.split('@')[0] || 'Entrepreneur');
+              const phone = e.phone;
+              const waMsg = encodeURIComponent(`Hi ${displayName}, I saw your business on the SHAKTI platform and would like to connect.`);
+              const waUrl = phone ? `https://wa.me/${phone.replace(/\D/g, '')}?text=${waMsg}` : null;
+              const canConnect = !!selfUserId && !!e?.id;
+
+              // enrich with pitch
+              const pitch = allPitches.find(p => p.created_by === e.email);
+              const investmentNeeded = typeof pitch?.funding_needed === 'number' ? pitch.funding_needed : null;
+              const description = pitch?.structured_pitch || pitch?.problem || pitch?.solution || e.bio || '';
+              const skills = Array.isArray(e.entrepreneur_skills_needed) ? e.entrepreneur_skills_needed.slice(0,6) : [];
+
               return (
                 <Card key={inv.id} className="glass-card hover:shadow-md transition-all h-full">
                   <CardContent className="p-5">
