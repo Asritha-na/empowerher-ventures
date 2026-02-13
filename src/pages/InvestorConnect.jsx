@@ -13,105 +13,78 @@ export default function InvestorConnect() {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const { data: investors = [], isLoading } = useQuery({
-    queryKey: ["investor-users"],
-    queryFn: () => base44.entities.User.filter({ user_role: "investor" }, "-created_date", 200),
+  const { data: entrepreneurs = [], isLoading } = useQuery({
+    queryKey: ["entrepreneur-users-ic"],
+    queryFn: () => base44.entities.User.filter({ user_role: "entrepreneur", profile_completed: true }, "-created_date", 1000),
   });
 
-  const { data: myInvestor = null } = useQuery({
-    queryKey: ["myInvestor", user?.email],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const r = await base44.entities.Investor.filter({ email: user.email }, "-created_date", 1);
-      return r?.[0] || null;
-    },
+  const { data: allPitches = [] } = useQuery({
+    queryKey: ["ic-all-pitches"],
+    queryFn: () => base44.entities.Pitch.list("-created_date", 1000),
   });
 
   const queryClient = useQueryClient();
 
-  const { data: allInvestorEntities = [] } = useQuery({
-    queryKey: ["all-investor-entities"],
-    queryFn: () => base44.entities.Investor.list("-created_date", 500),
-  });
+
 
   const selfUserId = user?.id;
-  const selfInvestorId = myInvestor?.id;
 
-  const { data: connsAInv = [] } = useQuery({
-    queryKey: ["invconns-a-inv", selfInvestorId],
-    enabled: !!selfInvestorId,
-    queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: selfInvestorId, status: 'connected' }, "-created_date", 500),
+  const { data: connsA = [] } = useQuery({
+    queryKey: ["ic-conns-a", selfUserId],
+    enabled: !!selfUserId,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: selfUserId, status: 'connected' }, "-created_date", 500),
   });
-  const { data: connsBInv = [] } = useQuery({
-    queryKey: ["invconns-b-inv", selfInvestorId],
-    enabled: !!selfInvestorId,
-    queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: selfInvestorId, status: 'connected' }, "-created_date", 500),
+  const { data: connsB = [] } = useQuery({
+    queryKey: ["ic-conns-b", selfUserId],
+    enabled: !!selfUserId,
+    queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: selfUserId, status: 'connected' }, "-created_date", 500),
   });
 
-  const allConns = [...connsAInv, ...connsBInv];
+  const allConns = [...connsA, ...connsB];
 
   React.useEffect(() => {
-    const unsub = base44.entities.InvestorConnection.subscribe(() => {
-      queryClient.invalidateQueries({ queryKey: ["invconns-a-inv", selfInvestorId] });
-      queryClient.invalidateQueries({ queryKey: ["invconns-b-inv", selfInvestorId] });
+    const u1 = base44.entities.InvestorConnection.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["ic-conns-a", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["ic-conns-b", selfUserId] });
     });
-    return unsub;
-  }, [selfInvestorId, queryClient]);
+    const u2 = base44.entities.User.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["entrepreneur-users-ic"] });
+    });
+    const u3 = base44.entities.Pitch.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["ic-all-pitches"] });
+    });
+    return () => { u1(); u2(); u3(); };
+  }, [selfUserId, queryClient]);
 
   const connectMutation = useMutation({
     mutationFn: async (targetUser) => {
-      const targetInvestor = allInvestorEntities.find(e => e.email === targetUser.email) || null;
-      if (!selfInvestorId || !targetInvestor?.id) return null; // require proper investor IDs
-      if (selfInvestorId === targetInvestor.id) return null; // prevent self-connection
-
-      const existingAB = await base44.entities.InvestorConnection.filter({ investor_a_id: selfInvestorId, investor_b_id: targetInvestor.id, status: 'connected' }, "-created_date", 1);
-      const existingBA = await base44.entities.InvestorConnection.filter({ investor_a_id: targetInvestor.id, investor_b_id: selfInvestorId, status: 'connected' }, "-created_date", 1);
-      if ((existingAB?.length || 0) > 0 || (existingBA?.length || 0) > 0) return null; // prevent duplicates
-
+      if (!selfUserId || !targetUser?.id || selfUserId === targetUser.id) return null;
+      const existingAB = await base44.entities.InvestorConnection.filter({ investor_a_id: selfUserId, investor_b_id: targetUser.id, status: 'connected' }, "-created_date", 1);
+      const existingBA = await base44.entities.InvestorConnection.filter({ investor_a_id: targetUser.id, investor_b_id: selfUserId, status: 'connected' }, "-created_date", 1);
+      if ((existingAB?.length || 0) > 0 || (existingBA?.length || 0) > 0) return null;
       return base44.entities.InvestorConnection.create({
-        investor_a_id: selfInvestorId,
-        investor_b_id: targetInvestor.id,
+        investor_a_id: selfUserId,
+        investor_b_id: targetUser.id,
         timestamp: new Date().toISOString(),
         status: 'connected',
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["invconns-a-inv", selfInvestorId] });
-      queryClient.invalidateQueries({ queryKey: ["invconns-b-inv", selfInvestorId] });
+      queryClient.invalidateQueries({ queryKey: ["ic-conns-a", selfUserId] });
+      queryClient.invalidateQueries({ queryKey: ["ic-conns-b", selfUserId] });
     },
   });
 
-  const disconnectMutation = useMutation({
-    mutationFn: async (targetUser) => {
-      const targetInvestor = allInvestorEntities.find(e => e.email === targetUser.email) || null;
-      if (!selfInvestorId || !targetInvestor?.id) return null;
 
-      const [existingAB] = await base44.entities.InvestorConnection.filter({ investor_a_id: selfInvestorId, investor_b_id: targetInvestor.id, status: 'connected' }, "-created_date", 1);
-      if (existingAB) {
-        await base44.entities.InvestorConnection.delete(existingAB.id);
-        return;
-      }
-      const [existingBA] = await base44.entities.InvestorConnection.filter({ investor_a_id: targetInvestor.id, investor_b_id: selfInvestorId, status: 'connected' }, "-created_date", 1);
-      if (existingBA) {
-        await base44.entities.InvestorConnection.delete(existingBA.id);
-        return;
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["invconns-a-inv", selfInvestorId] });
-      queryClient.invalidateQueries({ queryKey: ["invconns-b-inv", selfInvestorId] });
-    },
-  });
 
   const isConnectedTo = (targetUser) => {
-    const targetInvestor = allInvestorEntities.find(e => e.email === targetUser.email) || null;
-    if (!selfInvestorId || !targetInvestor?.id) return false;
-    return allConns.some(c => (c.investor_a_id === selfInvestorId && c.investor_b_id === targetInvestor.id) || (c.investor_b_id === selfInvestorId && c.investor_a_id === targetInvestor.id));
+    if (!selfUserId || !targetUser?.id) return false;
+    return allConns.some(c => (c.investor_a_id === selfUserId && c.investor_b_id === targetUser.id) || (c.investor_b_id === selfUserId && c.investor_a_id === targetUser.id));
   };
 
-  const visibleInvestors = investors
-    .filter((inv) => inv.id !== user?.id)
-    .filter((inv) => (inv.investor_name || inv.full_name) && (inv.investor_company || inv.investor_bio || inv.investor_location));
+  const visibleEntrepreneurs = entrepreneurs
+    .filter((e) => e.id !== user?.id)
+    .filter((e) => e.profile_completed === true);
 
   // Debug safety: if none found, log all users and their roles (admin only)
   React.useEffect(() => {
@@ -152,13 +125,13 @@ export default function InvestorConnect() {
           <div className="text-center py-12">
             <p className="text-gray-500">Loading investors...</p>
           </div>
-        ) : visibleInvestors.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-            <p className="text-gray-500">No investors available to connect</p>
-          </div>
+        ) : visibleEntrepreneurs.length === 0 ? (
+         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
+           <p className="text-gray-500">No entrepreneurs available to connect</p>
+         </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visibleInvestors.map((inv) => {
+         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+           {visibleEntrepreneurs.map((e) => {
               const connected = isConnectedTo(inv);
               const displayName = inv.investor_name || inv.full_name || (inv.email?.split('@')[0] || 'Investor');
               const phone = inv.investor_phone;
