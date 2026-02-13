@@ -75,6 +75,11 @@ export default function InvestorPitches() {
     return `https://wa.me/${cleanPhone}${text}`;
   };
 
+  const isValidUpiId = (v) => /^[\w.\-]{2,256}@[a-zA-Z]{2,64}$/.test(String(v || "").trim());
+  const buildUpiParams = ({ pa, pn, am, tn }) => `pa=${encodeURIComponent(pa)}&pn=${encodeURIComponent(pn || "")}${am ? `&am=${encodeURIComponent(am)}` : ""}&cu=INR&tn=${encodeURIComponent(tn || "")}`;
+  const buildIntentUrl = (pkg, params) => `intent://pay?${params}#Intent;scheme=upi;package=${pkg};end`;
+  const buildGenericUpiUrl = (params) => `upi://pay?${params}`;
+
   // Connections involving current user (investor)
   const { data: connsA = [] } = useQuery({
     queryKey: ["ip-conns-a", user?.id],
@@ -198,6 +203,27 @@ export default function InvestorPitches() {
                 const email = eUser?.email || pitch.created_by;
                 const phone = eUser?.phone;
                 const waMsg = `Hi ${displayName}, I'm an investor on Shakti and would like to discuss your business idea.`;
+                const upiId = eUser?.upi_id?.trim();
+                const validUpi = isValidUpiId(upiId);
+                const handlePay = async (method) => {
+                  if (!validUpi) return;
+                  const params = buildUpiParams({ pa: upiId, pn: displayName, am: "", tn: "Investment via SHAKTI Platform" });
+                  const pkgMap = { gpay: "com.google.android.apps.nbu.paisa.user", paytm: "net.one97.paytm", phonepe: "com.phonepe.app" };
+                  try {
+                    await base44.entities.PaymentTransaction.create({
+                      investor_id: user?.id,
+                      entrepreneur_id: otherId,
+                      amount: typeof funding === "number" ? funding : null,
+                      timestamp: new Date().toISOString(),
+                      status: "initiated",
+                      method,
+                      pitch_id: pitch.id,
+                    });
+                  } catch (e) {}
+                  const intentUrl = buildIntentUrl(pkgMap[method], params);
+                  window.open(intentUrl, "_blank");
+                  setTimeout(() => { window.open(buildGenericUpiUrl(params), "_blank"); }, 1200);
+                };
 
                 return (
                   <Card key={pitch.id} className="glass-card hover:shadow-md transition-all">
@@ -250,7 +276,7 @@ export default function InvestorPitches() {
                             Connect
                           </Button>
                         ) : (
-                          <div className="grid grid-cols-3 gap-2">
+                          <div className="grid grid-cols-6 gap-2">
                             <Button className="col-span-1 bg-gray-200 text-gray-700 rounded-2xl" disabled>
                               Connected
                             </Button>
@@ -268,6 +294,31 @@ export default function InvestorPitches() {
                             >
                               <Phone className="w-4 h-4 mr-1" /> WhatsApp
                             </Button>
+                            {validUpi && (
+                              <>
+                                <Button
+                                  className="col-span-1 bg-white text-gray-800 border hover:bg-white/80 rounded-2xl"
+                                  onClick={() => handlePay('gpay')}
+                                >
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Google_Pay_Logo_%282018-2020%29.svg" alt="GPay" className="w-4 h-4 mr-1" />
+                                  GPay
+                                </Button>
+                                <Button
+                                  className="col-span-1 bg-white border border-blue-500 text-blue-600 hover:bg-blue-50 rounded-2xl"
+                                  onClick={() => handlePay('paytm')}
+                                >
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Paytm_Logo_.svg" alt="Paytm" className="w-4 h-4 mr-1" />
+                                  Paytm
+                                </Button>
+                                <Button
+                                  className="col-span-1 bg-white border border-purple-600 text-purple-700 hover:bg-purple-50 rounded-2xl"
+                                  onClick={() => handlePay('phonepe')}
+                                >
+                                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/PhonePe_Logo.svg" alt="PhonePe" className="w-4 h-4 mr-1" />
+                                  PhonePe
+                                </Button>
+                              </>
+                            )}
                           </div>
                         )}
 

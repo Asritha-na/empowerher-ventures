@@ -59,6 +59,8 @@ export default function Profile() {
     investor_budget_max: "",
     investor_sections_of_interest: [],
     entrepreneur_skills_needed: [],
+    upi_id: "",
+    preferred_upi_app: "",
   });
 
   useEffect(() => {
@@ -78,6 +80,9 @@ export default function Profile() {
         investor_budget_max: typeof u.investor_budget_max === 'number' ? String(u.investor_budget_max) : "",
         investor_sections_of_interest: u.investor_sections_of_interest || [],
         entrepreneur_skills_needed: u.entrepreneur_skills_needed || [],
+        upi_id: u.upi_id || "",
+        preferred_upi_app: u.preferred_upi_app || "",
+
       });
       setLoading(false);
     });
@@ -326,17 +331,47 @@ export default function Profile() {
 
               {/* Entrepreneur-specific fields */}
               {form.user_role === 'entrepreneur' && (
-                <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-500">Skills They Are Looking For</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {entrepreneurSkillsNeededOptions.map((opt) => (
-                      <label key={opt} className="flex items-center gap-2 h-12 rounded-xl border border-gray-200 bg-white px-3 cursor-pointer">
-                        <Checkbox checked={form.entrepreneur_skills_needed?.includes(opt)} onCheckedChange={() => toggleInArray('entrepreneur_skills_needed', opt)} />
-                        <span className="text-sm text-gray-700">{opt}</span>
-                      </label>
-                    ))}
+                <>
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-500">Skills They Are Looking For</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {entrepreneurSkillsNeededOptions.map((opt) => (
+                        <label key={opt} className="flex items-center gap-2 h-12 rounded-xl border border-gray-200 bg-white px-3 cursor-pointer">
+                          <Checkbox checked={form.entrepreneur_skills_needed?.includes(opt)} onCheckedChange={() => toggleInArray('entrepreneur_skills_needed', opt)} />
+                          <span className="text-sm text-gray-700">{opt}</span>
+                        </label>
+                      ))}
+                    </div>
                   </div>
-                </div>
+
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-500">UPI ID (to receive payments)</label>
+                    <Input
+                      value={form.upi_id}
+                      onChange={(e) => setForm({ ...form, upi_id: e.target.value })}
+                      placeholder="e.g., yourname@upi"
+                      className="rounded-xl h-12"
+                    />
+                    <p className="text-xs text-gray-500">Investors can send funds directly via UPI.</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-500">Preferred UPI App</label>
+                    <Select
+                      value={form.preferred_upi_app || ""}
+                      onValueChange={(v) => setForm({ ...form, preferred_upi_app: v })}
+                    >
+                      <SelectTrigger className="rounded-xl h-12">
+                        <SelectValue placeholder="Select app (optional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="gpay">Google Pay</SelectItem>
+                        <SelectItem value="paytm">Paytm</SelectItem>
+                        <SelectItem value="phonepe">PhonePe</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </>
               )}
 
               <div className="space-y-1">
