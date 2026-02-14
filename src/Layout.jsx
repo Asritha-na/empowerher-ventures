@@ -65,36 +65,27 @@ function LayoutInner({ children, currentPageName, user }) {
     : getEntrepreneurNavItems(t);
 
   return (
-    <div className="min-h-screen flex items-stretch" style={{ background: 'linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%)' }}>
+    <div className="min-h-screen flex items-stretch" style={{ background: 'linear-gradient(135deg, #2B0F0F 0%, #3A1414 100%)' }}>
       <style>{`
         :root {
-          --color-primary: #8B1E1E;
-          --color-sidebar: #E79A9A;
-          --color-hero-start: #B94B5A;
-          --color-hero-end: #D8707C;
+          --color-primary: #7A1C1C; /* brand maroon */
+          --color-sidebar-start: #2B0F0F;
+          --color-sidebar-end: #140707;
+          --color-accent: #F08770; /* coral */
+          --color-surface: #1E0A0A;
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-          width: 8px;
-          height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #FDE8EC;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #E79A9A;
-          border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #B94B5A;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #2B0F0F; }
+        ::-webkit-scrollbar-thumb { background: #F08770; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #F26D56; }
       `}</style>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 flex items-center justify-between px-4 z-50 shadow-md" style={{ background: '#E79A9A' }}>
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 flex items-center justify-between px-4 z-50 shadow-md" style={{ background: '#3A1414' }}>
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-full bg-[#E31B23] flex items-center justify-center">
             <img 
@@ -126,7 +117,7 @@ function LayoutInner({ children, currentPageName, user }) {
         className={`fixed md:static top-0 left-0 h-screen md:h-auto md:self-stretch w-[260px] z-50 transform transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
-        style={{ background: '#E79A9A' }}
+        style={{ background: 'linear-gradient(180deg, var(--color-sidebar-start) 0%, var(--color-sidebar-end) 100%)', borderRight: '1px solid rgba(255,255,255,0.06)' }}
       >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-10">
@@ -151,13 +142,9 @@ function LayoutInner({ children, currentPageName, user }) {
                   key={item.page}
                   to={createPageUrl(item.page)}
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 px-5 py-3.5 text-sm font-medium transition-all duration-200 text-white shadow-md"
-                  style={{
-                    background: '#8B1E1E',
-                    borderRadius: '24px'
-                  }}
+                  className={`flex items-center gap-3 px-5 py-3.5 text-sm font-medium transition-all duration-200 rounded-2xl border ${isActive ? 'bg-[#F08770]/20 border-[#F08770]/40 text-[#FFEDEA]' : 'bg-transparent border-transparent text-white/90 hover:bg-white/5'}`}
                 >
-                  <item.icon className="w-5 h-5 text-white" />
+                  <item.icon className={`w-5 h-5 ${isActive ? 'text-[#F7A491]' : 'text-white/80'}`} />
                   {item.name}
                 </Link>
               );

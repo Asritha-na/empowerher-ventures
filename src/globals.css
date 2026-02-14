@@ -5,10 +5,10 @@ css
 
 @layer base {
   :root {
-    --sidebar-pink: #E79A9A;
-    --button-maroon: #8B1E1E;
-    --hero-rose-start: #B94B5A;
-    --hero-rose-end: #D8707C;
+    --sidebar-pink: #2B0F0F; /* repurposed: sidebar background */
+    --button-maroon: #7A1C1C;
+    --hero-rose-start: #3A1414;
+    --hero-rose-end: #2B0F0F;
     
     --background: 0 0% 98%;
     --foreground: 222 47% 11%;
@@ -16,19 +16,19 @@ css
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 355 73% 33%;
+    --primary: 0 62% 29%; /* maroon */
     --primary-foreground: 0 0% 100%;
-    --secondary: 231 85% 47%;
+    --secondary: 15 88% 68%; /* coral */
     --secondary-foreground: 0 0% 100%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 355 73% 33%;
+    --muted: 20 20% 96%;
+    --muted-foreground: 15 16% 42%;
+    --accent: 15 88% 68%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 355 73% 33%;
+    --border: 20 15% 90%;
+    --input: 20 15% 90%;
+    --ring: 0 62% 29%;
     --radius: 1rem;
   }
 }
@@ -41,7 +41,7 @@ css
     font-feature-settings: "rlig" 1, "calt" 1;
     min-height: 100vh;
     color: #1F2937;
-    background: linear-gradient(135deg, #FDE8EC 0%, #FCF4F6 100%);
+    background: linear-gradient(135deg, #FFF4F0 0%, #FFEDEA 100%);
   }
 }
 
@@ -79,19 +79,19 @@ css
   }
   
   .gradient-primary {
-    background: linear-gradient(135deg, #B94B5A 0%, #D8707C 100%);
+    background: linear-gradient(135deg, #3A1414 0%, #2B0F0F 100%);
   }
   
   .gradient-hero {
-    background: linear-gradient(135deg, #B94B5A 0%, #D8707C 100%);
+    background: linear-gradient(135deg, #3A1414 0%, #2B0F0F 100%);
   }
   
   .sidebar-pink {
-    background: #E79A9A;
+    background: linear-gradient(180deg, #2B0F0F 0%, #140707 100%);
   }
   
   .button-maroon {
-    background: #8B1E1E;
+    background: #7A1C1C;
     color: white;
     border-radius: 24px;
   }
