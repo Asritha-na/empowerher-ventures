@@ -154,7 +154,7 @@ function LayoutInner({ children, currentPageName, user }) {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 min-h-screen md:ml-0 mt-16 md:mt-0 mb-16">
+      <main className="flex-1 min-h-screen md:ml-0 mt-16 md:mt-0 mb-16" style={{ background: 'linear-gradient(135deg, #FFF4F0 0%, #FFEDEA 100%)' }}>
         {children}
       </main>
 
