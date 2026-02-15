@@ -60,6 +60,17 @@ export default function InvestorPitches() {
     return map;
   }, [entrepreneurs]);
 
+  // Latest pitch per entrepreneur (by email), using first from -created_date list
+  const latestPitchByEmail = React.useMemo(() => {
+    const map = new Map();
+    (pitches || []).forEach((p) => {
+      const em = p?.created_by?.toLowerCase?.();
+      if (!em) return;
+      if (!map.has(em)) map.set(em, p);
+    });
+    return map;
+  }, [pitches]);
+
   const skillColors = [
     "bg-pink-100 text-pink-700",
     "bg-blue-100 text-blue-700",
@@ -194,55 +205,34 @@ export default function InvestorPitches() {
           ))}
         </div>
 
-        {/* Pitches with Watchlist */}
+        {/* Entrepreneur Discovery (Find Pitches) */}
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Business Pitches</h2>
-          {pitches.length === 0 ? (
+          {entrepreneurs.length === 0 ? (
             <div className="text-center py-8 bg-white rounded-xl border border-gray-200">
-              <p className="text-gray-500">No pitches available yet</p>
+              <p className="text-gray-500">No entrepreneurs available yet</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {pitches.map((pitch) => {
-                const eUser = pitch.created_by ? entrepreneurByEmail.get(pitch.created_by.toLowerCase()) : null;
-                const otherId = eUser?.user_id || eUser?.id;
+              {entrepreneurs.map((e) => {
+                const displayName = e.full_name || (e.email ? e.email.split('@')[0].replace(/[._-]/g, ' ') : 'Entrepreneur');
+                const businessName = e.business_name || '';
+                const location = e.location || e.location_formatted || '';
+                const skills = Array.isArray(e.entrepreneur_skills_needed) ? e.entrepreneur_skills_needed : [];
+                const email = e.email;
+                const phone = e.phone;
+                const otherId = e.user_id || e.id;
                 const isConnected = !!otherId && (connsByInvestor.some(c => c.entrepreneur_id === otherId) || allConns.some(c => (c.investor_a_id === user?.id && c.investor_b_id === otherId) || (c.investor_b_id === user?.id && c.investor_a_id === otherId)));
-                const displayName = eUser?.full_name || (pitch.created_by ? pitch.created_by.split('@')[0].replace(/[._-]/g, ' ') : 'Entrepreneur');
-                const businessName = eUser?.business_name || pitch.title || '';
-                const location = eUser?.location || eUser?.location_formatted || '';
-                const skills = Array.isArray(eUser?.entrepreneur_skills_needed) ? eUser.entrepreneur_skills_needed : [];
-                const funding = typeof pitch.funding_needed === 'number' ? pitch.funding_needed : (typeof eUser?.entrepreneur_investment_needed === 'number' ? eUser.entrepreneur_investment_needed : null);
-                const description = pitch.structured_pitch || pitch.problem || pitch.solution || eUser?.bio || pitch.raw_speech || '';
-                const email = eUser?.email || pitch.created_by;
-                const phone = eUser?.phone;
+                const latestPitch = email ? latestPitchByEmail.get(email.toLowerCase()) : null;
+                const pitchSummary = latestPitch?.structured_pitch || latestPitch?.problem || latestPitch?.solution || '';
+                const bio = e.bio || '';
                 const waMsg = `Hi ${displayName}, I'm an investor on Shakti and would like to discuss your business idea.`;
-                const upiId = eUser?.upi_id?.trim();
-                const validUpi = isValidUpiId(upiId);
-                const handlePay = async (method) => {
-                  if (!validUpi) return;
-                  const params = buildUpiParams({ pa: upiId, pn: displayName, am: "", tn: "Investment via SHAKTI Platform" });
-                  const pkgMap = { gpay: "com.google.android.apps.nbu.paisa.user", paytm: "net.one97.paytm", phonepe: "com.phonepe.app" };
-                  try {
-                    await base44.entities.PaymentTransaction.create({
-                      investor_id: user?.id,
-                      entrepreneur_id: otherId,
-                      amount: typeof funding === "number" ? funding : null,
-                      timestamp: new Date().toISOString(),
-                      status: "initiated",
-                      method,
-                      pitch_id: pitch.id,
-                    });
-                  } catch (e) {}
-                  const intentUrl = buildIntentUrl(pkgMap[method], params);
-                  window.open(intentUrl, "_blank");
-                  setTimeout(() => { window.open(buildGenericUpiUrl(params), "_blank"); }, 1200);
-                };
 
                 return (
-                  <Card key={pitch.id} className="glass-card hover:shadow-md transition-all">
+                  <Card key={e.id || otherId} className="glass-card hover:shadow-md transition-all">
                     <CardContent className="p-5">
                       <div className="flex items-start gap-3 mb-3">
-                        <img src={eUser?.profile_image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={displayName} className="w-10 h-10 rounded-full object-cover" />
+                        <img src={e.profile_image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60'} alt={displayName} className="w-10 h-10 rounded-full object-cover" />
                         <div>
                           <h4 className="font-bold text-gray-900 leading-tight">{displayName}</h4>
                           {businessName && <p className="text-xs text-gray-600">{businessName}</p>}
@@ -254,22 +244,15 @@ export default function InvestorPitches() {
                         </div>
                       </div>
 
-                      {pitch.category && (
-                        <Badge variant="secondary" className="mb-3 capitalize">{pitch.category}</Badge>
-                      )}
-
-                      {funding !== null && (
-                        <p className="text-sm text-gray-600 mb-2">
-                          Seeking: <span className="font-semibold text-green-600">₹{funding.toLocaleString()}</span>
-                        </p>
-                      )}
-
-                      {description && (
-                        <p className="text-sm text-gray-700 line-clamp-3 mb-3">{description}</p>
+                      {pitchSummary && (
+                        <div className="mb-3">
+                          <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Pitch Summary</p>
+                          <p className="text-sm text-gray-700 line-clamp-3">{pitchSummary}</p>
+                        </div>
                       )}
 
                       {skills.length > 0 && (
-                        <div className="mb-4">
+                        <div className="mb-3">
                           <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Skills</p>
                           <div className="flex flex-wrap gap-1.5">
                             {skills.slice(0,6).map((s, idx) => (
@@ -279,17 +262,24 @@ export default function InvestorPitches() {
                         </div>
                       )}
 
+                      {bio && (
+                        <div className="mb-3">
+                          <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Bio</p>
+                          <p className="text-sm text-gray-700 line-clamp-3">{bio}</p>
+                        </div>
+                      )}
+
                       <div className="space-y-2">
                         {!isConnected ? (
                           <Button
                             className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl"
-                            onClick={() => eUser && connectMutation.mutate(eUser)}
-                            disabled={!eUser || !user}
+                            onClick={() => connectMutation.mutate(e)}
+                            disabled={!user}
                           >
                             Connect
                           </Button>
                         ) : (
-                          <div className={`grid ${validUpi ? 'grid-cols-6' : 'grid-cols-3'} gap-2`}>
+                          <div className="grid grid-cols-3 gap-2">
                             <Button className="col-span-1 bg-gray-200 text-gray-700 rounded-2xl" disabled>
                               Connected
                             </Button>
@@ -307,41 +297,8 @@ export default function InvestorPitches() {
                             >
                               <Phone className="w-4 h-4 mr-1" /> WhatsApp
                             </Button>
-                            {validUpi && (
-                              <>
-                                <Button
-                                  className="col-span-1 bg-white text-gray-800 border hover:bg-white/80 rounded-2xl"
-                                  onClick={() => handlePay('gpay')}
-                                >
-                                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Google_Pay_Logo_%282018-2020%29.svg" alt="GPay" className="w-4 h-4 mr-1" />
-                                  GPay
-                                </Button>
-                                <Button
-                                  className="col-span-1 bg-white border border-blue-500 text-blue-600 hover:bg-blue-50 rounded-2xl"
-                                  onClick={() => handlePay('paytm')}
-                                >
-                                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Paytm_Logo_.svg" alt="Paytm" className="w-4 h-4 mr-1" />
-                                  Paytm
-                                </Button>
-                                <Button
-                                  className="col-span-1 bg-white border border-purple-600 text-purple-700 hover:bg-purple-50 rounded-2xl"
-                                  onClick={() => handlePay('phonepe')}
-                                >
-                                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/PhonePe_Logo.svg" alt="PhonePe" className="w-4 h-4 mr-1" />
-                                  PhonePe
-                                </Button>
-                              </>
-                            )}
                           </div>
                         )}
-
-                        <AddToWatchlistButton pitch={pitch} investorEmail={user?.email} variant="outline" />
-                        <NotesManager
-                          investorEmail={user?.email}
-                          relatedToType="pitch"
-                          relatedToId={pitch.id}
-                          relatedToName={pitch.title}
-                        />
                       </div>
                     </CardContent>
                   </Card>
