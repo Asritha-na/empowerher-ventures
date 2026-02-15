@@ -135,11 +135,10 @@ export default function InvestorConnect() {
          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
            {visibleInvestors.map((e) => {
               const displayName = e.name || (e.email?.split('@')[0] || 'Investor');
-              const phone = e.phone;
+              const whatsapp = e.whatsapp_number || e.phone;
               const email = e.email;
               const connected = !!(connectionWith(e.user_id || e.id));
-              const waMsg = encodeURIComponent(`Hello ${displayName}, I found your profile on the SHAKTI platform and would like to connect.`);
-              const waUrl = phone ? `https://wa.me/${phone.replace(/\D/g, '')}?text=${waMsg}` : null;
+              const waUrl = whatsapp ? `https://wa.me/${whatsapp.replace(/\D/g, '')}` : null;
               const investmentRange = (typeof e.min_investment === 'number' || typeof e.max_investment === 'number')
                 ? `${typeof e.min_investment === 'number' ? '₹' + e.min_investment.toLocaleString() : '₹0'} - ${typeof e.max_investment === 'number' ? '₹' + e.max_investment.toLocaleString() : '₹0'}`
                 : null;

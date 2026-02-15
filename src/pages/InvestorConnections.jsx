@@ -147,8 +147,8 @@ export default function InvestorConnections() {
                   <div className="mt-4 grid grid-cols-2 gap-2">
                     <Button
                       className="bg-green-600 hover:bg-green-700 text-white rounded-2xl"
-                      onClick={() => c.phone && window.open(`https://wa.me/${c.phone.replace(/\D/g, '')}?text=${encodeURIComponent('Hi ' + c.name + ', I saw your business on Shakti and would like to connect.')}`, '_blank')}
-                      disabled={!c.phone}
+                      onClick={() => c.whatsapp && window.open(`https://wa.me/${c.whatsapp.replace(/\D/g, '')}`, '_blank')}
+                      disabled={!c.whatsapp}
                     >
                       <Phone className="w-4 h-4 mr-1" /> WhatsApp
                     </Button>
