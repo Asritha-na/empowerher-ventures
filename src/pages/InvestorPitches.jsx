@@ -313,7 +313,7 @@ export default function InvestorPitches() {
                             </Button>
                             <Button
                               className="col-span-1 bg-green-600 hover:bg-green-700 text-white rounded-2xl"
-                              onClick={() => whatsapp && window.open(getWhatsAppLink(whatsapp, waMsg), '_blank')}
+                              onClick={() => whatsapp && window.open(`https://wa.me/${whatsapp.replace(/\\D/g, '')}`, '_blank')}
                               disabled={!whatsapp}
                             >
                               <Phone className="w-4 h-4 mr-1" /> WhatsApp
