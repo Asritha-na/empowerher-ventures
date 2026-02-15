@@ -12,6 +12,7 @@ import { User, Save, Loader2, Camera, Mail, Phone, MapPin, Building2, LogOut, Ph
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
 import LanguageSelector from "@/components/LanguageSelector";
+import ReviewList from "@/components/reviews/ReviewList";
 
 const businessTypes = [
   { value: "handicrafts", label: "🎨 Handicrafts" },
@@ -529,6 +530,11 @@ export default function Profile() {
               </Button>
             </CardContent>
           </Card>
+
+          {/* Reviews */}
+          <div className="mt-6">
+            <ReviewList targetUserId={user?.id} />
+          </div>
 
           {/* Toll-Free Support */}
           <Card className="glass-card mt-6">
