@@ -306,7 +306,7 @@ export default function InvestorPitches() {
                             </Button>
                             <Button
                               className="col-span-1 bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
-                              onClick={() => email && window.open(`mailto:${email}?subject=${encodeURIComponent('Regarding your business idea on SHAKTI')}`)}
+                              onClick={() => email && window.open(`mailto:${email}`, '_blank')}
                               disabled={!email}
                             >
                               <Mail className="w-4 h-4 mr-1" /> Email

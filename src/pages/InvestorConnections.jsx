@@ -154,7 +154,7 @@ export default function InvestorConnections() {
                     </Button>
                     <Button
                       className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
-                      onClick={() => c.email && window.open(`mailto:${c.email}?subject=${encodeURIComponent('Regarding your business idea on SHAKTI')}`)}
+                      onClick={() => c.email && window.open(`mailto:${c.email}`, '_blank')}
                       disabled={!c.email}
                     >
                       <Mail className="w-4 h-4 mr-1" /> Email
