@@ -74,10 +74,10 @@ export default function InvestorConnections() {
       const business = u.business_name || pitch?.title || 'Business Idea';
       const skills = Array.isArray(u.entrepreneur_skills_needed) ? u.entrepreneur_skills_needed.slice(0,6) : [];
       const investment = typeof pitch?.funding_needed === 'number' ? pitch.funding_needed : (typeof u.entrepreneur_investment_needed === 'number' ? u.entrepreneur_investment_needed : null);
-      const phone = u.phone;
+      const whatsapp = u.whatsapp_number || null;
       const profile_image = u.profile_image;
       const location = u.location || u.location_formatted || null;
-      return { email, name, business, skills, investment, phone, profile_image, location };
+      return { email, name, business, skills, investment, whatsapp, profile_image, location };
     }
     // Fallback: try Investor entity by id (some investors may be connected)
     const inv = investors.find(i => (i.user_id || i.id) === oid);
@@ -88,12 +88,12 @@ export default function InvestorConnections() {
         business: inv.category_label || inv.investor_type || 'Investor',
         skills: Array.isArray(inv.focus_areas) ? inv.focus_areas.slice(0,6) : [],
         investment: null,
-        phone: inv.phone || null,
+        whatsapp: inv.whatsapp_number || null,
         profile_image: inv.image_url || null,
         location: inv.location || null,
       };
     }
-    return { email: null, name: 'User', business: '', skills: [], investment: null, phone: null, profile_image: null, location: null };
+    return { email: null, name: 'User', business: '', skills: [], investment: null, whatsapp: null, profile_image: null, location: null };
   });
 
   return (

@@ -238,7 +238,7 @@ export default function InvestorPitches() {
                 const location = e.location || e.location_formatted || '';
                 const skills = Array.isArray(e.entrepreneur_skills_needed) ? e.entrepreneur_skills_needed : [];
                 const email = e.email;
-                const phone = e.phone;
+                const whatsapp = e.whatsapp_number;
                 const otherId = e.user_id || e.id;
                 const connected = !!otherId && !!connectionWith(otherId);
                 const latestPitch = email ? latestPitchByEmail.get(email.toLowerCase()) : null;
@@ -310,8 +310,8 @@ export default function InvestorPitches() {
                             </Button>
                             <Button
                               className="col-span-1 bg-green-600 hover:bg-green-700 text-white rounded-2xl"
-                              onClick={() => phone && window.open(getWhatsAppLink(phone, waMsg), '_blank')}
-                              disabled={!phone}
+                              onClick={() => whatsapp && window.open(getWhatsAppLink(whatsapp, waMsg), '_blank')}
+                              disabled={!whatsapp}
                             >
                               <Phone className="w-4 h-4 mr-1" /> WhatsApp
                             </Button>

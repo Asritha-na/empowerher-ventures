@@ -205,16 +205,16 @@ export default function InvestorConnect() {
 
                       <Button
                         className="bg-green-600 hover:bg-green-700 text-white rounded-2xl"
-                        onClick={() => { if (waUrl) window.open(waUrl, '_blank'); }}
-                        disabled={!waUrl}
+                        onClick={() => { if (waUrl && connected) window.open(waUrl, '_blank'); }}
+                        disabled={!waUrl || !connected}
                       >
                         <Phone className="w-4 h-4" /> WhatsApp
                       </Button>
 
                       <Button
                         className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
-                        onClick={() => { if (email) window.open(`mailto:${email}?subject=${encodeURIComponent('Investment Inquiry from SHAKTI Platform')}`); }}
-                        disabled={!email}
+                        onClick={() => { if (email && connected) window.open(`mailto:${email}?subject=${encodeURIComponent('Investment Inquiry from SHAKTI Platform')}`); }}
+                        disabled={!email || !connected}
                       >
                         <Mail className="w-4 h-4" /> Email
                       </Button>
