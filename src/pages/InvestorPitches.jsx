@@ -238,7 +238,7 @@ export default function InvestorPitches() {
                 const location = e.location || e.location_formatted || '';
                 const skills = Array.isArray(e.entrepreneur_skills_needed) ? e.entrepreneur_skills_needed : [];
                 const email = e.email;
-                const whatsapp = e.whatsapp_number;
+                const whatsapp = e.whatsapp_number || e.phone;
                 const otherId = e.user_id || e.id;
                 const connected = !!otherId && !!connectionWith(otherId);
                 const latestPitch = email ? latestPitchByEmail.get(email.toLowerCase()) : null;

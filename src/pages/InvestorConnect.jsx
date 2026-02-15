@@ -213,7 +213,7 @@ export default function InvestorConnect() {
 
                       <Button
                         className="bg-white text-[#8B1E1E] border border-[#8B1E1E] hover:bg-white/80 rounded-2xl"
-                        onClick={() => { if (email && connected) window.open(`mailto:${email}?subject=${encodeURIComponent('Investment Inquiry from SHAKTI Platform')}`); }}
+                        onClick={() => { if (email && connected) window.open(`mailto:${email}`); }}
                         disabled={!email || !connected}
                       >
                         <Mail className="w-4 h-4" /> Email
