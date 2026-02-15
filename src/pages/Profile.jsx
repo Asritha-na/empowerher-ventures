@@ -91,6 +91,10 @@ export default function Profile() {
 
   useEffect(() => {
     let ac;
+    // Inject Google Maps API key provided by user
+    if (typeof window !== 'undefined' && !window.GOOGLE_MAPS_API_KEY) {
+      window.GOOGLE_MAPS_API_KEY = 'AIzaSyCfmokDEC4y4orK1V03zQcmW5G312ox0OE';
+    }
     function ensureScript() {
       if (window.google && window.google.maps && window.google.maps.places) return Promise.resolve();
       const key = window.GOOGLE_MAPS_API_KEY || "";
