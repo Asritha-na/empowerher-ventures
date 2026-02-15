@@ -16,9 +16,9 @@ export default function InvestorConnections() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const u1 = base44.entities.InvestorConnection.subscribe(() => {
-      queryClient.invalidateQueries({ queryKey: ["conns-a", user?.id] });
-      queryClient.invalidateQueries({ queryKey: ["conns-b", user?.id] });
+    const u0 = base44.entities.Connection.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["conn-sent", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["conn-recv", user?.id] });
     });
     const u2 = base44.entities.PublicProfile.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["entrepreneur-users-all"] });
@@ -26,7 +26,7 @@ export default function InvestorConnections() {
     const u3 = base44.entities.Pitch.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["all-pitches"] });
     });
-    return () => { u1(); u2(); u3(); };
+    return () => { u0(); u2(); u3(); };
   }, [queryClient, user?.id]);
 
   const { data: investors = [] } = useQuery({
@@ -39,59 +39,61 @@ export default function InvestorConnections() {
     queryFn: () => base44.entities.Pitch.list("-created_date", 500),
   });
 
-  // Connections based on InvestorConnection entity
-  const { data: connsA = [] } = useQuery({
-    queryKey: ["conns-a", user?.id],
+  // Connections based on new Connection entity
+  const { data: sent = [] } = useQuery({
+    queryKey: ["conn-sent", user?.id],
     enabled: !!user?.id,
-    queryFn: () => base44.entities.InvestorConnection.filter({ investor_a_id: user.id, status: 'connected' }, "-created_date", 500),
+    queryFn: () => base44.entities.Connection.filter({ sender_id: user.id, status: 'connected' }, "-created_date", 1000),
   });
-  const { data: connsB = [] } = useQuery({
-    queryKey: ["conns-b", user?.id],
+  const { data: recv = [] } = useQuery({
+    queryKey: ["conn-recv", user?.id],
     enabled: !!user?.id,
-    queryFn: () => base44.entities.InvestorConnection.filter({ investor_b_id: user.id, status: 'connected' }, "-created_date", 500),
-  });
-  const { data: connsByInvestor = [] } = useQuery({
-    queryKey: ["conns-investor", user?.id],
-    enabled: !!user?.id,
-    queryFn: () => base44.entities.InvestorConnection.filter({ investor_id: user.id, status: 'connected' }, "-created_date", 500),
+    queryFn: () => base44.entities.Connection.filter({ receiver_id: user.id, status: 'connected' }, "-created_date", 1000),
   });
 
   const { data: entrepreneurUsers = [] } = useQuery({
     queryKey: ["entrepreneur-users-all"],
-    queryFn: () => base44.entities.PublicProfile.filter({ user_role: 'entrepreneur', profile_completed: true, is_public: true }, "-created_date", 1000),
+    queryFn: () => base44.entities.PublicProfile.filter({ profile_completed: true, is_public: true }, "-created_date", 1000),
   });
 
-  const connectedEntrepreneurEmails = [];
+  const otherIds = React.useMemo(() => {
+    const s = new Set();
+    sent.forEach(c => { if (c.receiver_id && c.receiver_id !== user?.id) s.add(c.receiver_id); });
+    recv.forEach(c => { if (c.sender_id && c.sender_id !== user?.id) s.add(c.sender_id); });
+    return Array.from(s);
+  }, [sent, recv, user?.id]);
 
-  const entreById = new Map(entrepreneurUsers.map(u => [u.user_id, u]));
-  const entreByEmail = new Map(entrepreneurUsers.map(u => [u.email, u]));
+  const entreByUserId = new Map(entrepreneurUsers.map(u => [u.user_id, u]));
 
-  const fromConnections = [
-    ...connsByInvestor.map(c => c.entrepreneur_id && entreById.get(c.entrepreneur_id)).filter(Boolean),
-    ...[...connsA, ...connsB]
-      .map(c => (c.investor_a_id === user?.id ? c.investor_b_id : c.investor_a_id))
-      .map(otherId => entreById.get(otherId))
-      .filter(Boolean)
-  ];
-
-  const fromEmails = connsByInvestor
-    .map(c => c.entrepreneur_email && entreByEmail.get(c.entrepreneur_email))
-    .filter(Boolean);
-
-  const mergedEntrepreneurs = [];
-  const seen = new Set();
-  [...fromConnections, ...fromEmails].forEach(u => { if (!seen.has(u.id)) { seen.add(u.id); mergedEntrepreneurs.push(u); } });
-
-  const cards = mergedEntrepreneurs.map((u) => {
-    const email = u.email;
-    const pitch = allPitches.find((p) => p.created_by === email);
-    const name = u.full_name || (email?.split('@')[0]?.replace(/[._-]/g, ' ') || 'Entrepreneur');
-    const business = u.business_name || pitch?.title || 'Business Idea';
-    const skills = Array.isArray(u.entrepreneur_skills_needed) ? u.entrepreneur_skills_needed.slice(0,6) : [];
-    const investment = typeof pitch?.funding_needed === 'number' ? pitch.funding_needed : (typeof u.entrepreneur_investment_needed === 'number' ? u.entrepreneur_investment_needed : null);
-    const phone = u.phone;
-    const profile_image = u.profile_image;
-    return { email, name, business, skills, investment, phone, profile_image, location: u.location || u.location_formatted || null };
+  const cards = otherIds.map((oid) => {
+    const u = entreByUserId.get(oid);
+    if (u) {
+      const email = u.email;
+      const pitch = allPitches.find((p) => p.created_by === email);
+      const name = u.full_name || (email?.split('@')[0]?.replace(/[._-]/g, ' ') || 'Entrepreneur');
+      const business = u.business_name || pitch?.title || 'Business Idea';
+      const skills = Array.isArray(u.entrepreneur_skills_needed) ? u.entrepreneur_skills_needed.slice(0,6) : [];
+      const investment = typeof pitch?.funding_needed === 'number' ? pitch.funding_needed : (typeof u.entrepreneur_investment_needed === 'number' ? u.entrepreneur_investment_needed : null);
+      const phone = u.phone;
+      const profile_image = u.profile_image;
+      const location = u.location || u.location_formatted || null;
+      return { email, name, business, skills, investment, phone, profile_image, location };
+    }
+    // Fallback: try Investor entity by id (some investors may be connected)
+    const inv = investors.find(i => (i.user_id || i.id) === oid);
+    if (inv) {
+      return {
+        email: inv.email || null,
+        name: inv.name || 'Investor',
+        business: inv.category_label || inv.investor_type || 'Investor',
+        skills: Array.isArray(inv.focus_areas) ? inv.focus_areas.slice(0,6) : [],
+        investment: null,
+        phone: inv.phone || null,
+        profile_image: inv.image_url || null,
+        location: inv.location || null,
+      };
+    }
+    return { email: null, name: 'User', business: '', skills: [], investment: null, phone: null, profile_image: null, location: null };
   });
 
   return (
@@ -103,7 +105,7 @@ export default function InvestorConnections() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Connections</h1>
-            <p className="text-sm text-gray-700">Entrepreneurs you’ve connected with</p>
+            <p className="text-sm text-gray-700">Your connections</p>
           </div>
         </div>
 

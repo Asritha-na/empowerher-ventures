@@ -109,40 +109,58 @@ export default function InvestorPitches() {
   });
   const allConns = [...connsA, ...connsB];
 
+  // New unified connections (sender/receiver) using Connection entity
+  const { data: myConnsSent = [] } = useQuery({
+    queryKey: ["conn-sent", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => base44.entities.Connection.filter({ sender_id: user.id, status: 'connected' }, "-created_date", 1000),
+  });
+  const { data: myConnsRecv = [] } = useQuery({
+    queryKey: ["conn-recv", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => base44.entities.Connection.filter({ receiver_id: user.id, status: 'connected' }, "-created_date", 1000),
+  });
+  const allMyConns = [...myConnsSent, ...myConnsRecv];
+  const connectionWith = (otherId) => allMyConns.find(c => (c.sender_id === user?.id && c.receiver_id === otherId) || (c.receiver_id === user?.id && c.sender_id === otherId));
+
   // Mutation: connect investor -> entrepreneur
   const connectMutation = useMutation({
-    mutationFn: async (entrepreneurUser) => {
-      const targetId = entrepreneurUser?.user_id || entrepreneurUser?.id;
-      if (!user?.id || !targetId || targetId === user.id) return;
-      // Avoid duplicate connection (new + legacy)
-      const existingNew = await base44.entities.InvestorConnection.filter({ investor_id: user.id, entrepreneur_id: targetId, status: 'connected' }, "-created_date", 1);
-      const [existAB] = await base44.entities.InvestorConnection.filter({ investor_a_id: user.id, investor_b_id: targetId, status: 'connected' }, "-created_date", 1);
-      const [existBA] = await base44.entities.InvestorConnection.filter({ investor_a_id: targetId, investor_b_id: user.id, status: 'connected' }, "-created_date", 1);
-      if ((existingNew?.length || 0) > 0 || existAB || existBA) return;
-      await base44.entities.InvestorConnection.create({
-        investor_a_id: user.id,
-        investor_b_id: targetId,
-        investor_id: user.id,
-        entrepreneur_id: targetId,
-        entrepreneur_name: entrepreneurUser.full_name || (entrepreneurUser.email?.split('@')[0] || 'Entrepreneur'),
-        entrepreneur_email: entrepreneurUser.email || null,
-        timestamp: new Date().toISOString(),
-        status: 'connected',
-      });
+    mutationFn: async (otherId) => {
+      if (!user?.id || !otherId || otherId === user.id) return;
+      const a = await base44.entities.Connection.filter({ sender_id: user.id, receiver_id: otherId, status: 'connected' }, "-created_date", 1);
+      const b = await base44.entities.Connection.filter({ sender_id: otherId, receiver_id: user.id, status: 'connected' }, "-created_date", 1);
+      if ((a?.length || 0) > 0 || (b?.length || 0) > 0) return;
+      await base44.entities.Connection.create({ sender_id: user.id, receiver_id: otherId, status: 'connected' });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["ip-conns-a", user?.id] });
-      queryClient.invalidateQueries({ queryKey: ["ip-conns-b", user?.id] });
-      queryClient.invalidateQueries({ queryKey: ["ip-conns-investor", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["conn-sent", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["conn-recv", user?.id] });
+    }
+  });
+
+  const disconnectMutation = useMutation({
+    mutationFn: async (otherId) => {
+      const a = await base44.entities.Connection.filter({ sender_id: user.id, receiver_id: otherId, status: 'connected' }, "-created_date", 10);
+      const b = await base44.entities.Connection.filter({ sender_id: otherId, receiver_id: user.id, status: 'connected' }, "-created_date", 10);
+      const targets = [...(a||[]), ...(b||[])];
+      await Promise.all(targets.map(r => base44.entities.Connection.delete(r.id)));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["conn-sent", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["conn-recv", user?.id] });
     }
   });
 
   // Real-time sync on connections and data updates
   useEffect(() => {
-    const unsubConn = base44.entities.InvestorConnection.subscribe(() => {
+    const unsubConnOld = base44.entities.InvestorConnection.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["ip-conns-a", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["ip-conns-b", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["ip-conns-investor", user?.id] });
+    });
+    const unsubConnNew = base44.entities.Connection.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["conn-sent", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["conn-recv", user?.id] });
     });
     const unsubPitch = base44.entities.Pitch.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["investor-pitches"] });
@@ -150,7 +168,7 @@ export default function InvestorPitches() {
     const unsubUser = base44.entities.PublicProfile.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ["public-entrepreneur-profiles"] });
     });
-    return () => { unsubConn(); unsubPitch(); unsubUser(); };
+    return () => { unsubConnOld(); unsubConnNew(); unsubPitch(); unsubUser(); };
   }, [user?.id, queryClient]);
 
   return (
@@ -222,7 +240,7 @@ export default function InvestorPitches() {
                 const email = e.email;
                 const phone = e.phone;
                 const otherId = e.user_id || e.id;
-                const isConnected = !!otherId && (connsByInvestor.some(c => c.entrepreneur_id === otherId) || allConns.some(c => (c.investor_a_id === user?.id && c.investor_b_id === otherId) || (c.investor_b_id === user?.id && c.investor_a_id === otherId)));
+                const connected = !!otherId && !!connectionWith(otherId);
                 const latestPitch = email ? latestPitchByEmail.get(email.toLowerCase()) : null;
                 const pitchSummary = latestPitch?.structured_pitch || latestPitch?.problem || latestPitch?.solution || '';
                 const bio = e.bio || '';
