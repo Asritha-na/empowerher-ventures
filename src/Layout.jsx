@@ -129,8 +129,8 @@ function LayoutInner({ children, currentPageName, user }) {
               />
             </div>
             <div>
-              <span className="font-bold text-gray-900 text-lg">Shakti</span>
-              <p className="text-xs text-gray-700">Empowering Women</p>
+              <span className="font-bold text-white text-lg">Shakti</span>
+              <p className="text-xs text-white">Empowering Women</p>
             </div>
           </div>
 
