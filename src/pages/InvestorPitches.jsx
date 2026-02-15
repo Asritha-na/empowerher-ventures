@@ -288,17 +288,20 @@ export default function InvestorPitches() {
                       )}
 
                       <div className="space-y-2">
-                        {!isConnected ? (
+                        {!connected ? (
                           <Button
                             className="w-full bg-[#8B1E1E] hover:opacity-90 text-white rounded-2xl"
-                            onClick={() => connectMutation.mutate(e)}
+                            onClick={() => otherId && connectMutation.mutate(otherId)}
                             disabled={!user}
                           >
                             Connect
                           </Button>
                         ) : (
                           <div className="grid grid-cols-3 gap-2">
-                            <Button className="col-span-1 bg-gray-200 text-gray-700 rounded-2xl" disabled>
+                            <Button
+                              className="col-span-1 bg-gray-200 text-gray-700 rounded-2xl"
+                              onClick={() => otherId && disconnectMutation.mutate(otherId)}
+                            >
                               Connected
                             </Button>
                             <Button
