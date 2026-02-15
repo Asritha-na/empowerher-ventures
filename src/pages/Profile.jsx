@@ -46,6 +46,7 @@ export default function Profile() {
   const [saving, setSaving] = useState(false);
   const locationInputRef = useRef(null);
   const [budgetError, setBudgetError] = useState("");
+  const [mapsReady, setMapsReady] = useState(false);
   const [form, setForm] = useState({
     full_name: "",
     user_role: "",
@@ -117,7 +118,8 @@ export default function Profile() {
       });
     }
     ensureScript().then(() => {
-      if (!locationInputRef.current || !window.google?.maps?.places) return;
+      if (!locationInputRef.current || !window.google?.maps?.places) { setMapsReady(false); return; }
+      setMapsReady(true);
       ac = new window.google.maps.places.Autocomplete(locationInputRef.current, {
         fields: ["address_components", "geometry", "formatted_address"],
         types: ["(cities)"],
@@ -149,7 +151,7 @@ export default function Profile() {
           sessionStorage.setItem("location_data", JSON.stringify(data));
         }
       });
-    });
+    }).catch(() => { setMapsReady(false); });
     return () => { ac = null; };
   }, [locationInputRef]);
 
@@ -330,6 +332,9 @@ export default function Profile() {
                   placeholder={t("villageCityState")}
                   className="rounded-xl h-12"
                 />
+                <p className={`text-xs mt-1 ${mapsReady ? 'text-green-600' : 'text-amber-600'}`}>
+                  {mapsReady ? 'Google Maps Autocomplete enabled' : 'Autocomplete unavailable; please type your city'}
+                </p>
               </div>
 
               <div className="space-y-1">
